@@ -1,0 +1,48 @@
+.form-inline {
+    flex: 1;
+    justify-content: flex-end !important;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+.search-bar {
+    position: relative;
+    flex-wrap: wrap;
+    align-items: stretch;
+    flex: 1;
+    max-width: 300px;
+    margin: 0 var(--margin-md);
+    background-color: #242a30;
+}
+
+.search-bar .search-icon {
+    position: absolute;
+    margin-left: 12px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.bi {
+    color: gray;
+}
+
+.__icon {
+    padding: 0px;
+    margin: 0px 15px;
+}
+
+.__help {
+    padding: 0px 15px;
+    margin: 0px;
+    color: gray;
+    border-left: 1px solid gray;
+}
+
+.__avatar {
+    border-radius: 100%;
+    width: 30px;
+    height: 30px;
+    background-color: gray;
+}
