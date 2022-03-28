@@ -11,7 +11,7 @@
     padding: 15px 0px;
 }
 
-.title-inline {
+.__title_inline {
     flex: 1;
     justify-content: flex-start !important;
     display: flex;

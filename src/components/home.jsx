@@ -1,6 +1,7 @@
 import React from "react";
 import "./assets/css/home.css";
 import Nav from "./nav";
+import SideNav from "./sideNav";
 
 const Home = (props) => {
   return (
@@ -12,7 +13,7 @@ const Home = (props) => {
           <div className="w-100">
             <div className="container-fluid">
               <div
-                className="title-inline"
+                className="__title_inline"
                 style={{ justifyContent: "flex-start" }}
               >
                 <div className="__icon">
@@ -22,12 +23,15 @@ const Home = (props) => {
               </div>
             </div>
           </div>
+          <div className="w-100">
+            {/* Sidebar */}
+            <div className="__side_bar">
+              <SideNav />
+            </div>
 
-          {/* Sidebar */}
-          <div className="side-bar"></div>
-
-          {/* Content */}
-          <div className="w-100"></div>
+            {/* Content */}
+            <div className="__content"></div>
+          </div>
         </div>
       </div>
     </>
