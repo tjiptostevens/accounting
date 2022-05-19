@@ -2,9 +2,7 @@ import React, { useState } from "react";
 
 const site = window.location.hostname;
 const apiSite =
-  site === "localhost"
-    ? "https://njajal.sekolahmusik.co.id/"
-    : "https://sister.sekolahmusik.co.id/";
+  site === "localhost" ? "http://localhost/accounting/public/php/" : "-";
 
 const urlLink = {
   url: apiSite,

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { NavLink, Link, useParams } from "react-router-dom";
 import useWindow from "./useWindow";
 import urlLink from "./config/urlLink";
 import Login from "./login";
@@ -9,7 +9,6 @@ import "./assets/css/sideNav.css";
 const SideNav = (props) => {
   const { lin } = useParams(props);
   const { width } = useWindow();
-
   const handleLogout = (e) => {
     console.log(e);
   };
@@ -182,76 +181,69 @@ const SideNav = (props) => {
               style={{ paddingLeft: "30px" }}
             >
               <li>
-                <Link
-                  to="/d"
-                  className={
-                    window.location.pathname === "/d"
-                      ? "nav-link text-white active"
-                      : "nav-link text-white"
-                  }
+                <NavLink
+                  to="/d/company"
+                  className="nav-link text-white"
                   aria-current="page"
                 >
                   <svg className="bi me-2" width="16" height="16">
                     <use xlinkHref="#home"></use>
                   </svg>
                   Company
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link
-                  to="/d/profile"
-                  className={
-                    window.location.pathname === "/d/profile"
-                      ? "nav-link text-white active"
-                      : "nav-link text-white"
-                  }
-                >
-                  <svg className="bi me-2" width="16" height="16">
-                    <use xlinkHref="#people-circle" />
-                  </svg>
+                <NavLink to="/d/chartofaccount" className="nav-link text-white">
+                  <i className="bi bi-bar-chart-steps me-2"></i>
                   Chart Of Account
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link
-                  to="/d/course"
-                  className={
-                    window.location.pathname === "/d/course"
-                      ? "nav-link text-white active"
-                      : "nav-link text-white"
-                  }
-                >
+                <NavLink to="/d/course" className="nav-link text-white">
                   <svg className="bi me-2" width="16" height="16">
                     <use xlinkHref="#table" />
                   </svg>
                   Course
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link
-                  to="/d/riwayat"
-                  className={
-                    window.location.pathname === "/d/riwayat"
-                      ? "nav-link text-white active"
-                      : "nav-link text-white"
-                  }
-                >
+                <NavLink to="/d/riwayat" className="nav-link text-white">
                   <svg className="bi me-2" width="16" height="16">
                     <use xlinkHref="#collection"></use>
                   </svg>
                   Riwayat
-                </Link>
+                </NavLink>
+              </li>
+              <hr />
+              <p className="__subtitle" style={{ paddingLeft: "15px" }}>
+                SETTINGS
+              </p>
+              <li>
+                <NavLink to="/d/user" className="nav-link text-white">
+                  <svg className="bi me-2" width="16" height="16">
+                    <use xlinkHref="#collection"></use>
+                  </svg>
+                  User
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/d/profile" className="nav-link text-white">
+                  <svg className="bi me-2" width="16" height="16">
+                    <use xlinkHref="#collection"></use>
+                  </svg>
+                  Profile
+                </NavLink>
               </li>
               <hr />
               <li>
-                <Link
+                <NavLink
                   to={"/login"}
                   className="nav-link text-white"
                   onClick={handleLogout}
                 >
                   <span className="glyphicon glyphicon-log-out me2"></span>
                   Log Out
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </div>
@@ -264,7 +256,7 @@ const SideNav = (props) => {
 
               {/* <div className="row nav nav-pills flex-column mb-auto"> */}
               <div className="col-2">
-                <Link
+                <NavLink
                   to="/d"
                   className="nav-link text-white"
                   style={{
@@ -276,11 +268,11 @@ const SideNav = (props) => {
                   <svg className="bi me-2" width="25" height="25">
                     <use xlinkHref="#home"></use>
                   </svg>
-                </Link>
+                </NavLink>
               </div>
 
               <div className="col-2">
-                <Link
+                <NavLink
                   to="/d/course"
                   className="nav-link text-white"
                   style={{
@@ -293,11 +285,11 @@ const SideNav = (props) => {
                   <svg className="bi me-2" width="25" height="25">
                     <use xlinkHref="#table" />
                   </svg>
-                </Link>
+                </NavLink>
               </div>
 
               <div className="col-3">
-                <Link
+                <NavLink
                   to="/d/qrcam"
                   className="nav-link text-white"
                   style={{
@@ -310,11 +302,11 @@ const SideNav = (props) => {
                   <svg className="bi me-2" width="55 " height="55">
                     <use xlinkHref="#qr" />
                   </svg>
-                </Link>
+                </NavLink>
               </div>
 
               <div className="col-2">
-                <Link
+                <NavLink
                   to="/d/riwayat"
                   className="nav-link text-white"
                   style={{
@@ -327,11 +319,11 @@ const SideNav = (props) => {
                   <svg className="bi me-2" width="25" height="25">
                     <use xlinkHref="#collection"></use>
                   </svg>
-                </Link>
+                </NavLink>
               </div>
 
               {/* <div className="col">
-              <Link
+              <NavLink
                 to={"/"}
                 className="nav-link text-white"
                 onClick={() => {
@@ -341,10 +333,10 @@ const SideNav = (props) => {
                 }}
               >
                 <span className="glyphicon glyphicon-log-out me2"></span>
-              </Link>
+              </NavLink>
             </div> */}
               <div className="col-2">
-                <Link
+                <NavLink
                   to="/d/profile"
                   className="nav-link text-white"
                   style={{
@@ -357,7 +349,7 @@ const SideNav = (props) => {
                   {/* <svg className="bi me-2" width="16" height="16">
                   <use xlinkHref="#people-circle" />
                 </svg> */}
-                </Link>
+                </NavLink>
               </div>
             </div>
           </div>

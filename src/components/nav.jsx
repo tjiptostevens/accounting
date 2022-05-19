@@ -9,7 +9,7 @@ const Nav = () => {
       <div className="w-100" style={{ backgroundColor: "#1c2126" }}>
         <div className="container-fluid">
           <nav className="navbar navbar-expand navbar-dark justify-content-between sticky-top">
-            <Link className="navbar-brand" to="#">
+            <Link className="navbar-brand" to="/">
               <img
                 src={logo}
                 width="30"
@@ -17,7 +17,7 @@ const Nav = () => {
                 className="d-inline-block align-top __icon"
                 alt=""
               />
-              GAJIAN
+              AKUNTABILITY
             </Link>
             <div className="form-inline">
               {/* Search Bar */}
@@ -60,7 +60,7 @@ const Nav = () => {
                       textAlign: "center",
                     }}
                   >
-                    <span> T</span>
+                    <span>T</span>
                   </div>
                 </div>
               </div>

@@ -1,0 +1,89 @@
+.__modal-window {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.75);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    opacity: 1;
+}
+
+.__modal-window>div {
+    width: 50%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2em;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.__modal-window header {
+    font-weight: bold;
+}
+
+.__modal-window h1 {
+    font-size: 150%;
+    margin: 0 0 15px;
+}
+
+.modal-window div:not(:last-of-type) {
+    margin-bottom: 15px;
+}
+
+.modal-window {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.75);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    visibility: visible;
+    /* opacity: 0; */
+    /* pointer-events: none; */
+    transition: all 0.3s;
+}
+
+.modal-window:target {
+    visibility: visible;
+    opacity: 1;
+    /* pointer-events: auto; */
+}
+
+.modal-window>div {
+    width: 50%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2em;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.modal-window header {
+    font-weight: bold;
+}
+
+.modal-window h1 {
+    font-size: 150%;
+    margin: 0 0 15px;
+}
+
+.modal-close {
+    color: #aaa;
+    line-height: 50px;
+    font-size: 80%;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    width: 70px;
+    text-decoration: none;
+}
+
+.modal-close :hover {
+    color: black;
+    text-decoration: none;
+}
