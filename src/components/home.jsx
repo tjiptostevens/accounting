@@ -23,11 +23,15 @@ const Home = (props) => {
                 <div className="__icon">
                   <i className="bi bi-view-list"></i>
                 </div>
-                <div className="__title">{data}</div>
+                {/* {console.log(window.location)} */}
+                <div className="__title">{window.location.pathname}</div>
               </div>
             </div>
           </div>
-          <div className="w-100">
+          <div
+            className="w-100"
+            style={{ display: "flex", flexDirection: "row" }}
+          >
             {/* Sidebar */}
             <div className="__side_bar">
               <SideNav />
@@ -36,14 +40,10 @@ const Home = (props) => {
             {/* Content */}
             <div className="__content">
               <Routes>
-                <Route path="/d/company" exact component={Company}>
-                  {/* <Company /> */}
-                </Route>
-                <Route path="/d/chartofaccount" exact>
-                  {/* <Coa /> */}
-                </Route>
-                <Route path="/d/company" exact></Route>
-                <Route path="/d/company" exact></Route>
+                <Route path="/company" exact element={<Company />} />
+                <Route path="/chartofaccount" exact element={<Coa />} />
+                <Route path="/costumer" exact></Route>
+                <Route path="/company" exact></Route>
               </Routes>
             </div>
           </div>

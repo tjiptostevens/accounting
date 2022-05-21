@@ -4,12 +4,16 @@ import Login from "../login";
 const routes = {
   web: [
     {
+      path: "/",
+      component: <Login />,
+    },
+    {
       path: "/login",
-      component: Login,
+      component: <Login />,
     },
     {
       path: "/d",
-      component: Home,
+      component: <Home />,
     },
   ],
 };

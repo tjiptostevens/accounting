@@ -18,4 +18,27 @@
     flex-flow: row wrap;
     align-items: center;
     background-color: rgb(22, 26, 31);
+    padding: 15px;
+}
+
+.__content {
+    color: rgb(172, 172, 172);
+    width: 100%;
+    padding: 0 15px;
+}
+
+.__content_title {
+    color: lightgreen;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: green;
+    border-color: green;
+}
+
+.btn-primary:hover {
+    color: lightgreen;
+    background-color: green;
+    border-color: green;
 }

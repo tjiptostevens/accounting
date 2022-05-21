@@ -1,30 +1,25 @@
 import { useState, useEffect } from "react";
 import urlLink from "./config/urlLink";
 
-const useFetch = (url, filter) => {
+const useFetch = (url) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const abortCtr = new AbortController();
-    const headers = filter
-      ? {
-          Accept: "application/json",
-          "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-        }
-      : {
-          Accept: "application/json",
-          "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-          Authorization: "token f6b262554df61cb:ca71946b2def9fa",
-        };
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": window.location.origin,
+    };
     // console.log(headers);
     setTimeout(() => {
-      fetch(`${urlLink.url}api/method/smi.api.${url}`, {
+      fetch(`${urlLink.url}${url}`, {
         signal: abortCtr.signal,
         method: "GET",
         headers: headers,
-        credentials: "include",
+        // credentials: "include",
       })
         .then((res) => {
           if (!res.ok) {
@@ -49,7 +44,7 @@ const useFetch = (url, filter) => {
         });
     }, 0);
     return () => abortCtr.abort();
-  }, [url, filter]);
+  }, [url]);
 
   return { data, isLoading, error };
 };

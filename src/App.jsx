@@ -11,16 +11,18 @@ import Login from "./components/login";
 function App() {
   return (
     <Router>
-      <Login />
-
       <Routes>
-        {/* <Home /> */}
-        {Rute.web.map(
-          (r) => console.log(r)
-          // <Route exact key={r.path} path={r.path} component={r.component} />
-        )}
-        {/* <Route path="/" component={Home} />
-        <Route path={"/*"} component={Page404} /> */}
+        {Rute.web.map((r) => (
+          // console.log(r)
+          <Route
+            exact
+            key={r.path}
+            path={`${r.path}/*`}
+            element={r.component}
+          />
+        ))}
+        {/* <Route exact path="/d/*" element={<Home />} /> */}
+        <Route path={"/*"} element={<Page404 />} />
       </Routes>
     </Router>
   );

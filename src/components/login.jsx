@@ -24,7 +24,7 @@ const Login = (props) => {
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "http://localhost:3000",
+      "Access-Control-Allow-Origin": window.location.origin,
     };
     setTimeout(() => {
       fetch(`${urlLink.url}login.php`, {
@@ -35,30 +35,35 @@ const Login = (props) => {
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log(res);
-          if (res) {
+          if (res.token) {
             console.log("Successfully Login");
             sessionStorage.setItem("user_id", res.token);
             data.data.isRemember === true
               ? localStorage.setItem("user_id", res.token)
               : console.log("is");
+            setData({
+              ...data,
+              msg: res.message,
+              token: res.token,
+              vis: !data.vis,
+              res: res.data,
+            });
+            return res;
+          } else {
+            setData({
+              ...data,
+              msg: res.message,
+            });
           }
-          return res;
-        })
-
-        .then((res) => {
-          setData({
-            ...data,
-            msg: res.message,
-            token: res.token,
-            vis: !data.vis,
-            res: res.data,
-          });
         })
 
         // display an alert message for an error
         .catch((err) => {
-          return <Login />;
+          console.log(err);
+          setData({
+            ...data,
+            msg: "terjadi kesalahan",
+          });
         });
     }, 50);
   };
@@ -67,6 +72,7 @@ const Login = (props) => {
     setData({
       ...data,
       data: { ...data.data, [e.target.name]: e.target.value },
+      msg: "",
     });
   };
   return (
@@ -168,7 +174,7 @@ const Login = (props) => {
             />
             <label className="form-check-label"> Remember me</label>
           </div>
-          <span>{data.message}</span>
+          <p>{data.msg}</p>
           <button className="btn btn-lg btn-primary btn-block" type="submit">
             Sign in
           </button>

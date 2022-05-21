@@ -10,7 +10,8 @@ const SideNav = (props) => {
   const { lin } = useParams(props);
   const { width } = useWindow();
   const handleLogout = (e) => {
-    console.log(e);
+    sessionStorage.clear();
+    localStorage.clear();
   };
 
   return (
@@ -172,7 +173,7 @@ const SideNav = (props) => {
         </svg>
         {width > 450 ? (
           <div
-            style={{ minWidth: "230px", maxWidth: "250px", overflowY: "auto" }}
+            style={{ minWidth: "250px", maxWidth: "270px", overflowY: "auto" }}
             className="d-flex flex-column flex-shrink-0 p-3 text-white"
           >
             <p className="__subtitle">MASTER</p>
@@ -199,11 +200,11 @@ const SideNav = (props) => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/d/course" className="nav-link text-white">
+                <NavLink to="/d/customer" className="nav-link text-white">
                   <svg className="bi me-2" width="16" height="16">
                     <use xlinkHref="#table" />
                   </svg>
-                  Course
+                  Customer
                 </NavLink>
               </li>
               <li>

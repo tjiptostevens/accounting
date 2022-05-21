@@ -9,7 +9,7 @@ const Nav = () => {
       <div className="w-100" style={{ backgroundColor: "#1c2126" }}>
         <div className="container-fluid">
           <nav className="navbar navbar-expand navbar-dark justify-content-between sticky-top">
-            <Link className="navbar-brand" to="/">
+            <Link className="navbar-brand" to="/d">
               <img
                 src={logo}
                 width="30"
