@@ -62,7 +62,7 @@ const Login = (props) => {
           console.log(err);
           setData({
             ...data,
-            msg: "terjadi kesalahan",
+            msg: "Error Connection",
           });
         });
     }, 50);

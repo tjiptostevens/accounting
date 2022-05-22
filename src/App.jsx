@@ -21,7 +21,6 @@ function App() {
             element={r.component}
           />
         ))}
-        {/* <Route exact path="/d/*" element={<Home />} /> */}
         <Route path={"/*"} element={<Page404 />} />
       </Routes>
     </Router>

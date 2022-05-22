@@ -35,10 +35,22 @@
     color: #fff;
     background-color: green;
     border-color: green;
+    min-width: 100px;
+}
+
+.btn-primary>i {
+    color: #fff;
 }
 
 .btn-primary:hover {
     color: lightgreen;
     background-color: green;
     border-color: green;
+}
+
+.btn-primary:active,
+.btn-primary:focus {
+    color: green;
+    background-color: lightgreen;
+    border-color: lightgreen;
 }
