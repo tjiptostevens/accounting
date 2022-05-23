@@ -1,7 +1,5 @@
 <?php
 header("Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type,Accept, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-// header("Access-Control-Allow-Origin: http://localhost:3000");
-// header("Access-Control-Allow-Methods: POST");
 header("Content-Type: application/json");
 
 // Allow from any origin
@@ -19,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
     if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
         header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
-
     exit(0);
 }
 
@@ -29,27 +26,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     $rest_json = file_get_contents("php://input");
     $_POST = json_decode($rest_json, true);
 
-    if( empty($_POST['username']) && empty($_POST['password']) ) {
+    // if( isset($_POST) {
+    if( empty($_POST['number']) && empty($_POST['name'])) {
         echo json_encode(
             [
-               "message" => "Empty data"
+               "message" => "Please fill all the required field."
             ]
         ); 
         exit();
     }
 
-    if ($_POST){
+    if ($_POST){      
+        
         //@important: Please change this before using
         http_response_code(200);
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $mobile = $_POST['mobile']; 
-        $type = $_POST[ 'type'];
-        $created_date = $_POST['date'];
-        $arr="INSERT INTO tabuser (username, password, mobile, type, created_date) VALUES ('$username',md5('$password'),'$mobile','$type','$created_date')";
+        $number = $_POST['number'];
+        $name = $_POST['name'];
+        if ($_POST['is_group']=== true) {
+            $is_group = "1";
+        } else {
+            $is_group = null;
+        }; 
+        $parent = $_POST[ 'parent'];
+        $created_date = date("Y-m-d h:i:s");
+        $modified_date = date("Y-m-d h:i:s");        
+        $created_by = "admin";
+        $status = "1";
+        $arr="INSERT INTO tabchartofaccount (number,name,is_group,parent, created_date, modified_date, created_by, status) VALUES ('$number','$name','$is_group','$parent','$created_date','$modified_date','$created_by','$status')";
         
+        // echo json_encode(
+        //     [
+        //        "message" => $arr
+        //     ]
+        // ); 
+
+
         //Actual sending email
-        // $sendEmail = new Sender($username, $password, $mobile);
+        // $sendEmail = new Sender($number, $name, $is_group);
         // $sendEmail->send();
 
     } else {
@@ -63,9 +76,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     }
 
     if (mysqli_query($conn,$arr)) {
-        echo "new record created succesfully";
+        echo json_encode(
+            [
+               "message" => "new record created succesfully"
+            ]
+        );
     } else {
-        echo "error: " . $arr . "<br>" . $conn->error;
+        echo json_encode(
+            [
+               "error: " => $arr,
+               "message" => $conn->error
+            ]
+        );
     }
 
     mysqli_close($conn);
