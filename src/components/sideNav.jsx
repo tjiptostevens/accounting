@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, Link, useParams } from "react-router-dom";
 import useWindow from "./useWindow";
 import urlLink from "./config/urlLink";
@@ -7,8 +7,8 @@ import Logo from "./assets/img/env.png";
 import "./assets/css/sideNav.css";
 
 const SideNav = (props) => {
-  const { lin } = useParams(props);
   const { width } = useWindow();
+  const [data, setData] = useState({ width: true, micon: "bi bi-x-circle" });
   const handleLogout = (e) => {
     sessionStorage.clear();
     localStorage.clear();
@@ -208,31 +208,51 @@ const SideNav = (props) => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/d/riwayat" className="nav-link text-white">
-                  <svg className="bi me-2" width="16" height="16">
-                    <use xlinkHref="#collection"></use>
-                  </svg>
-                  Riwayat
+                <NavLink to="/d/user" className="nav-link text-white">
+                  <i className="bi bi-person-square"></i>
+                  User
                 </NavLink>
               </li>
               <hr />
               <p className="__subtitle" style={{ paddingLeft: "15px" }}>
-                SETTINGS
+                ACTIVITY
               </p>
               <li>
-                <NavLink to="/d/user" className="nav-link text-white">
-                  <svg className="bi me-2" width="16" height="16">
-                    <use xlinkHref="#collection"></use>
-                  </svg>
-                  User
+                <NavLink to="/d/journal" className="nav-link text-white">
+                  <i className="bi bi-file-earmark-break"></i>
+                  Journal
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/d/profile" className="nav-link text-white">
-                  <svg className="bi me-2" width="16" height="16">
-                    <use xlinkHref="#collection"></use>
-                  </svg>
-                  Profile
+                <NavLink to="/d/profitandloss" className="nav-link text-white">
+                  <i className="bi bi-file-earmark-diff"></i>Profit & Loss
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/d/cashflow" className="nav-link text-white">
+                  <i className="bi bi-file-earmark-medical"></i>Cash Flow
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/d/generalledger" className="nav-link text-white">
+                  <i className="bi bi-file-earmark-spreadsheet"></i>General
+                  Ledger
+                </NavLink>
+              </li>
+              <hr />
+              <p className="__subtitle" style={{ paddingLeft: "15px" }}>
+                SALES
+              </p>
+              <li>
+                <NavLink to="/d/order" className="nav-link text-white">
+                  <i className="bi bi-file-earmark-plus"></i>
+                  Order
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/d/payment" className="nav-link text-white">
+                  <i className="bi bi-journal-plus"></i>
+                  Payment
                 </NavLink>
               </li>
               <hr />
@@ -249,112 +269,113 @@ const SideNav = (props) => {
             </ul>
           </div>
         ) : (
-          <div className="w-100 m__menu">
-            <div className="row subm__menu mb-auto">
-              {/* <div className="d-flex align-items-center">
-              
-            </div> */}
-
-              {/* <div className="row nav nav-pills flex-column mb-auto"> */}
-              <div className="col-2">
+          <div
+            className="m__menu"
+            style={{ left: { true: "-240px", false: "-20px" }[data.width] }}
+          >
+            <div
+              className="m__menu_toggle"
+              onClick={(e) => setData({ ...data, width: !data.width })}
+            >
+              <i
+                className={
+                  { true: "bi bi-list", false: "bi bi-x-lg" }[data.width]
+                }
+                style={{ color: "white" }}
+              ></i>
+            </div>
+            <p className="__subtitle">MASTER</p>
+            <ul
+              className="nav nav-pills flex-column mb-auto"
+              style={{ paddingLeft: "30px" }}
+            >
+              <li>
                 <NavLink
-                  to="/d"
+                  to="/d/company"
                   className="nav-link text-white"
-                  style={{
-                    borderBottom:
-                      window.location.pathname === "/d" ? "3px solid grey" : "",
-                  }}
                   aria-current="page"
                 >
-                  <svg className="bi me-2" width="25" height="25">
+                  <svg className="bi me-2" width="16" height="16">
                     <use xlinkHref="#home"></use>
                   </svg>
+                  Company
                 </NavLink>
-              </div>
-
-              <div className="col-2">
-                <NavLink
-                  to="/d/course"
-                  className="nav-link text-white"
-                  style={{
-                    borderBottom:
-                      window.location.pathname === "/d/course"
-                        ? "3px solid grey"
-                        : "",
-                  }}
-                >
-                  <svg className="bi me-2" width="25" height="25">
+              </li>
+              <li>
+                <NavLink to="/d/chartofaccount" className="nav-link text-white">
+                  <i className="bi bi-bar-chart-steps me-2"></i>
+                  Chart Of Account
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/d/customer" className="nav-link text-white">
+                  <svg className="bi me-2" width="16" height="16">
                     <use xlinkHref="#table" />
                   </svg>
+                  Customer
                 </NavLink>
-              </div>
-
-              <div className="col-3">
+              </li>
+              <li>
+                <NavLink to="/d/user" className="nav-link text-white">
+                  <i className="bi bi-person-square"></i>
+                  User
+                </NavLink>
+              </li>
+              <hr />
+              <p className="__subtitle" style={{ paddingLeft: "15px" }}>
+                ACTIVITY
+              </p>
+              <li>
+                <NavLink to="/d/journal" className="nav-link text-white">
+                  <i className="bi bi-file-earmark-break"></i>
+                  Journal
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/d/profitandloss" className="nav-link text-white">
+                  <i className="bi bi-file-earmark-diff"></i>Profit & Loss
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/d/cashflow" className="nav-link text-white">
+                  <i className="bi bi-file-earmark-medical"></i>Cash Flow
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/d/generalledger" className="nav-link text-white">
+                  <i className="bi bi-file-earmark-spreadsheet"></i>General
+                  Ledger
+                </NavLink>
+              </li>
+              <hr />
+              <p className="__subtitle" style={{ paddingLeft: "15px" }}>
+                SALES
+              </p>
+              <li>
+                <NavLink to="/d/order" className="nav-link text-white">
+                  <i className="bi bi-file-earmark-plus"></i>
+                  Order
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/d/payment" className="nav-link text-white">
+                  <i className="bi bi-journal-plus"></i>
+                  Payment
+                </NavLink>
+              </li>
+              <hr />
+              <li>
                 <NavLink
-                  to="/d/qrcam"
+                  to={"/login"}
                   className="nav-link text-white"
-                  style={{
-                    borderBottom:
-                      window.location.pathname === "/d/qrcam"
-                        ? "3px solid grey"
-                        : "",
-                  }}
+                  onClick={handleLogout}
                 >
-                  <svg className="bi me-2" width="55 " height="55">
-                    <use xlinkHref="#qr" />
-                  </svg>
+                  <span className="glyphicon glyphicon-log-out me2"></span>
+                  Log Out
                 </NavLink>
-              </div>
-
-              <div className="col-2">
-                <NavLink
-                  to="/d/riwayat"
-                  className="nav-link text-white"
-                  style={{
-                    borderBottom:
-                      window.location.pathname === "/d/riwayat"
-                        ? "3px solid grey"
-                        : "",
-                  }}
-                >
-                  <svg className="bi me-2" width="25" height="25">
-                    <use xlinkHref="#collection"></use>
-                  </svg>
-                </NavLink>
-              </div>
-
-              {/* <div className="col">
-              <NavLink
-                to={"/"}
-                className="nav-link text-white"
-                onClick={() => {
-                  sessionStorage.clear();
-                  localStorage.clear();
-                  window.location.assign("/");
-                }}
-              >
-                <span className="glyphicon glyphicon-log-out me2"></span>
-              </NavLink>
-            </div> */}
-              <div className="col-2">
-                <NavLink
-                  to="/d/profile"
-                  className="nav-link text-white"
-                  style={{
-                    borderBottom:
-                      window.location.pathname === "/d/profile"
-                        ? "3px solid grey"
-                        : "",
-                  }}
-                >
-                  {/* <svg className="bi me-2" width="16" height="16">
-                  <use xlinkHref="#people-circle" />
-                </svg> */}
-                </NavLink>
-              </div>
-            </div>
+              </li>
+            </ul>
           </div>
-          // </div>
         )}
       </div>
     </>

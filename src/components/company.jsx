@@ -21,13 +21,29 @@ const Company = () => {
   };
   return (
     <>
-      <div className="w-100">
-        <p className="__content_title">Company Information</p>
-        <hr />
-        {company && company ? (
-          <>
-            {/* {JSON.stringify(data)} */}
-            {console.log(company[0])}
+      {/* Component Title */}
+      <div
+        className="w-100"
+        style={{ display: "flex", justifyContent: "space-between" }}
+      >
+        <span className="__content_title">Company Info</span>
+        {/* add User + search */}
+        <span style={{ display: "flex" }}>
+          <button
+            className="btn btn-primary m-1"
+            onClick={() => setData({ ...data, vis: !data.vis, value: 1 })}
+          >
+            Edit
+          </button>
+        </span>
+      </div>
+
+      <hr style={{ margin: "0" }} />
+      {company && company ? (
+        <>
+          {/* {JSON.stringify(data)} */}
+          {console.log(company[0])}
+          <div className="w-100" style={{ height: "70vh" }}>
             <div className="row col-md-12">
               <div className="w-100" style={{ padding: "25px" }}>
                 <div className="row">
@@ -58,6 +74,7 @@ const Company = () => {
                         id="logo"
                         accept=".jpg, .jpeg, .png"
                         style={{ display: "none" }}
+                        value=""
                         onChange={async ({ target: { files } }) => {
                           console.log(files[0]);
                           let dat = new FormData();
@@ -90,7 +107,6 @@ const Company = () => {
                           //   setPercentage(100);
                           //   setBio({ ...bio, photo_location: res.data.file });
                           // });
-                          // await setDataAES(bio);
                         }}
                       />
                     </label>
@@ -399,13 +415,13 @@ const Company = () => {
                 </>
               )}
             </div>
-          </>
-        ) : (
-          <>
-            <div>data still loaded</div>
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div>data still loaded</div>
+        </>
+      )}
     </>
   );
 };

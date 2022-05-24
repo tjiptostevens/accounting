@@ -6,7 +6,7 @@ function CoaList({ list }) {
   });
 
   return (
-    <div style={{ marginLeft: "20px", marginTop: "5px" }}>
+    <div style={{ paddingLeft: "20px", marginTop: "5px" }}>
       <div
         style={{
           display: "flex",

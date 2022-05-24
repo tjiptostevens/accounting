@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./assets/css/home.css";
 import Coa from "./coa";
 import Company from "./company";
+import Customer from "./customer";
+import User from "./user";
 import Nav from "./nav";
 import SideNav from "./sideNav";
+import Journal from "./journal";
+import Order from "./order";
+import Payment from "./payment";
+import ProfitAndLoss from "./profitandloss";
+import CashFlow from "./cashflow";
+import GeneralLedger from "./generalledger";
 
 const Home = (props) => {
   const [data, setData] = useState("");
@@ -40,10 +48,24 @@ const Home = (props) => {
             {/* Content */}
             <div className="__content">
               <Routes>
-                <Route path="/company" exact element={<Company />} />
-                <Route path="/chartofaccount" exact element={<Coa />} />
-                <Route path="/costumer" exact></Route>
-                <Route path="/company" exact></Route>
+                <Route exact path="/company" element={<Company />} />
+                <Route exact path="/chartofaccount" element={<Coa />} />
+                <Route exact path="/customer" element={<Customer />} />
+                <Route exact path="/user" element={<User />} />
+                <Route exact path="/journal" element={<Journal />} />
+                <Route
+                  exact
+                  path="/profitandloss"
+                  element={<ProfitAndLoss />}
+                />
+                <Route exact path="/cashflow" element={<CashFlow />} />
+                <Route
+                  exact
+                  path="/generalledger"
+                  element={<GeneralLedger />}
+                />
+                <Route exact path="/order" element={<Order />} />
+                <Route exact path="/payment" element={<Payment />} />
               </Routes>
             </div>
           </div>

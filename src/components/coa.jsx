@@ -6,7 +6,9 @@ import AddCoa from "./addCoa";
 const Coa = () => {
   const { data: coa } = useFetch("getcoa.php");
   const [data, setData] = useState({ vis: false });
-
+  const handleClose = (e) => {
+    setData({ ...data, vis: false });
+  };
   return (
     <>
       <div
@@ -39,7 +41,7 @@ const Coa = () => {
           >
             {
               {
-                1: <AddCoa />,
+                1: <AddCoa handleClose={handleClose} />,
                 2: "",
               }[data.value]
             }
@@ -47,34 +49,37 @@ const Coa = () => {
         </div>
       </div>
       <div className="w-100">
-        <p className="__content_title">Chart of Account</p>
-        <hr />
         <div
           className="w-100"
-          style={{ paddingLeft: "15px", paddingRight: "30px" }}
+          style={{ display: "flex", justifyContent: "space-between" }}
         >
-          <button
-            className="btn btn-primary m-1"
-            onClick={() => setData({ ...data, vis: !data.vis, value: 1 })}
-          >
-            <i className="bi bi-plus"></i>
-            Account
-          </button>
-
-          <button className="btn btn-primary m-1">
-            <i className="bi bi-file-earmark-spreadsheet"></i>General Ledger
-          </button>
-
-          <button className="btn btn-primary m-1">
-            <i className="bi bi-file-earmark-medical"></i>Cash Flow
-          </button>
-
-          <button className="btn btn-primary m-1">
-            <i className="bi bi-file-earmark-diff"></i>Profit & Loss
-          </button>
+          <span className="__content_title">Chart of Account</span>
+          <span style={{}}>
+            <button className="btn btn-primary m-1">
+              <i className="bi bi-file-earmark-diff"></i>Profit & Loss
+            </button>
+            <button className="btn btn-primary m-1">
+              <i className="bi bi-file-earmark-medical"></i>Cash Flow
+            </button>
+            <button className="btn btn-primary m-1">
+              <i className="bi bi-file-earmark-spreadsheet"></i>General Ledger
+            </button>
+            <button
+              className="btn btn-primary m-1"
+              onClick={() => setData({ ...data, vis: !data.vis, value: 1 })}
+            >
+              <i className="bi bi-plus"></i>
+              Add New Account
+            </button>
+          </span>
         </div>
+        <hr style={{ margin: "0" }} />
+
         <div className="w-100" style={{ height: "25px" }}></div>
-        <div className="row col-md-12" style={{ paddingRight: "50px" }}>
+        <div
+          className="row col-md-12"
+          style={{ padding: "0px 25px", maxHeight: "70vh", overflowY: "auto" }}
+        >
           {coa && <CoaLists list={coa} />}
         </div>
       </div>
