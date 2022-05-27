@@ -48,12 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             $is_group = null;
         }; 
         $parent = $_POST[ 'parent'];
-        $type = $_POST['type'];
         $created_date = date("Y-m-d h:i:s");
         $modified_date = date("Y-m-d h:i:s");        
-        $created_by = "admin";
+        $modified_by = "admin";
         $status = "1";
-        $arr="INSERT INTO tabchartofaccount (number,name,is_group,parent,type, created_date, modified_date, created_by, status) VALUES ('$number','$name','$is_group','$parent','$type','$created_date','$modified_date','$created_by','$status')";
+        $last = $_POST['last'];
+        $arr="UPDATE tabchartofaccount SET number='$number',name='$name',is_group='$is_group',parent='$parent', modified_date='$modified_date', modified_by='$modified_by' WHERE number='$last'";
         
         // echo json_encode(
         //     [
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     if (mysqli_query($conn,$arr)) {
         echo json_encode(
             [
-               "message" => "new record created succesfully"
+               "message" => "Data Edit Success"
             ]
         );
     } else {

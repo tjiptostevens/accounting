@@ -19,7 +19,7 @@ const Nav = () => {
                 className="d-inline-block align-top __icon"
                 alt=""
               />
-              {width > 450 ? "AKUNTABILITY" : ""}
+              {width > 450 ? "PITARA" : ""}
             </Link>
             <div className="form-inline">
               {/* Search Bar */}

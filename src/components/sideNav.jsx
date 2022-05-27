@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, Link, useParams } from "react-router-dom";
 import useWindow from "./useWindow";
-import urlLink from "./config/urlLink";
-import Login from "./login";
-import Logo from "./assets/img/env.png";
 import "./assets/css/sideNav.css";
 
 const SideNav = (props) => {
@@ -179,11 +176,10 @@ const SideNav = (props) => {
             style={{ minWidth: "250px", maxWidth: "270px", overflowY: "auto" }}
             className="d-flex flex-column flex-shrink-0 p-3 text-white"
           >
-            <p className="__subtitle">MASTER</p>
-            <ul
-              className="nav nav-pills flex-column mb-auto"
-              style={{ paddingLeft: "30px" }}
-            >
+            <p className="__subtitle" style={{ paddingLeft: "15px" }}>
+              MASTER
+            </p>
+            <ul className="nav nav-pills flex-column mb-auto">
               <li>
                 <NavLink
                   to="/d/company"
@@ -216,14 +212,60 @@ const SideNav = (props) => {
                   User
                 </NavLink>
               </li>
-              <hr />
-              <p className="__subtitle" style={{ paddingLeft: "15px" }}>
-                ACTIVITY
-              </p>
+            </ul>
+            <hr />
+            <p className="__subtitle" style={{ paddingLeft: "15px" }}>
+              ACTIVITY
+            </p>
+            <ul className="nav nav-pills flex-column mb-auto">
+              <li>
+                <NavLink to="/d/order" className="nav-link text-white">
+                  <i className="m_icon bi bi-file-earmark-plus"></i>
+                  Penjualan Kredit
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/d/payment" className="nav-link text-white">
+                  <i className="m_icon bi bi-journal-plus"></i>
+                  Pembelian Kredit
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/d/order" className="nav-link text-white">
+                  <i className="m_icon bi bi-file-earmark-plus"></i>
+                  Penerimaan Kas
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/d/payment" className="nav-link text-white">
+                  <i className="m_icon bi bi-journal-plus"></i>
+                  Pembayaran Kas
+                </NavLink>
+              </li>
               <li>
                 <NavLink to="/d/journal" className="nav-link text-white">
                   <i className="m_icon bi bi-file-earmark-break"></i>
                   Journal
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/d/journal" className="nav-link text-white">
+                  <i className="m_icon bi bi-file-earmark-break"></i>
+                  Depresiasi
+                </NavLink>
+              </li>
+            </ul>
+            <hr />
+            <p className="__subtitle" style={{ paddingLeft: "15px" }}>
+              REPORT
+            </p>
+
+            <ul className="nav nav-pills flex-column mb-auto">
+              <li>
+                <NavLink to="/d/profitandloss" className="nav-link text-white">
+                  <i className="m_icon bi bi-file-earmark-diff"></i>Trial
+                  Balance
                 </NavLink>
               </li>
               <li>
@@ -233,8 +275,9 @@ const SideNav = (props) => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/d/cashflow" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-medical"></i>Cash Flow
+                <NavLink to="/d/profitandloss" className="nav-link text-white">
+                  <i className="m_icon bi bi-file-earmark-diff"></i>Equity
+                  Change
                 </NavLink>
               </li>
               <li>
@@ -243,30 +286,21 @@ const SideNav = (props) => {
                   General Ledger
                 </NavLink>
               </li>
-              <hr />
-              <p className="__subtitle" style={{ paddingLeft: "15px" }}>
-                SALES
-              </p>
               <li>
-                <NavLink to="/d/order" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-plus"></i>
-                  Order
+                <NavLink to="/d/cashflow" className="nav-link text-white">
+                  <i className="m_icon bi bi-file-earmark-medical"></i>Cash Flow
                 </NavLink>
               </li>
-              <li>
-                <NavLink to="/d/payment" className="nav-link text-white">
-                  <i className="m_icon bi bi-journal-plus"></i>
-                  Payment
-                </NavLink>
-              </li>
-              <hr />
+            </ul>
+            <hr />
+            <ul className="nav nav-pills flex-column mb-auto">
               <li>
                 <NavLink
                   to={"/login"}
                   className="nav-link text-white"
                   onClick={handleLogout}
                 >
-                  <span className="glyphicon glyphicon-log-out me2"></span>
+                  <i className="m_icon bi bi-box-arrow-right"></i>
                   Log Out
                 </NavLink>
               </li>
@@ -291,10 +325,7 @@ const SideNav = (props) => {
               ></i>
             </div>
             <p className="__subtitle">MASTER</p>
-            <ul
-              className="nav nav-pills flex-column mb-auto"
-              style={{ paddingLeft: "30px" }}
-            >
+            <ul className="nav nav-pills flex-column mb-auto">
               <li>
                 <NavLink
                   to="/d/company"

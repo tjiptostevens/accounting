@@ -132,7 +132,7 @@ const AddJournal = (props) => {
       <div className="modal_title">
         <b>Add Jounal</b>
       </div>
-      {JSON.stringify(data)} <br />
+      {/* {JSON.stringify(data)} <br /> */}
       {/* {JSON.stringify(coa)} */}
       <div className="modal_content">
         <form onSubmit={handleSubmit} method="post">

@@ -16,6 +16,12 @@ const Customer = () => {
       [e.target.name]: e.target.value,
     });
   };
+  const handleEdit = (e) => {
+    setData({ ...data, vis: true, value: 2 });
+  };
+  const handleDelete = (e) => {
+    setData({ ...data, vis: true, value: 3 });
+  };
   let customerFil = useMemo(() => {
     const searchRegex = data.search && new RegExp(`${data.search}`, "gi");
     return (
@@ -115,6 +121,7 @@ const Customer = () => {
           <div style={{ width: "12%" }}>Mobile</div>
           <div style={{ width: "22%" }}>Email</div>
           <div style={{ width: "25%" }}>Address</div>
+          <div style={{ width: "10%" }}></div>
         </div>
         <hr />
       </div>
@@ -124,39 +131,58 @@ const Customer = () => {
       >
         {customerFil &&
           customerFil.map((d, i) => (
-            <>
-              <div key={i} className="row col-md-12">
-                <div style={{ width: "20%" }}>{d.name}</div>
+            <div key={i} className="row col-md-12">
+              <div style={{ width: "20%" }}>{d.name}</div>
 
+              {
                 {
-                  {
-                    0: (
-                      <div
-                        // ref={elementRef}
-                        className="text-warning"
-                        style={{ width: "11%" }}
-                      >
-                        <i className="bi bi-check-all text-warning"></i>Inactive
-                      </div>
-                    ),
-                    1: (
-                      <div
-                        // ref={elementRef}
-                        className="text-success"
-                        style={{ width: "11%" }}
-                      >
-                        <i className="bi bi-check-all text-success"></i>Active
-                      </div>
-                    ),
-                  }[d.status]
-                }
+                  0: (
+                    <div
+                      // ref={elementRef}
+                      className="text-warning"
+                      style={{ width: "11%" }}
+                    >
+                      <i className="bi bi-check-all text-warning"></i>Inactive
+                    </div>
+                  ),
+                  1: (
+                    <div
+                      // ref={elementRef}
+                      className="text-success"
+                      style={{ width: "11%" }}
+                    >
+                      <i className="bi bi-check-all text-success"></i>Active
+                    </div>
+                  ),
+                }[d.status]
+              }
 
-                <div style={{ width: "12%" }}>{d.mobile}</div>
-                <div style={{ width: "22%" }}>{d.email}</div>
-                <div style={{ width: "25%" }}>{d.address}</div>
-                <hr />
+              <div style={{ width: "12%" }}>{d.mobile}</div>
+              <div style={{ width: "22%" }}>{d.email}</div>
+              <div style={{ width: "25%" }}>{d.address}</div>
+
+              <div
+                className="btn-group btn-group-toggle"
+                style={{ padding: "0 10px", width: "10%" }}
+              >
+                <button
+                  className="btn btn-sm btn-warning"
+                  style={{ padding: "2px 7px", fontSize: "10px" }}
+                  onClick={handleEdit}
+                >
+                  Edit
+                </button>
+
+                <button
+                  className="btn btn-sm btn-danger"
+                  style={{ padding: "2px 7px", fontSize: "10px" }}
+                  onClick={handleDelete}
+                >
+                  Delete
+                </button>
               </div>
-            </>
+              <hr />
+            </div>
           ))}
       </div>
     </>

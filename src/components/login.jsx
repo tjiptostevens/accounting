@@ -122,69 +122,112 @@ const Login = (props) => {
 
       <div className="form-center text-center">
         {/* {JSON.stringify(data)} */}
-        <br />
-        <form className="form-signin" method="post" onSubmit={handleSubmit}>
-          <div className="d-none d-sm-block">
-            <img
-              className="mb-4"
-              src="./assets/img/logo512.png"
-              alt=""
-              width="72"
-              height="72"
-            />
+        <div className="w-100" style={{ margin: "0px", padding: "0px" }}>
+          <div className="w-100">
+            <b>PT. PITARA MULIA MAS LOGISTIK</b>
           </div>
-          <h1 className="h3 mb-3 font-weight-normal">Sign in</h1>
-          <label className="sr-only" htmlFor="usr">
-            Username
-          </label>
-          <input
-            className="form-control"
-            type="text"
-            name="usr"
-            id="usr"
-            placeholder="username"
-            required
-            autoFocus
-            onChange={handleChange}
-          />
-          <label className="sr-only" htmlFor="pwd">
-            Password
-          </label>
-          <input
-            className="form-control"
-            type="password"
-            name="pwd"
-            id="inputpwd"
-            placeholder="password"
-            required
-            onChange={handleChange}
-          />
-          <div className="form-check checkbox mb-3">
+          <hr />
+          <form className="form-signin" method="post" onSubmit={handleSubmit}>
+            <div className="w-100" style={{ height: "50px" }}></div>
+            <div className="d-none d-sm-block">
+              <img
+                className="mb-4"
+                src="./assets/img/logo512.png"
+                alt=""
+                width="72"
+                height="72"
+              />
+            </div>
+            <h1 className="h3 mb-3 font-weight-normal">Sign in</h1>
+            <label className="sr-only" htmlFor="usr">
+              Username
+            </label>
             <input
-              className="form-check-input"
-              type="checkbox"
-              name="isRemember"
-              value={data.isRemember}
-              onClick={() =>
-                setData({
-                  ...data,
-                  data: { ...data.data, isRemember: !data.data.isRemember },
-                })
-              }
+              className="form-control"
+              type="text"
+              name="usr"
+              id="usr"
+              placeholder="username"
+              required
+              autoFocus
+              onChange={handleChange}
             />
-            <label className="form-check-label"> Remember me</label>
-          </div>
-          <p>{data.msg}</p>
-          <button className="btn btn-lg btn-primary btn-block" type="submit">
-            Sign in
-          </button>
+            <label className="sr-only" htmlFor="pwd">
+              Password
+            </label>
+            <input
+              className="form-control"
+              type="password"
+              name="pwd"
+              id="inputpwd"
+              placeholder="password"
+              required
+              onChange={handleChange}
+            />
+            <div className="form-check checkbox mb-3">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                name="isRemember"
+                value={data.isRemember}
+                onClick={() =>
+                  setData({
+                    ...data,
+                    data: { ...data.data, isRemember: !data.data.isRemember },
+                  })
+                }
+              />
+              <label className="form-check-label"> Remember me</label>
+            </div>
+            <p>{data.msg}</p>
+            <button className="btn btn-lg btn-primary btn-block" type="submit">
+              Sign in
+            </button>
 
-          <div className="w-100" style={{ height: "25px" }}></div>
-          <hr />
-          <span>Don't have an account?</span>
-          <hr />
-          <p className="mt-5 mb-3 text-muted">&copy; 2021-2022</p>
-        </form>
+            <div className="w-100" style={{ height: "50px" }}></div>
+            {/* <hr />
+            <span>Don't have an account?</span>
+            <hr /> */}
+          </form>
+          <div
+            className="w-100"
+            style={{
+              textAlign: "left",
+              fontSize: "12px ",
+              background:
+                "rgba(255,255,255,0.3) url(./assets/img/truck.webp) no-repeat center center / cover",
+              filter: "grayscale(100%)",
+            }}
+          >
+            <div
+              className="w-100"
+              style={{
+                margin: "0px",
+                padding: "25px 50px",
+                background: "rgba(255,255,255,0.9)",
+              }}
+            >
+              <p>PT. PITARA MULIA MAS LOGISTIK</p>
+
+              <b> Office : </b>
+
+              <p style={{ padding: "0 15px" }}>
+                <small>
+                  Ruko Delta Mas <br /> Jl. Klipang Raya Blok Z Kav. 54 <br />{" "}
+                  Kel. Sendangmulyo Kec. Tembalang <br /> Kota Semarang Jawa
+                  Tengah - 50272 <br /> Telp/Fax : 024-76739356 <br />
+                  Phone : 0821-3615-1860
+                </small>
+              </p>
+            </div>
+          </div>
+          <p
+            className="text-muted"
+            style={{ margin: "0px", padding: "25px 0px" }}
+          >
+            &copy; 2021-2022
+          </p>
+        </div>
       </div>
     </>
   );

@@ -18,11 +18,11 @@ const Home = (props) => {
   const [data, setData] = useState("");
   return (
     <>
+      <Nav />
       <div className="__main">
-        <Nav />
         <div className="__body">
           {/* Title Header */}
-          <div className="w-100">
+          {/* <div className="w-100">
             <div className="container-fluid">
               <div
                 className="__title_inline"
@@ -31,14 +31,13 @@ const Home = (props) => {
                 <div className="__icon">
                   <i className="bi bi-view-list"></i>
                 </div>
-                {/* {console.log(window.location)} */}
                 <div className="__title">{window.location.pathname}</div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div
             className="w-100"
-            style={{ display: "flex", flexDirection: "row" }}
+            style={{ display: "flex", flexDirection: "row", height: "85vh" }}
           >
             {/* Sidebar */}
             <div className="__side_bar">

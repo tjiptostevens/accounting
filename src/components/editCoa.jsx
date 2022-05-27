@@ -2,13 +2,16 @@ import React, { useState, useMemo } from "react";
 import useFetch from "./useFetch";
 import urlLink from "./config/urlLink";
 
-const AddCoa = (props) => {
+const EditCoa = (props) => {
   const { data: coa } = useFetch("getcoa.php");
   const [data, setData] = useState({
-    is_group: null,
+    is_group: props.data.is_group === "0" ? false : true,
     required: true,
-    parent: props.data ? props.data.number : "",
-    type: props.data ? props.data.type : "",
+    parent: props.data.parent,
+    number: props.data.number,
+    last: props.data.number,
+    name: props.data.name,
+    type: props.data.type,
   });
   const handleChange = (e) => {
     console.log(`${[e.target.name]}`, e.target.value);
@@ -45,7 +48,7 @@ const AddCoa = (props) => {
       "Access-Control-Allow-Origin": window.location.origin,
     };
     setTimeout(() => {
-      fetch(`${urlLink.url}addCoa.php`, {
+      fetch(`${urlLink.url}editcoa.php`, {
         signal: abortCtr.signal,
         method: "POST",
         body: JSON.stringify(data),
@@ -77,10 +80,10 @@ const AddCoa = (props) => {
   return (
     <>
       <div className="modal_title">
-        <b>Add Chart Of Account</b>
+        <b>Edit Chart Of Account</b>
       </div>
-      {/* {JSON.stringify(data)} <br /> */}
-      {console.log("addcoa", props)}
+      {JSON.stringify(data)} <br />
+      {/* {console.log(props)} */}
       {/* {JSON.stringify(coa)} */}
       <div className="modal_content">
         <form onSubmit={handleSubmit} method="post">
@@ -129,7 +132,7 @@ const AddCoa = (props) => {
               Account Type <span className="text-danger">*</span>
             </label>
             <select
-              disabled={props.data ? true : false}
+              disabled={true}
               name="type"
               id="type"
               className="form-select"
@@ -155,6 +158,9 @@ const AddCoa = (props) => {
             }}
           >
             <input
+              disabled={
+                props.data.child.length > 0 || props.data.parent === "0"
+              }
               className="modal-check"
               type="checkbox"
               name="is_group"
@@ -164,7 +170,7 @@ const AddCoa = (props) => {
                   is_group: !data.is_group,
                 })
               }
-              checked={data.is_group}
+              checked={data.parent === "0" ? true : data.is_group}
               // onChange={handleChange}
             />
             <label className="label_title" style={{ paddingLeft: "15px" }}>
@@ -187,7 +193,11 @@ const AddCoa = (props) => {
               value={data.parent}
             >
               {data.parent ? "" : <option value="null">Select Parent</option>}
-              {/* <option value="0">Root Parent</option> */}
+              {data.parent === "0" ? (
+                <option value="0">Root Parent</option>
+              ) : (
+                ""
+              )}
               {coaFil &&
                 coaFil
                   .filter((e) => e.is_group === "1")
@@ -198,9 +208,11 @@ const AddCoa = (props) => {
                   ))}
             </select>
           </div>
+
           <div>
             <p>{data.message}</p>
           </div>
+
           {/* Button */}
           <button className="btn btn-primary" type="submit">
             Save
@@ -214,4 +226,4 @@ const AddCoa = (props) => {
   );
 };
 
-export default AddCoa;
+export default EditCoa;
