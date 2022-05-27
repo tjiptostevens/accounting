@@ -46,18 +46,18 @@ const Nav = () => {
                 />
               </div>
               {/* Login Information */}
-              <div className="row">
+              <div style={{ display: "flex" }}>
                 {width > 450 ? (
                   <>
-                    <div className="col __icon">
-                      <i className="bi bi-bell"></i>
+                    <div className="">
+                      <i className="m_icon bi bi-bell"></i>
                     </div>
-                    <div className="col __help">Help</div>
+                    <div className="__help">Help</div>
                   </>
                 ) : (
                   ""
                 )}
-                <div className="col __icon">
+                <div className="">
                   <div
                     className="__avatar"
                     style={{

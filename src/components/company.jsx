@@ -43,8 +43,9 @@ const Company = () => {
         <>
           {/* {JSON.stringify(data)} */}
           {console.log(company[0])}
-          <div className="w-100" style={{ height: "70vh" }}>
-            <div className="row col-md-12">
+          <div className="w-100" style={{ height: "80vh", overflowY: "auto" }}>
+            {/* Logo */}
+            <div className="row col-md-12" style={{ margin: "0px" }}>
               <div className="w-100" style={{ padding: "25px" }}>
                 <div className="row">
                   <div className="col-md-4" style={{ maxWidth: "250px" }}>
@@ -119,7 +120,10 @@ const Company = () => {
                 </div>
               </div>
             </div>
-            <div className="row col-md-12" style={{ padding: "10px 10px" }}>
+            <div
+              className="row col-md-12"
+              style={{ margin: "0px", padding: "10px" }}
+            >
               {/* Company Name */}
               <div
                 className="row col-md-6 p-1"
@@ -279,20 +283,23 @@ const Company = () => {
                 </div>
               </div>
             </div>
-            <div className="row col-md-12" style={{ padding: "10px 10px" }}>
+            <div
+              className="row col-md-12"
+              style={{ margin: "0px", padding: "10px" }}
+            >
               {/* Address */}
               <div
                 className="row col-md-12 p-1"
                 style={{ margin: "0px", padding: "0px" }}
               >
-                <label className="col-md-2 col-2" htmlFor="address">
+                <label className="col-md-2 col-4" htmlFor="address">
                   Alamat <span className="text-danger">*</span>
                   <br />
                   <small>
                     <i>Address</i>
                   </small>
                 </label>
-                <div className="col-md-10 col-10">
+                <div className="col-md-10 col-8">
                   <input
                     required
                     onChange={handleChange}
@@ -369,14 +376,14 @@ const Company = () => {
                 className="row col-md-12 p-1"
                 style={{ margin: "0px", padding: "0px" }}
               >
-                <label className="col-md-2 col-2" htmlFor="other">
+                <label className="col-md-2 col-4" htmlFor="other">
                   Info Lain <span className="text-danger">*</span>
                   <br />
                   <small>
                     <i>Other Info</i>
                   </small>
                 </label>
-                <div className="col-md-10 col-10">
+                <div className="col-md-10 col-8">
                   <input
                     required
                     onChange={handleChange}
@@ -391,7 +398,7 @@ const Company = () => {
                 </div>
               </div>
             </div>
-            <div className="w-100" style={{ padding: "15px" }}>
+            <div className="w-100" style={{ margin: "0px", padding: "25px" }}>
               {data.edit ? (
                 <button
                   className="btn btn-primary"

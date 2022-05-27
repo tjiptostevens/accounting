@@ -145,12 +145,16 @@ hr {
 }
 
 body {
-    min-height: 100vh;
+    height: 100vh;
     min-height: -webkit-fill-available;
 }
 
 html {
     height: -webkit-fill-available;
+}
+
+.m_icon {
+    margin: 0px 10px;
 }
 
 .m__menu {

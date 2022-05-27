@@ -8,7 +8,10 @@ import "./assets/css/sideNav.css";
 
 const SideNav = (props) => {
   const { width } = useWindow();
-  const [data, setData] = useState({ width: true, micon: "bi bi-x-circle" });
+  const [data, setData] = useState({
+    width: true,
+    micon: "m_icon bi bi-x-circle",
+  });
   const handleLogout = (e) => {
     sessionStorage.clear();
     localStorage.clear();
@@ -187,7 +190,7 @@ const SideNav = (props) => {
                   className="nav-link text-white"
                   aria-current="page"
                 >
-                  <svg className="bi me-2" width="16" height="16">
+                  <svg className="m_icon bi me-2" width="16" height="16">
                     <use xlinkHref="#home"></use>
                   </svg>
                   Company
@@ -195,13 +198,13 @@ const SideNav = (props) => {
               </li>
               <li>
                 <NavLink to="/d/chartofaccount" className="nav-link text-white">
-                  <i className="bi bi-bar-chart-steps me-2"></i>
+                  <i className="m_icon bi bi-bar-chart-steps me-2"></i>
                   Chart Of Account
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/d/customer" className="nav-link text-white">
-                  <svg className="bi me-2" width="16" height="16">
+                  <svg className="m_icon bi me-2" width="16" height="16">
                     <use xlinkHref="#table" />
                   </svg>
                   Customer
@@ -209,7 +212,7 @@ const SideNav = (props) => {
               </li>
               <li>
                 <NavLink to="/d/user" className="nav-link text-white">
-                  <i className="bi bi-person-square"></i>
+                  <i className="m_icon bi bi-person-square"></i>
                   User
                 </NavLink>
               </li>
@@ -219,24 +222,25 @@ const SideNav = (props) => {
               </p>
               <li>
                 <NavLink to="/d/journal" className="nav-link text-white">
-                  <i className="bi bi-file-earmark-break"></i>
+                  <i className="m_icon bi bi-file-earmark-break"></i>
                   Journal
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/d/profitandloss" className="nav-link text-white">
-                  <i className="bi bi-file-earmark-diff"></i>Profit & Loss
+                  <i className="m_icon bi bi-file-earmark-diff"></i>Profit &
+                  Loss
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/d/cashflow" className="nav-link text-white">
-                  <i className="bi bi-file-earmark-medical"></i>Cash Flow
+                  <i className="m_icon bi bi-file-earmark-medical"></i>Cash Flow
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/d/generalledger" className="nav-link text-white">
-                  <i className="bi bi-file-earmark-spreadsheet"></i>General
-                  Ledger
+                  <i className="m_icon bi bi-file-earmark-spreadsheet"></i>
+                  General Ledger
                 </NavLink>
               </li>
               <hr />
@@ -245,13 +249,13 @@ const SideNav = (props) => {
               </p>
               <li>
                 <NavLink to="/d/order" className="nav-link text-white">
-                  <i className="bi bi-file-earmark-plus"></i>
+                  <i className="m_icon bi bi-file-earmark-plus"></i>
                   Order
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/d/payment" className="nav-link text-white">
-                  <i className="bi bi-journal-plus"></i>
+                  <i className="m_icon bi bi-journal-plus"></i>
                   Payment
                 </NavLink>
               </li>
@@ -279,7 +283,9 @@ const SideNav = (props) => {
             >
               <i
                 className={
-                  { true: "bi bi-list", false: "bi bi-x-lg" }[data.width]
+                  { true: "m_icon bi bi-list", false: "m_icon bi bi-x-lg" }[
+                    data.width
+                  ]
                 }
                 style={{ color: "white" }}
               ></i>
@@ -295,7 +301,7 @@ const SideNav = (props) => {
                   className="nav-link text-white"
                   aria-current="page"
                 >
-                  <svg className="bi me-2" width="16" height="16">
+                  <svg className="m_icon bi me-2" width="16" height="16">
                     <use xlinkHref="#home"></use>
                   </svg>
                   Company
@@ -303,13 +309,13 @@ const SideNav = (props) => {
               </li>
               <li>
                 <NavLink to="/d/chartofaccount" className="nav-link text-white">
-                  <i className="bi bi-bar-chart-steps me-2"></i>
+                  <i className="m_icon bi bi-bar-chart-steps me-2"></i>
                   Chart Of Account
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/d/customer" className="nav-link text-white">
-                  <svg className="bi me-2" width="16" height="16">
+                  <svg className="m_icon bi me-2" width="16" height="16">
                     <use xlinkHref="#table" />
                   </svg>
                   Customer
@@ -317,7 +323,7 @@ const SideNav = (props) => {
               </li>
               <li>
                 <NavLink to="/d/user" className="nav-link text-white">
-                  <i className="bi bi-person-square"></i>
+                  <i className="m_icon bi bi-person-square"></i>
                   User
                 </NavLink>
               </li>
@@ -327,24 +333,25 @@ const SideNav = (props) => {
               </p>
               <li>
                 <NavLink to="/d/journal" className="nav-link text-white">
-                  <i className="bi bi-file-earmark-break"></i>
+                  <i className="m_icon bi bi-file-earmark-break"></i>
                   Journal
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/d/profitandloss" className="nav-link text-white">
-                  <i className="bi bi-file-earmark-diff"></i>Profit & Loss
+                  <i className="m_icon bi bi-file-earmark-diff"></i>Profit &
+                  Loss
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/d/cashflow" className="nav-link text-white">
-                  <i className="bi bi-file-earmark-medical"></i>Cash Flow
+                  <i className="m_icon bi bi-file-earmark-medical"></i>Cash Flow
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/d/generalledger" className="nav-link text-white">
-                  <i className="bi bi-file-earmark-spreadsheet"></i>General
-                  Ledger
+                  <i className="m_icon bi bi-file-earmark-spreadsheet"></i>
+                  General Ledger
                 </NavLink>
               </li>
               <hr />
@@ -353,13 +360,13 @@ const SideNav = (props) => {
               </p>
               <li>
                 <NavLink to="/d/order" className="nav-link text-white">
-                  <i className="bi bi-file-earmark-plus"></i>
+                  <i className="m_icon bi bi-file-earmark-plus"></i>
                   Order
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/d/payment" className="nav-link text-white">
-                  <i className="bi bi-journal-plus"></i>
+                  <i className="m_icon bi bi-journal-plus"></i>
                   Payment
                 </NavLink>
               </li>

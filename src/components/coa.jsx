@@ -56,19 +56,31 @@ const Coa = () => {
           <span className="__content_title">Chart of Account</span>
           <span style={{}}>
             <button className="btn btn-primary m-1">
-              <i className="bi bi-file-earmark-diff"></i>Profit & Loss
+              <i
+                className="bi bi-file-earmark-diff"
+                style={{ marginRight: "10px" }}
+              ></i>
+              Profit & Loss
             </button>
             <button className="btn btn-primary m-1">
-              <i className="bi bi-file-earmark-medical"></i>Cash Flow
+              <i
+                className="bi bi-file-earmark-medical"
+                style={{ marginRight: "10px" }}
+              ></i>
+              Cash Flow
             </button>
             <button className="btn btn-primary m-1">
-              <i className="bi bi-file-earmark-spreadsheet"></i>General Ledger
+              <i
+                className="bi bi-file-earmark-spreadsheet"
+                style={{ marginRight: "10px" }}
+              ></i>
+              General Ledger
             </button>
             <button
               className="btn btn-primary m-1"
               onClick={() => setData({ ...data, vis: !data.vis, value: 1 })}
             >
-              <i className="bi bi-plus"></i>
+              <i className="bi bi-plus" style={{ marginRight: "10px" }}></i>
               Add New Account
             </button>
           </span>

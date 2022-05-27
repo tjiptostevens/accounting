@@ -16,7 +16,7 @@ const Journal = () => {
       [e.target.name]: e.target.value,
     });
   };
-  let userFil = useMemo(() => {
+  let journalFil = useMemo(() => {
     const searchRegex = data.search && new RegExp(`${data.search}`, "gi");
     return (
       journal &&
@@ -114,6 +114,8 @@ const Journal = () => {
       </div>
 
       <hr style={{ margin: "0" }} />
+      <div className="w-100" style={{ height: "25px" }}></div>
+      <div className="row col-md-12"></div>
     </>
   );
 };

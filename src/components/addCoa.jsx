@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import useFetch from "./useFetch";
 import urlLink from "./config/urlLink";
 
@@ -12,7 +12,20 @@ const AddCoa = (props) => {
       [e.target.name]: e.target.value,
     });
   };
+  let coaFil = useMemo(() => {
+    const searchRegex =
+      data.number && new RegExp(`${data.number.substring(0, 1)}`, "gi");
+    return (
+      coa &&
+      coa
+        .sort((a, b) => (a.number > b.number ? 1 : -1))
+        .filter(
+          (d) => !searchRegex || searchRegex.test(d.number.substring(0, 2))
+        )
+    );
+  }, [coa, data.number]);
   const handleClose = (e) => {
+    e.preventDefault();
     console.log(data);
     setData({ ...data, required: !data.required });
     props.handleClose(e);
@@ -122,6 +135,7 @@ const AddCoa = (props) => {
                   is_group: !data.is_group,
                 })
               }
+              checked={data.is_group}
               // onChange={handleChange}
             />
             <label className="label_title" style={{ paddingLeft: "15px" }}>
@@ -145,8 +159,8 @@ const AddCoa = (props) => {
             >
               {data.parent ? "" : <option value="null">Select Parent</option>}
               <option value="0">Root Parent</option>
-              {coa &&
-                coa
+              {coaFil &&
+                coaFil
                   .filter((e) => e.is_group === "1")
                   .map((e, i) => (
                     <option key={i} value={e.number}>

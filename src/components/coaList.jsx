@@ -22,9 +22,9 @@ function CoaList({ list }) {
           }}
         >
           {list.is_group === "1" ? (
-            <i className="bi bi-folder"></i>
+            <i className="bi bi-folder" style={{ marginRight: "10px" }}></i>
           ) : (
-            <i className="bi bi-file"></i>
+            <i className="bi bi-file" style={{ marginRight: "10px" }}></i>
           )}
           <div style={{ color: "white" }}>
             {list.number} - {list.name}
