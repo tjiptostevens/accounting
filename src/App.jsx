@@ -1,13 +1,9 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import "./components/assets/css/scrollbar.css";
-import Footer from "./components/footer";
-import Nav from "./components/nav";
 import Rute from "./components/config/routes";
 import Page404 from "./components/Page404";
-import Home from "./components/home";
-import Login from "./components/login";
 
 function App() {
   return (

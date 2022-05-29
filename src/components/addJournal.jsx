@@ -8,6 +8,7 @@ import Entry from "./entry";
 const AddJournal = (props) => {
   const { data: coa } = useFetch("getcoa.php");
   const { now, YY, DD, MM, ss } = useDate();
+  const [lists, setLists] = useState([]);
   const [data, setData] = useState({
     required: true,
     name: "",
@@ -104,26 +105,68 @@ const AddJournal = (props) => {
         });
     }, 50);
   };
-  const handleRow = (e) => {
-    // console.log(`${[e.target.name]}`, e.target.value);
-    console.log(e);
-    // setData({
-    //   ...data,
-    //   [e.target.name]: e.target.value,
-    // });
-  };
+  function TotalDebit() {
+    let debit = data.entry.map((e) => Number(e.debit));
+
+    console.log(debit);
+    let sum = debit.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    console.log(sum);
+    return sum;
+  }
+  function TotalCredit() {
+    let credit = data.entry.map((e) => Number(e.credit));
+
+    console.log(credit);
+    let sum = credit.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    console.log(sum);
+    return sum;
+  }
+  function handleRow({ e, list }) {
+    // console.log(e.target.id, `${[e.target.name]}`, e.target.value);
+    let i = Number(e.target.id);
+    // let nam = e.target.name;
+    // let val = e.target.val;
+    // let dat = data.entry[i];
+    // let newArr = [...dat];
+    let listDat = [...data.entry];
+    listDat[i] = list;
+    console.log("e", e);
+    console.log("handleRow", list);
+    console.log("list", listDat);
+    setData({
+      ...data,
+      entry: listDat,
+    });
+  }
   const handleAddRow = (e) => {
     e.preventDefault();
     let idx = data.entry.length + 1;
     // data.entry.push({
     //   idx: idx.toString(),
-    //   acc: "",
-    //   party_type: "",
-    //   party: "",
-    //   debit: "",
-    //   credit: "",
+    // acc: "",
+    // party_type: "",
+    // party: "",
+    // debit: "",
+    // credit: "",
     // });
-    setData({ ...data, entry: [...data.entry, { idx: idx.toString() }] });
+    setData({
+      ...data,
+      entry: [
+        ...data.entry,
+        {
+          idx: idx.toString(),
+          acc: "",
+          party_type: "",
+          party: "",
+          debit: "",
+          credit: "",
+        },
+      ],
+    });
     console.log("handleAddRow", data);
   };
 
@@ -205,9 +248,9 @@ const AddJournal = (props) => {
             style={{ margin: "0px", padding: "0px" }}
           >
             <label className="label_title">Accounting Entries</label>
-            <small>{JSON.stringify(data)}</small>
-            <hr />
-            <small>{console.log(props)}</small>
+            {/* <small>{JSON.stringify(data)}</small> */}
+            {/* <hr /> */}
+            {/* <small>{JSON.stringify(lists)}</small> */}
             <div
               className="row col-md-12 "
               style={{
@@ -257,14 +300,58 @@ const AddJournal = (props) => {
                 <Entry i={i} data={e} handleRow={handleRow} />
               ))}
 
-            <div style={{ margin: "0px", padding: "5px 0" }}>
-              <button
-                style={{ padding: "0 5px", minWidth: "unset" }}
-                className="btn btn-primary btn-sm"
-                onClick={handleAddRow}
+            <div
+              className="row col-md-12 "
+              style={{
+                margin: "0px",
+                padding: "0px",
+              }}
+            >
+              <div
+                className="col-md-4"
+                style={{ margin: "0px", padding: "5px 0" }}
               >
-                Add Row
-              </button>
+                <button
+                  style={{ padding: "0 5px", minWidth: "unset" }}
+                  className="btn btn-primary btn-sm"
+                  onClick={handleAddRow}
+                >
+                  Add Row
+                </button>
+              </div>
+              {data.entry.length > 0 && (
+                <>
+                  <div
+                    className="col-md-4"
+                    style={{
+                      padding: "5px 10px",
+                      textAlign: "right",
+                    }}
+                  >
+                    Total
+                  </div>
+                  <div
+                    className="col-md-2"
+                    style={{
+                      padding: "5px 10px",
+                      border: "1px solid #b3b3b3",
+                      background: "white",
+                    }}
+                  >
+                    {TotalDebit()}
+                  </div>
+                  <div
+                    className="col-md-2"
+                    style={{
+                      padding: "5px 10px",
+                      border: "1px solid #b3b3b3",
+                      background: "white",
+                    }}
+                  >
+                    {TotalCredit()}
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
