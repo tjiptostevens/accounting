@@ -115,7 +115,46 @@ const Journal = () => {
 
       <hr style={{ margin: "0" }} />
       <div className="w-100" style={{ height: "25px" }}></div>
-      <div className="row col-md-12"></div>
+      <div className="row col-md-12" style={{ paddingLeft: "25px" }}>
+        <div
+          className="row col-md-12"
+          style={{
+            color: "white",
+            textAlign: "left",
+            padding: "7px 0",
+            fontWeight: "600",
+          }}
+        >
+          <div className="col-md-2">Number</div>
+          <div className="col-md-3">Title</div>
+          <div className="col-md-3">Type</div>
+          <div className="col-md-2">Debit</div>
+          <div className="col-md-2">Credit</div>
+        </div>
+        <hr />
+      </div>
+      <div className="row col-md-12" style={{ paddingLeft: "25px" }}>
+        <div
+          className="row col-md-12"
+          style={{
+            color: "white",
+            textAlign: "left",
+            padding: "7px 0",
+            fontWeight: "100",
+          }}
+        >
+          {journalFil &&
+            journalFil.map((e) => (
+              <>
+                <div className="col-md-2">{e.name}</div>
+                <div className="col-md-3">{e.title}</div>
+                <div className="col-md-3">{e.type}</div>
+                <div className="col-md-2">{e.total_debit}</div>
+                <div className="col-md-2">{e.total_credit}</div>
+              </>
+            ))}
+        </div>
+      </div>
     </>
   );
 };

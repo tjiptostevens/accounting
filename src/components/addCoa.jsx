@@ -95,7 +95,7 @@ const AddCoa = (props) => {
             <input
               required={data.required}
               onChange={handleChange}
-              type="number"
+              type="text"
               className="form-control mb-2"
               value={data.number}
               name="number"
@@ -179,24 +179,44 @@ const AddCoa = (props) => {
             <label className="label_title">
               Parent Name <span className="text-danger">*</span>
             </label>
-            <select
+            <input
+              list="coa"
+              className="form-select"
+              style={{ padding: "5px 10px", border: "none" }}
+              type="text"
+              name="parent"
+              value={data.parent}
+              onChange={handleChange}
+              onBlur={handleChange}
+            />
+            <datalist id="coa">
+              {coa &&
+                coa
+                  .filter((e) => e.is_group === "1" && e.type === data.type)
+                  .map((e, i) => (
+                    <option key={i} value={e.number}>
+                      {e.number} - {e.name}
+                    </option>
+                  ))}
+            </datalist>
+            {/* <select
               className="form-select"
               name="parent"
               id="parent"
               onChange={handleChange}
               value={data.parent}
-            >
-              {data.parent ? "" : <option value="null">Select Parent</option>}
-              {/* <option value="0">Root Parent</option> */}
-              {coaFil &&
+            > */}
+            {/* {data.parent ? "" : <option value="null">Select Parent</option>} */}
+            {/* <option value="0">Root Parent</option> */}
+            {/* {coaFil &&
                 coaFil
                   .filter((e) => e.is_group === "1")
                   .map((e, i) => (
                     <option key={i} value={e.number}>
                       {e.number} - {e.name}
                     </option>
-                  ))}
-            </select>
+                  ))} */}
+            {/* </select> */}
           </div>
           <div>
             <p>{data.message}</p>

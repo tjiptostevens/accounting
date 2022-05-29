@@ -5,11 +5,12 @@ const Entry = (props, { data, i }) => {
   const { data: coa } = useFetch("getcoa.php");
   const [list, setList] = useState({
     idx: (props.i + 1).toString(),
-    acc: "",
-    party_type: "",
-    party: "",
-    debit: 0,
-    credit: 0,
+    parent: props.parent,
+    acc: props.data.acc,
+    party_type: props.data.party_type,
+    party: props.data.party,
+    debit: props.data.debit,
+    credit: props.data.credit,
     delete: false,
   });
   const handleChange = (e) => {
@@ -43,18 +44,19 @@ const Entry = (props, { data, i }) => {
           </div>
           <input
             list="coa"
-            className="col-md-3 inp-number"
+            className="col-md-3"
             style={{ padding: "5px 10px", border: "none" }}
-            type="number"
+            type="text"
             name="acc"
             id={props.i}
+            value={list.acc}
             onChange={handleChange}
             onBlur={handleChange}
           />
           <datalist id="coa">
             {coa &&
               coa
-                .filter((e) => e.parent !== "0")
+                .filter((e) => e.is_group === "0")
                 .map((e) => (
                   <option value={e.number}>
                     {e.number} - {e.name}
@@ -67,6 +69,7 @@ const Entry = (props, { data, i }) => {
             style={{ padding: "5px 10px", border: "none" }}
             name="party_type"
             id={props.i}
+            value={list.party_type}
             onChange={handleChange}
             onBlur={handleChange}
             // value={e.party_type}
@@ -77,6 +80,7 @@ const Entry = (props, { data, i }) => {
             style={{ padding: "5px 10px", border: "none" }}
             name="party"
             id={props.i}
+            value={list.party}
             onChange={handleChange}
             onBlur={handleChange}
             // value={e.party}
@@ -87,6 +91,7 @@ const Entry = (props, { data, i }) => {
             style={{ padding: "5px 10px", border: "none" }}
             name="debit"
             id={props.i}
+            value={list.debit}
             onChange={handleChange}
             onBlur={handleChange}
             pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}"
@@ -98,6 +103,7 @@ const Entry = (props, { data, i }) => {
             style={{ padding: "5px 10px", border: "none" }}
             name="credit"
             id={props.i}
+            value={list.credit}
             onChange={handleChange}
             onBlur={handleChange}
             // value={e.credit}

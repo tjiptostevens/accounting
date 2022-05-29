@@ -218,7 +218,7 @@ const SideNav = (props) => {
               ACTIVITY
             </p>
             <ul className="nav nav-pills flex-column mb-auto">
-              <li>
+              {/* <li>
                 <NavLink to="/d/order" className="nav-link text-white">
                   <i className="m_icon bi bi-file-earmark-plus"></i>
                   Penjualan Kredit
@@ -241,7 +241,7 @@ const SideNav = (props) => {
                   <i className="m_icon bi bi-journal-plus"></i>
                   Pembayaran Kas
                 </NavLink>
-              </li>
+              </li> */}
               <li>
                 <NavLink to="/d/journal" className="nav-link text-white">
                   <i className="m_icon bi bi-file-earmark-break"></i>
@@ -250,7 +250,7 @@ const SideNav = (props) => {
               </li>
 
               <li>
-                <NavLink to="/d/journal" className="nav-link text-white">
+                <NavLink to="/d/depreciation" className="nav-link text-white">
                   <i className="m_icon bi bi-file-earmark-break"></i>
                   Depresiasi
                 </NavLink>
