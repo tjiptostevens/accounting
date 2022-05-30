@@ -13,7 +13,7 @@ const AddJournal = (props) => {
     type: "Journal Umum",
     type_number: 6,
     required: true,
-    name: `JV/${MM}/0001`,
+    name: `JV/${MM}/####`,
     title: "",
     last: "0000",
     now: `${YY}-${MM}-${DD}`,
@@ -33,14 +33,15 @@ const AddJournal = (props) => {
       "Access-Control-Allow-Origin": window.location.origin,
     };
     setTimeout(() => {
-      fetch(`${urlLink.url}getjournallast.php`, {
+      fetch(`${urlLink.url}getjournallast.php?type=${data.type}`, {
         signal: abortCtr.signal,
         method: "GET",
         headers: headers,
       })
         .then((res) => res.json())
         .then((res) => {
-          // console.log(res);
+          console.log(res);
+          setData({ ...data, last: res });
         })
 
         // display an alert message for an error
@@ -52,16 +53,18 @@ const AddJournal = (props) => {
             msg: "Error Connection",
           });
         });
-    }, 50);
+    }, 0);
     return data;
   }, [data.name, data.title]);
   useEffect(() => {
+    let td = TotalDebit();
+    let tc = TotalCredit();
     setData({
       ...data,
-      total_debit: TotalDebit(),
-      total_credit: TotalCredit(),
+      total_debit: td,
+      total_credit: tc,
     });
-  }, [data.entry, data.title, data.user_remark, data.pay_to_recd_from]);
+  }, [data.entry]);
   const handleChange = (e) => {
     console.log(`${[e.target.name]}`, typeof e.target.value);
     let nam = e.target.name;
@@ -73,7 +76,7 @@ const AddJournal = (props) => {
         case 1:
           setData({
             ...data,
-            name: `SC/Track/${data.month}/${(data.last + 1).slice(-4)}`,
+            name: `SC/Track/${data.month}/####`,
             type: "Penjualan Tracking Kredit",
             type_number: 1,
             entry: [
@@ -99,7 +102,7 @@ const AddJournal = (props) => {
         case 2:
           setData({
             ...data,
-            name: `SC/Conta/${data.month}/${(data.last + 1).slice(-4)}`,
+            name: `SC/Conta/${data.month}/####`,
             type: "Penjualan Container Kredit",
             type_number: 2,
             entry: [
@@ -125,7 +128,7 @@ const AddJournal = (props) => {
         case 3:
           setData({
             ...data,
-            name: `PC/${data.month}/${(data.last + 1).slice(-4)}`,
+            name: `PC/${data.month}/####`,
             type: "Pembelian Kredit",
             type_number: 3,
             entry: [
@@ -151,7 +154,7 @@ const AddJournal = (props) => {
         case 4:
           setData({
             ...data,
-            name: `CR/${data.month}/${(data.last + 1).slice(-4)}`,
+            name: `CR/${data.month}/####`,
             type: "Penerimaan Kas",
             type_number: 4,
             entry: [
@@ -177,7 +180,7 @@ const AddJournal = (props) => {
         case 5:
           setData({
             ...data,
-            name: `CP/${data.month}/${(data.last + 1).slice(-4)}`,
+            name: `CP/${data.month}/####`,
             type: "Pembayaran Kas",
             type_number: 5,
             entry: [
@@ -203,7 +206,7 @@ const AddJournal = (props) => {
         case 6:
           setData({
             ...data,
-            name: `JV/${data.month}/${(data.last + 1).slice(-4)}`,
+            name: `JV/${data.month}/####`,
             type: "Journal Umum",
             type_number: 6,
             entry: [],
@@ -262,29 +265,38 @@ const AddJournal = (props) => {
         .then((res) => res.json())
         .then((res) => {
           console.log(res);
-          data.entry.map((e, i) => {
-            setTimeout(() => {
-              fetch(`${urlLink.url}addjournalentry.php`, {
-                signal: abortCtr.signal,
-                method: "POST",
-                body: JSON.stringify(data.entry[i]),
-                headers: headers,
-              })
-                .then((res) => res.json())
-                .then((res) => {
-                  console.log(res);
+          if (res.error) {
+            console.log(res.error);
+            setData({ ...data, message: res.message });
+          } else {
+            data.entry.map((e, i) => {
+              setTimeout(() => {
+                fetch(`${urlLink.url}addjournalentry.php`, {
+                  signal: abortCtr.signal,
+                  method: "POST",
+                  body: JSON.stringify(data.entry[i]),
+                  headers: headers,
                 })
+                  .then((res) => res.json())
+                  .then((res) => {
+                    console.log(res);
+                    setData({
+                      ...data,
+                      msg: res.message,
+                    });
+                  })
 
-                // display an alert message for an error
-                .catch((err) => {
-                  console.log(err);
-                  setData({
-                    ...data,
-                    msg: "Error Connection",
+                  // display an alert message for an error
+                  .catch((err) => {
+                    console.log(err);
+                    setData({
+                      ...data,
+                      msg: "Error Connection",
+                    });
                   });
-                });
-            }, 50);
-          });
+              }, 50);
+            });
+          }
         })
 
         // display an alert message for an error
@@ -353,6 +365,7 @@ const AddJournal = (props) => {
         ...data.entry,
         {
           idx: idx.toString(),
+          parent: "",
           acc: "",
           party_type: "",
           party: "",
@@ -516,6 +529,7 @@ const AddJournal = (props) => {
                   i={i}
                   data={e}
                   parent={data.name}
+                  last={data.last}
                   handleRow={handleRow}
                 />
               ))}

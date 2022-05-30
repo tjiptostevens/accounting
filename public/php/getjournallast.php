@@ -24,16 +24,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
     include 'conn.php';
-
+    $type = $_GET['type'];
     
-    $sql=$conn->query("SELECT name FROM tabjournal ORDER BY name DESC LIMIT 1;");
+    $sql=$conn->query("SELECT COUNT(*) as last FROM tabjournal where type='$type'");
     $result=array();
 
     while ($data=$sql-> fetch_assoc()){
         $result[]=$data;
-    }
+    };
+    $series =  $result[0]['last']+1;
+    $series = str_pad($series, 4, '0', STR_PAD_LEFT);
 
-    echo json_encode($result);
+    echo json_encode($series);
+    // echo json_encode(
+    //     [
+    //        "message" => $type,
+    //     ]
+    // ); 
 
     mysqli_close($conn);
 

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useFetch from "./useFetch";
 import "./assets/css/form.css";
 const Entry = (props, { data, i }) => {
   const { data: coa } = useFetch("getcoa.php");
   const [list, setList] = useState({
     idx: (props.i + 1).toString(),
-    parent: props.parent,
+    parent: `${props.parent.replace("####", "")}${props.last}`,
     acc: props.data.acc,
     party_type: props.data.party_type,
     party: props.data.party,
@@ -14,7 +14,11 @@ const Entry = (props, { data, i }) => {
     delete: false,
   });
   const handleChange = (e) => {
-    setList({ ...list, [e.target.name]: e.target.value });
+    setList({
+      ...list,
+      [e.target.name]: e.target.value,
+      parent: `${props.parent.replace("####", "")}${props.last}`,
+    });
     props.handleRow({ list, e });
   };
   return (

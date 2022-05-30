@@ -40,7 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
         //@important: Please change this before using
         http_response_code(200);
         $type = $_POST['type'];
-        $name = $_POST['name'];
+        $name = trim($_POST['name'],"#");  
+        $last = $_POST['last'];      
+        $total_debit = $_POST['total_debit'];
+        $total_credit = $_POST['total_credit'];
         $posting_date = $_POST['posting_date'];
         $title = $_POST['title'];
         $pay_to_recd_from = $_POST[ 'pay_to_recd_from'];
@@ -49,24 +52,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
         $modified_date = date("Y-m-d h:i:s");        
         $created_by = "admin";
         $company=1;
-        $arr="INSERT INTO tabjournal (type,name,posting_date,title,pay_to_recd_from,user_remark, created_date, modified_date, created_by,company ) VALUES ('$type','$name','$posting_date','$title','$pay_to_recd_from','$user_remark','$created_date','$modified_date','$created_by','$company')";
+
+        // get last number from type
+        $sql=$conn->query("SELECT COUNT(*) as last FROM tabjournal where type='$type'");
+        $result=array();
+        while ($data=$sql-> fetch_assoc()){
+            $result[]=$data;
+        };
+        $series =  $result[0]['last'];
+        $series = str_pad($series, 4, '0', STR_PAD_LEFT);
+        // $arr="";
+        $arr="INSERT INTO tabjournal (type,name,posting_date,title,pay_to_recd_from,user_remark,total_debit,total_credit, created_date, modified_date, created_by,company ) VALUES ('$type','$name$last','$posting_date','$title','$pay_to_recd_from','$user_remark','$total_debit','$total_credit','$created_date','$modified_date','$created_by','$company')";
         
         // echo json_encode(
         //     [
-        //        "message" => $arr
+        //        "message" => $series,
         //     ]
         // ); 
 
-
-        //Actual sending email
-        // $sendEmail = new Sender($number, $name, $is_group);
-        // $sendEmail->send();
 
     } else {
      // tell the user about error
      echo json_encode(
          [
-            "error: " => $arr,
+            "error" => $arr,
             "message" => $conn->error
          ]
      );
@@ -81,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     } else {
         echo json_encode(
             [
-               "error: " => $arr,
+               "error" => $arr,
                "message" => $conn->error
             ]
         );

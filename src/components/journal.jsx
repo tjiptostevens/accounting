@@ -128,32 +128,45 @@ const Journal = () => {
           <div className="col-md-2">Number</div>
           <div className="col-md-3">Title</div>
           <div className="col-md-3">Type</div>
-          <div className="col-md-2">Debit</div>
-          <div className="col-md-2">Credit</div>
+          <div className="col-md-2" style={{ textAlign: "center" }}>
+            Debit
+          </div>
+          <div className="col-md-2" style={{ textAlign: "center" }}>
+            Credit
+          </div>
         </div>
         <hr />
       </div>
       <div className="row col-md-12" style={{ paddingLeft: "25px" }}>
-        <div
-          className="row col-md-12"
-          style={{
-            color: "white",
-            textAlign: "left",
-            padding: "7px 0",
-            fontWeight: "100",
-          }}
-        >
-          {journalFil &&
-            journalFil.map((e) => (
-              <>
+        {journalFil &&
+          journalFil.map((e, i) => (
+            <>
+              <div
+                key={i}
+                className="row col-md-12"
+                style={{
+                  color: "white",
+                  textAlign: "left",
+                  fontWeight: "100",
+                }}
+              >
                 <div className="col-md-2">{e.name}</div>
                 <div className="col-md-3">{e.title}</div>
                 <div className="col-md-3">{e.type}</div>
-                <div className="col-md-2">{e.total_debit}</div>
-                <div className="col-md-2">{e.total_credit}</div>
-              </>
-            ))}
-        </div>
+                <div className="col-md-2" style={{ textAlign: "right" }}>
+                  {Number(e.total_debit)
+                    .toFixed(2)
+                    .replace(/\d(?=(\d{3})+\.)/g, "$&.")}
+                </div>
+                <div className="col-md-2" style={{ textAlign: "right" }}>
+                  {Number(e.total_credit)
+                    .toFixed(2)
+                    .replace(/\d(?=(\d{3})+\.)/g, "$&.")}
+                </div>
+                <hr />
+              </div>
+            </>
+          ))}
       </div>
     </>
   );
