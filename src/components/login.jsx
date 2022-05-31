@@ -81,42 +81,52 @@ const Login = (props) => {
         className="__modal-window"
         style={{ display: { true: "block", false: "none" }[data.vis] }}
       >
-        <div className="row col-md-12">
+        <div
+          className="row col-md-7 col-11"
+          style={{
+            maxHeight: "95vh",
+            overflowY: "auto",
+            margin: "0px",
+            padding: "15px",
+            borderRadius: "5px",
+          }}
+        >
           <div
             className="w-100 justify-content-around"
             style={{
-              textAlign: "justify",
+              textAlign: "center",
               height: "auto",
             }}
           >
             <div style={{ fontSize: "24px" }}>{data.msg}</div>
+            <hr />
           </div>
-        </div>
-        <div
-          className="w-100 justify-content-around"
-          style={{
-            textAlign: "center",
-            height: "auto",
-          }}
-        >
-          <Link
-            to={{
-              pathname: "/d",
-              state: { data: data },
+          <div
+            className="w-100 justify-content-around"
+            style={{
+              textAlign: "center",
+              height: "auto",
             }}
           >
-            <button
-              type="button"
-              className="btn btn-primary"
-              style={{
-                textAlign: "center",
-                width: "60px",
-                height: "auto",
+            <Link
+              to={{
+                pathname: "/d",
+                state: { data: data },
               }}
             >
-              OK
-            </button>
-          </Link>
+              <button
+                type="button"
+                className="btn btn-primary"
+                style={{
+                  textAlign: "center",
+                  width: "60px",
+                  height: "auto",
+                }}
+              >
+                OK
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
 

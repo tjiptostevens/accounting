@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import useFetch from "./useFetch";
 import "./assets/css/form.css";
-const Entry = (props, { data, i }) => {
+const Entry = (props) => {
   const { data: coa } = useFetch("getcoa.php");
+  const [data, setData] = useState({ delete: false });
   const [list, setList] = useState({
     idx: (props.i + 1).toString(),
     parent: `${props.parent.replace("####", "")}${props.last}`,
@@ -11,7 +12,6 @@ const Entry = (props, { data, i }) => {
     party: props.data.party,
     debit: props.data.debit,
     credit: props.data.credit,
-    delete: false,
   });
   const handleChange = (e) => {
     setList({
@@ -22,8 +22,8 @@ const Entry = (props, { data, i }) => {
     props.handleRow({ list, e });
   };
   const handleDelete = (e) => {
-    setList({ ...list, delete: !list.delete });
-    props.handleDelete(props.i, list.delete);
+    setData({ ...data, delete: !data.delete });
+    props.handleDelete(props.i, data.delete);
   };
   return (
     <>
@@ -43,12 +43,12 @@ const Entry = (props, { data, i }) => {
             className="col-md-1"
             style={{ padding: "5px 10px", border: "none" }}
             onClick={handleDelete}
-            onMouseOver={() => setList({ delete: true })}
-            onMouseOut={() => setList({ delete: false })}
+            onMouseOver={() => setData({ delete: true })}
+            onMouseOut={() => setData({ delete: false })}
           >
             <i
-              className={list.delete ? "bi bi-x-square-fill" : "bi bi-square"}
-              style={list.delete ? { color: "red" } : { color: "white" }}
+              className={data.delete ? "bi bi-x-square-fill" : "bi bi-square"}
+              style={data.delete ? { color: "red" } : { color: "white" }}
             ></i>{" "}
             {props.data.idx}
           </div>

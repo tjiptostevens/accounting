@@ -282,7 +282,7 @@ const AddJournal = (props) => {
                     console.log(res);
                     setData({
                       ...data,
-                      msg: res.message,
+                      message: res.message,
                     });
                   })
 

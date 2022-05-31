@@ -22,14 +22,16 @@ const Journal = () => {
     return (
       journal &&
       journal
-        .sort((a, b) => (a.name > b.name ? 1 : -1))
+        // .sort((a, b) => (a.name > b.name ? 1 : -1))
         .filter(
           (d) =>
-            !searchRegex ||
-            searchRegex.test(d.name + d.mobile + d.email + d.address)
+            (!searchRegex ||
+              searchRegex.test(d.name + d.title + d.type + d.posting_date)) &&
+            (!data.search_type || d.type === data.search_type) &&
+            (!data.end_date || d.posting_date === data.end_date)
         )
     );
-  }, [journal, data.search]);
+  }, [journal, data.search, data.search_type, data.end_date]);
   return (
     <>
       {/* Modal Window */}
@@ -93,18 +95,46 @@ const Journal = () => {
               className="form-control m-1"
               type="search"
               name="search"
-              placeholder="Type to search"
+              placeholder="Type here search"
               onChange={handleChange}
             />
           </span>
           <span style={{ display: "flex", alignItems: "center" }}>
-            <input
+            {/* <input
+              list="type"
+              className="col-md-3"
+              style={{ padding: "5px 10px", border: "none" }}
+              type="text"
+              name="search_type"
+              onChange={handleChange}
+            /> */}
+            <select
+              className="form-control m-1"
+              name="search_type"
+              onChange={handleChange}
+              id="type"
+            >
+              <option value=""></option>
+              <option value="Penjualan Tracking Kredit">
+                Penjualan Tracking Kredit
+              </option>
+              <option value="Penjualan Container Kredit">
+                Penjualan Container Kredit
+              </option>
+              <option value="Pembelian Kredit">Pembelian Kredit</option>
+              <option value="Penerimaan Kas">Penerimaan Kas</option>
+              <option value="Pembayaran Kas">Pembayaran Kas</option>
+              <option value="Journal Umum">Journal Umum</option>
+            </select>
+          </span>
+          <span style={{ display: "flex", alignItems: "center" }}>
+            {/* <input
               className="form-control m-1"
               type="date"
               name="start_date"
               placeholder="Type to search"
               onChange={handleChange}
-            />
+            /> */}
             <input
               className="form-control m-1"
               type="date"
@@ -137,13 +167,14 @@ const Journal = () => {
         >
           <div className="col-md-2">Number</div>
           <div className="col-md-3">Title</div>
-          <div className="col-md-3">Type</div>
+          <div className="col-md-2">Type</div>
           <div className="col-md-2" style={{ textAlign: "center" }}>
             Debit
           </div>
           <div className="col-md-2" style={{ textAlign: "center" }}>
             Credit
           </div>
+          <div className="col-md-1"></div>
         </div>
         <hr />
       </div>
@@ -162,7 +193,7 @@ const Journal = () => {
               >
                 <div className="col-md-2">{e.name}</div>
                 <div className="col-md-3">{e.title}</div>
-                <div className="col-md-3">{e.type}</div>
+                <div className="col-md-2">{e.type}</div>
                 <div className="col-md-2" style={{ textAlign: "right" }}>
                   {Number(e.total_debit)
                     .toFixed(2)
@@ -173,8 +204,31 @@ const Journal = () => {
                     .toFixed(2)
                     .replace(/\d(?=(\d{3})+\.)/g, "$&.")}
                 </div>
-                <hr />
+                <div
+                  className="col-md-1"
+                  style={{ textAlign: "right" }}
+                  onMouseOver={() => setData({ ...data, i: i, det: true })}
+                  onMouseOut={() => setData({ ...data, i: i, det: false })}
+                >
+                  {data.i === i && data.det ? (
+                    <i
+                      className="bi bi-plus-square-fill"
+                      style={{ color: "white" }}
+                    ></i>
+                  ) : (
+                    <i className="bi bi-plus-square"></i>
+                  )}
+                </div>
               </div>
+              <div
+                className="row-md-12"
+                style={{
+                  color: "white",
+                  textAlign: "left",
+                  fontWeight: "100",
+                }}
+              ></div>
+              <hr />
             </>
           ))}
       </div>
