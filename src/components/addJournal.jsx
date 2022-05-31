@@ -396,7 +396,7 @@ const AddJournal = (props) => {
         acc: ent[i],
         credit: "",
         debit: "",
-        parent: "",
+        parent: `${data.parent.replace("####", "")}${data.last}`,
         party: "",
         party_type: "",
       });
