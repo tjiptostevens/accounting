@@ -181,9 +181,8 @@ const Journal = () => {
       <div className="row col-md-12" style={{ paddingLeft: "25px" }}>
         {journalFil &&
           journalFil.map((e, i) => (
-            <>
+            <div key={i}>
               <div
-                key={i}
                 className="row col-md-12"
                 style={{
                   color: "white",
@@ -229,7 +228,7 @@ const Journal = () => {
                 }}
               ></div>
               <hr />
-            </>
+            </div>
           ))}
       </div>
     </>

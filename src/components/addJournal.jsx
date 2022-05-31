@@ -23,6 +23,7 @@ const AddJournal = (props) => {
     month: MM,
     minute: ss,
     posting_date: `${YY}-${MM}-${DD}`,
+    opening: false,
   });
 
   useEffect(() => {
@@ -56,15 +57,7 @@ const AddJournal = (props) => {
     }, 0);
     return data;
   }, [data.name, data.title]);
-  useEffect(() => {
-    let td = TotalDebit();
-    let tc = TotalCredit();
-    setData({
-      ...data,
-      total_debit: td,
-      total_credit: tc,
-    });
-  }, [data.entry]);
+
   const handleChange = (e) => {
     console.log(`${[e.target.name]}`, typeof e.target.value);
     let nam = e.target.name;
@@ -309,6 +302,16 @@ const AddJournal = (props) => {
         });
     }, 50);
   };
+  // Hitung Debit & Credit
+  useEffect(() => {
+    let td = TotalDebit();
+    let tc = TotalCredit();
+    setData({
+      ...data,
+      total_debit: td,
+      total_credit: tc,
+    });
+  }, [data.entry]);
   const TotalDebit = () => {
     let debit = data.entry.map((e) => Number(e.debit));
 
@@ -331,6 +334,7 @@ const AddJournal = (props) => {
     // setData({ ...data, total_credit: sum });
     return sum;
   };
+  // Handling Row
   function handleRow({ e, list }) {
     // console.log(e.target.id, `${[e.target.name]}`, e.target.value);
     let i = Number(e.target.id);
@@ -351,14 +355,7 @@ const AddJournal = (props) => {
   const handleAddRow = (e) => {
     e.preventDefault();
     let idx = data.entry.length + 1;
-    // data.entry.push({
-    //   idx: idx.toString(),
-    // acc: "",
-    // party_type: "",
-    // party: "",
-    // debit: "",
-    // credit: "",
-    // });
+
     setData({
       ...data,
       entry: [
@@ -388,10 +385,65 @@ const AddJournal = (props) => {
       entry: listDat,
     });
   };
+  const handleOpening = (e) => {
+    console.log(e);
+    let ent = coa.filter((e) => e.is_group === "0").map((e) => e.number);
+    console.log(ent);
+    let obj = [];
+    for (let i = 0; i < ent.length; ++i) {
+      obj.push({
+        idx: i + 1,
+        acc: ent[i],
+        credit: "",
+        debit: "",
+        parent: "",
+        party: "",
+        party_type: "",
+      });
+    }
+
+    console.log(obj);
+    setData({
+      ...data,
+      name: `OP/${data.month}/####`,
+      type: "Opening",
+      type_number: 7,
+      entry: [...obj],
+      opening: true,
+    });
+  };
   return (
     <>
       <div className="modal_title">
         <b>Add Jounal</b>
+        <div style={{ margin: "0px", padding: "5px 0" }}>
+          {data.opening ? (
+            <button
+              style={{ padding: "0 5px", minWidth: "unset" }}
+              className="btn btn-primary btn-sm"
+              onClick={() =>
+                setData({
+                  ...data,
+                  opening: false,
+                  type: "Journal Entry",
+                  type_number: 6,
+                  name: `JV/${data.month}/####`,
+                  entry: [],
+                })
+              }
+            >
+              Cancel
+            </button>
+          ) : (
+            <button
+              style={{ padding: "0 5px", minWidth: "unset" }}
+              className="btn btn-primary btn-sm"
+              onClick={handleOpening}
+            >
+              Add Opening Entries
+            </button>
+          )}
+        </div>
       </div>
       {/* {JSON.stringify(data)} <br /> */}
       {/* {JSON.stringify(coa)} */}
@@ -409,6 +461,7 @@ const AddJournal = (props) => {
               <label className="label_title">Journal Type :</label>
               <select
                 required={data.required}
+                disabled={data.opening}
                 className="form-select"
                 name="type"
                 value={data.type_number}
@@ -420,6 +473,9 @@ const AddJournal = (props) => {
                 <option value="4">Penerimaan Kas</option>
                 <option value="5">Pembayaran Kas</option>
                 <option value="6">Journal Umum</option>
+                <option value="7" hidden={!data.opening}>
+                  Opening
+                </option>
               </select>
             </div>
             {/* Numbering */}
@@ -432,6 +488,7 @@ const AddJournal = (props) => {
               </label>
               <input
                 required={data.required}
+                disabled={true}
                 onChange={handleChange}
                 type="text"
                 className="form-control mb-2"
