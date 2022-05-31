@@ -34,11 +34,20 @@ const Payment = () => {
       {/* Modal Window */}
       <div
         className="__modal-window"
-        style={{ display: { true: "block", false: "none" }[data.vis] }}
+        style={{
+          display: { true: "block", false: "none" }[data.vis],
+          margin: "0px",
+          padding: "0px",
+        }}
       >
         <div
-          className="row col-md-12"
-          style={{ maxHeight: "95vh", overflowY: "auto" }}
+          className="row col-md-6 col-11"
+          style={{
+            maxHeight: "95vh",
+            overflowY: "auto",
+            margin: "0px",
+            padding: "0px",
+          }}
         >
           <div
             className="modal-close"

@@ -21,6 +21,10 @@ const Entry = (props, { data, i }) => {
     });
     props.handleRow({ list, e });
   };
+  const handleDelete = (e) => {
+    setList({ ...list, delete: !list.delete });
+    props.handleDelete(props.i, list.delete);
+  };
   return (
     <>
       {/* {console.log("entry", data)} */}
@@ -38,12 +42,14 @@ const Entry = (props, { data, i }) => {
           <div
             className="col-md-1"
             style={{ padding: "5px 10px", border: "none" }}
-            // onClick={() => setList({ ...list, delete: !list.delete })}
+            onClick={handleDelete}
+            onMouseOver={() => setList({ delete: true })}
+            onMouseOut={() => setList({ delete: false })}
           >
-            {/* <i
+            <i
               className={list.delete ? "bi bi-x-square-fill" : "bi bi-square"}
               style={list.delete ? { color: "red" } : { color: "white" }}
-            ></i>{" "} */}
+            ></i>{" "}
             {props.data.idx}
           </div>
           <input
@@ -61,8 +67,8 @@ const Entry = (props, { data, i }) => {
             {coa &&
               coa
                 .filter((e) => e.is_group === "0")
-                .map((e) => (
-                  <option value={e.number}>
+                .map((e, i) => (
+                  <option key={i} value={e.number}>
                     {e.number} - {e.name}
                   </option>
                 ))}

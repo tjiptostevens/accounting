@@ -15,7 +15,7 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
     if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-        header("Access-Control-Allow-Methods: GET, POST, OPTIONS");         
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 
     if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
         header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
@@ -23,25 +23,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-    include 'conn.php';
-    $type = $_GET['type'];
-    
-    $sql=$conn->query("SELECT COUNT(*) as last FROM tabjournal where type='$type'");
-    $result=array();
+include 'conn.php';
+$type = $_GET['type'];
 
-    while ($data=$sql-> fetch_assoc()){
-        $result[]=$data;
-    };
-    $series =  $result[0]['last']+1;
-    $series = str_pad($series, 4, '0', STR_PAD_LEFT);
+$sql = $conn->query("SELECT COUNT(*) as last FROM tabjournal where type='$type'");
+$result = array();
 
-    echo json_encode($series);
-    // echo json_encode(
-    //     [
-    //        "message" => $type,
-    //     ]
-    // ); 
+while ($data = $sql->fetch_assoc()) {
+    $result[] = $data;
+};
+$series =  $result[0]['last'] + 1;
+$series = str_pad($series, 4, '0', STR_PAD_LEFT);
 
-    mysqli_close($conn);
+echo json_encode($series);
+// echo json_encode(
+//     [
+//        "message" => $type,
+//     ]
+// ); 
 
-?>
+mysqli_close($conn);

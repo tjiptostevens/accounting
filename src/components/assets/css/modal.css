@@ -10,7 +10,7 @@
 }
 
 .__modal-window>div {
-    width: 50%;
+    /* width: 50%; */
     position: relative;
     top: 50%;
     left: 50%;
@@ -53,7 +53,7 @@
 }
 
 .modal-window>div {
-    width: 50%;
+    /* width: 50%; */
     position: relative;
     top: 50%;
     left: 50%;
@@ -76,6 +76,7 @@
     right: 0;
     text-align: right;
     text-decoration: none;
+    padding: 15px;
 }
 
 .modal-close :hover {
@@ -85,6 +86,7 @@
 
 .modal_title {
     color: gray;
+    padding: 15px;
 }
 
 .modal_content {

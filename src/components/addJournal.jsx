@@ -340,7 +340,7 @@ const AddJournal = (props) => {
     // let newArr = [...dat];
     let listDat = [...data.entry];
     listDat[i] = list;
-    console.log("e", e);
+    // console.log("e", e);
     console.log("handleRow", list);
     console.log("list", listDat);
     setData({
@@ -376,7 +376,18 @@ const AddJournal = (props) => {
     });
     console.log("handleAddRow", data);
   };
-
+  const handleDelete = (e, vis) => {
+    let i = e;
+    let listDat = [...data.entry];
+    let list = listDat[i];
+    console.log(vis, list);
+    listDat.splice(i, 1);
+    console.log("list", listDat);
+    setData({
+      ...data,
+      entry: listDat,
+    });
+  };
   return (
     <>
       <div className="modal_title">
@@ -526,11 +537,13 @@ const AddJournal = (props) => {
             {data.entry &&
               data.entry.map((e, i) => (
                 <Entry
+                  key={i}
                   i={i}
                   data={e}
                   parent={data.name}
                   last={data.last}
                   handleRow={handleRow}
+                  handleDelete={handleDelete}
                 />
               ))}
 
@@ -610,14 +623,12 @@ const AddJournal = (props) => {
             style={{ margin: "0px", padding: "0px" }}
           >
             <label className="label_title">User Remark</label>
-            <input
+            <textarea
+              name="user_remark"
               onChange={handleChange}
-              type="text"
               className="form-control mb-2"
               value={data.user_remark}
-              name="user_remark"
-              id="user_remark"
-            />
+            ></textarea>
           </div>
           <div>
             <p>{data.message}</p>
