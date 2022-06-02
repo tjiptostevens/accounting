@@ -1,22 +1,22 @@
-import React, { useState, useMemo } from "react";
-import AddUser from "./addUser";
-import useFetch from "./useFetch";
+import React, { useState, useMemo } from 'react'
+import AddUser from './addUser'
+import useFetch from './useFetch'
 
 const User = () => {
-  const { data: user } = useFetch("getuser.php");
-  const [data, setData] = useState({ vis: false });
+  const { data: user } = useFetch('getuser.php')
+  const [data, setData] = useState({ vis: false })
   const handleClose = (e) => {
-    setData({ ...data, vis: false });
-  };
+    setData({ ...data, vis: false })
+  }
   const handleChange = (e) => {
-    console.log(`${[e.target.name]}`, e.target.value);
+    console.log(`${[e.target.name]}`, e.target.value)
     setData({
       ...data,
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
   let userFil = useMemo(() => {
-    const searchRegex = data.search && new RegExp(`${data.search}`, "gi");
+    const searchRegex = data.search && new RegExp(`${data.search}`, 'gi')
     return (
       user &&
       user
@@ -24,28 +24,28 @@ const User = () => {
         .filter(
           (d) =>
             !searchRegex ||
-            searchRegex.test(d.name + d.mobile + d.email + d.address)
+            searchRegex.test(d.name + d.mobile + d.email + d.address),
         )
-    );
-  }, [user, data.search]);
+    )
+  }, [user, data.search])
   return (
     <>
       {/* Modal Window */}
       <div
         className="__modal-window"
         style={{
-          display: { true: "block", false: "none" }[data.vis],
-          margin: "0px",
-          padding: "0px",
+          display: { true: 'block', false: 'none' }[data.vis],
+          margin: '0px',
+          padding: '0px',
         }}
       >
         <div
           className="row col-md-6 col-11"
           style={{
-            maxHeight: "95vh",
-            overflowY: "auto",
-            margin: "0px",
-            padding: "0px",
+            maxHeight: '95vh',
+            overflowY: 'auto',
+            margin: '0px',
+            padding: '0px',
           }}
         >
           <div
@@ -55,23 +55,23 @@ const User = () => {
             <i
               className="bi bi-x-lg"
               style={{
-                textAlign: "center",
-                width: "60px",
-                height: "auto",
+                textAlign: 'center',
+                width: '60px',
+                height: 'auto',
               }}
             ></i>
           </div>
           <div
             className="w-100 justify-content-around"
             style={{
-              textAlign: "justify",
-              height: "auto",
+              textAlign: 'justify',
+              height: 'auto',
             }}
           >
             {
               {
                 1: <AddUser handleClose={handleClose} />,
-                2: "",
+                2: '',
               }[data.value]
             }
           </div>
@@ -80,12 +80,12 @@ const User = () => {
       {/* Component Title */}
       <div
         className="w-100"
-        style={{ display: "flex", justifyContent: "space-between" }}
+        style={{ display: 'flex', justifyContent: 'space-between' }}
       >
         <span className="__content_title">User Data</span>
         {/* add User + search */}
-        <span style={{ display: "flex" }}>
-          <span style={{ display: "flex", alignItems: "center" }}>
+        <span style={{ display: 'flex' }}>
+          <span style={{ display: 'flex', alignItems: 'center' }}>
             <input
               className="form-control"
               type="search"
@@ -99,59 +99,59 @@ const User = () => {
             onClick={() => setData({ ...data, vis: !data.vis, value: 1 })}
           >
             <i className="bi bi-plus"></i>
-            Add New User
+            New
           </button>
         </span>
       </div>
 
-      <hr style={{ margin: "0" }} />
+      <hr style={{ margin: '0' }} />
 
       {/* User View */}
-      <div className="w-100" style={{ height: "25px" }}></div>
-      <div className="row col-md-12" style={{ paddingLeft: "25px" }}>
+      <div className="w-100" style={{ height: '25px' }}></div>
+      <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
         <div
           className="row col-md-12"
           style={{
-            color: "white",
-            textAlign: "left",
-            padding: "7px 0",
-            fontWeight: "600",
+            color: 'white',
+            textAlign: 'left',
+            padding: '7px 0',
+            fontWeight: '600',
           }}
         >
-          <div style={{ width: "15%" }}>First Name</div>
-          <div style={{ width: "15%" }}>Last Name</div>
-          <div style={{ width: "15%" }}>Mobile</div>
-          <div style={{ width: "15%" }}>Email</div>
-          <div style={{ width: "15%" }}>Username</div>
+          <div style={{ width: '15%' }}>First Name</div>
+          <div style={{ width: '15%' }}>Last Name</div>
+          <div style={{ width: '15%' }}>Mobile</div>
+          <div style={{ width: '15%' }}>Email</div>
+          <div style={{ width: '15%' }}>Username</div>
 
-          <div style={{ width: "15%" }}>Password</div>
+          <div style={{ width: '15%' }}>Password</div>
         </div>
         <hr />
       </div>
       <div
         className="row col-md-12"
-        style={{ paddingLeft: "25px", maxHeight: "60vh", overflowY: "auto" }}
+        style={{ paddingLeft: '25px', maxHeight: '60vh', overflowY: 'auto' }}
       >
         {userFil &&
           userFil.map((d, i) => (
             <>
               <div key={i} className="row col-md-12">
-                <div style={{ width: "15%" }}>{d.first_name}</div>
-                <div style={{ width: "15%" }}>
-                  {d.last_name === null ? "null" : d.last_name}
+                <div style={{ width: '15%' }}>{d.first_name}</div>
+                <div style={{ width: '15%' }}>
+                  {d.last_name === null ? 'null' : d.last_name}
                 </div>
-                <div style={{ width: "15%" }}>{d.mobile}</div>
-                <div style={{ width: "15%" }}>{d.email}</div>
-                <div style={{ width: "15%" }}>{d.usr}</div>
+                <div style={{ width: '15%' }}>{d.mobile}</div>
+                <div style={{ width: '15%' }}>{d.email}</div>
+                <div style={{ width: '15%' }}>{d.usr}</div>
 
-                <div style={{ width: "15%" }}>
+                <div style={{ width: '15%' }}>
                   <span
                     onClick={(e) => {
-                      console.log(e.target.innerHTML);
-                      e.target.innerHTML = `<i class="bi bi-eye-slash"></i> ${d.pwd}`;
+                      console.log(e.target.innerHTML)
+                      e.target.innerHTML = `<i class="bi bi-eye-slash"></i> ${d.pwd}`
                       setTimeout(() => {
-                        e.target.innerHTML = `<i class="bi bi-eye-slash"></i> ******`;
-                      }, 5000);
+                        e.target.innerHTML = `<i class="bi bi-eye-slash"></i> ******`
+                      }, 5000)
                     }}
                   >
                     <i className="bi bi-eye-slash"></i> *****
@@ -163,7 +163,7 @@ const User = () => {
           ))}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default User;
+export default User

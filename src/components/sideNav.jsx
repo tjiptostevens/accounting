@@ -1,23 +1,136 @@
-import React, { useState } from "react";
-import { NavLink, Link, useParams } from "react-router-dom";
-import useWindow from "./useWindow";
-import "./assets/css/sideNav.css";
+import React, { useState } from 'react'
+import { NavLink, Link } from 'react-router-dom'
+import logo from './assets/img/env.png'
+import useWindow from './useWindow'
+import './assets/css/sideNav.css'
 
 const SideNav = (props) => {
-  const { width } = useWindow();
+  const { width } = useWindow()
   const [data, setData] = useState({
     width: true,
-    micon: "m_icon bi bi-x-circle",
-  });
+    micon: 'm_icon bi bi-x-circle',
+  })
   const handleLogout = (e) => {
-    sessionStorage.clear();
-    localStorage.clear();
-  };
+    sessionStorage.clear()
+    localStorage.clear()
+  }
+
+  function Nav() {
+    return (
+      <>
+        <p className="__subtitle" style={{ paddingLeft: '15px' }}>
+          MASTER
+        </p>
+        <ul className="nav nav-pills flex-column mb-auto">
+          <li>
+            <NavLink
+              to="/d/company"
+              className="nav-link text-white"
+              aria-current="page"
+            >
+              <svg className="m_icon bi me-2" width="16" height="16">
+                <use xlinkHref="#home"></use>
+              </svg>
+              Company
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/d/chartofaccount" className="nav-link text-white">
+              <i className="m_icon bi bi-bar-chart-steps me-2"></i>
+              Chart Of Account
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/d/customer" className="nav-link text-white">
+              <svg className="m_icon bi me-2" width="16" height="16">
+                <use xlinkHref="#table" />
+              </svg>
+              Customer
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/d/user" className="nav-link text-white">
+              <i className="m_icon bi bi-person-square"></i>
+              User
+            </NavLink>
+          </li>
+        </ul>
+        <hr />
+        <p className="__subtitle" style={{ paddingLeft: '15px' }}>
+          ACTIVITY
+        </p>
+        <ul className="nav nav-pills flex-column mb-auto">
+          <li>
+            <NavLink to="/d/journal" className="nav-link text-white">
+              <i className="m_icon bi bi-file-earmark-break"></i>
+              Journal
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink to="/d/depreciation" className="nav-link text-white">
+              <i className="m_icon bi bi-file-earmark-break"></i>
+              Depresiasi
+            </NavLink>
+          </li>
+        </ul>
+        <hr />
+        <p className="__subtitle" style={{ paddingLeft: '15px' }}>
+          REPORT
+        </p>
+
+        <ul className="nav nav-pills flex-column mb-auto">
+          <li>
+            <NavLink to="/d/generaljournal" className="nav-link text-white">
+              <i className="m_icon bi bi-file-earmark-diff"></i>General Journal
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/d/adjustmentjournal" className="nav-link text-white">
+              <i className="m_icon bi bi-file-earmark-diff"></i>Adjustment
+              Journal
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/d/closingjournal" className="nav-link text-white">
+              <i className="m_icon bi bi-file-earmark-diff"></i>Closing Journal
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/d/trialbalance" className="nav-link text-white">
+              <i className="m_icon bi bi-file-earmark-diff"></i>Trial Balance
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/d/profitandloss" className="nav-link text-white">
+              <i className="m_icon bi bi-file-earmark-diff"></i>Profit & Loss
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/d/equitychange" className="nav-link text-white">
+              <i className="m_icon bi bi-file-earmark-diff"></i>Equity Change
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/d/generalledger" className="nav-link text-white">
+              <i className="m_icon bi bi-file-earmark-spreadsheet"></i>
+              General Ledger
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/d/cashflow" className="nav-link text-white">
+              <i className="m_icon bi bi-file-earmark-medical"></i>Cash Flow
+            </NavLink>
+          </li>
+        </ul>
+      </>
+    )
+  }
 
   return (
     <>
       <div>
-        <svg xmlns="http://www.w3.org/2000/svg" style={{ display: "none" }}>
+        <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
           <symbol id="bootstrap" viewBox="0 0 118 94">
             <title>Bootstrap</title>
             <path
@@ -173,130 +286,15 @@ const SideNav = (props) => {
         </svg>
         {width > 450 ? (
           <div
-            style={{ minWidth: "250px", maxWidth: "270px", overflowY: "auto" }}
+            style={{ minWidth: '250px', maxWidth: '270px', overflowY: 'auto' }}
             className="d-flex flex-column flex-shrink-0 p-3 text-white"
           >
-            <p className="__subtitle" style={{ paddingLeft: "15px" }}>
-              MASTER
-            </p>
-            <ul className="nav nav-pills flex-column mb-auto">
-              <li>
-                <NavLink
-                  to="/d/company"
-                  className="nav-link text-white"
-                  aria-current="page"
-                >
-                  <svg className="m_icon bi me-2" width="16" height="16">
-                    <use xlinkHref="#home"></use>
-                  </svg>
-                  Company
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/chartofaccount" className="nav-link text-white">
-                  <i className="m_icon bi bi-bar-chart-steps me-2"></i>
-                  Chart Of Account
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/customer" className="nav-link text-white">
-                  <svg className="m_icon bi me-2" width="16" height="16">
-                    <use xlinkHref="#table" />
-                  </svg>
-                  Customer
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/user" className="nav-link text-white">
-                  <i className="m_icon bi bi-person-square"></i>
-                  User
-                </NavLink>
-              </li>
-            </ul>
-            <hr />
-            <p className="__subtitle" style={{ paddingLeft: "15px" }}>
-              ACTIVITY
-            </p>
-            <ul className="nav nav-pills flex-column mb-auto">
-              {/* <li>
-                <NavLink to="/d/order" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-plus"></i>
-                  Penjualan Kredit
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/payment" className="nav-link text-white">
-                  <i className="m_icon bi bi-journal-plus"></i>
-                  Pembelian Kredit
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/order" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-plus"></i>
-                  Penerimaan Kas
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/payment" className="nav-link text-white">
-                  <i className="m_icon bi bi-journal-plus"></i>
-                  Pembayaran Kas
-                </NavLink>
-              </li> */}
-              <li>
-                <NavLink to="/d/journal" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-break"></i>
-                  Journal
-                </NavLink>
-              </li>
-
-              <li>
-                <NavLink to="/d/depreciation" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-break"></i>
-                  Depresiasi
-                </NavLink>
-              </li>
-            </ul>
-            <hr />
-            <p className="__subtitle" style={{ paddingLeft: "15px" }}>
-              REPORT
-            </p>
-
-            <ul className="nav nav-pills flex-column mb-auto">
-              <li>
-                <NavLink to="/d/profitandloss" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-diff"></i>Trial
-                  Balance
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/profitandloss" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-diff"></i>Profit &
-                  Loss
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/profitandloss" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-diff"></i>Equity
-                  Change
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/generalledger" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-spreadsheet"></i>
-                  General Ledger
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/cashflow" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-medical"></i>Cash Flow
-                </NavLink>
-              </li>
-            </ul>
+            <Nav />
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
               <li>
                 <NavLink
-                  to={"/login"}
+                  to={'/login'}
                   className="nav-link text-white"
                   onClick={handleLogout}
                 >
@@ -309,7 +307,7 @@ const SideNav = (props) => {
         ) : (
           <div
             className="m__menu"
-            style={{ left: { true: "-240px", false: "-20px" }[data.width] }}
+            style={{ left: { true: '-240px', false: '-15px' }[data.width] }}
           >
             <div
               className="m__menu_toggle"
@@ -317,98 +315,34 @@ const SideNav = (props) => {
             >
               <i
                 className={
-                  { true: "m_icon bi bi-list", false: "m_icon bi bi-x-lg" }[
+                  { true: 'm_icon bi bi-list', false: 'm_icon bi bi-x-lg' }[
                     data.width
                   ]
                 }
-                style={{ color: "white" }}
+                style={{ color: 'white' }}
               ></i>
             </div>
-            <p className="__subtitle">MASTER</p>
+            <div className="navbar-brand" to="/d">
+              <img
+                src={logo}
+                width="30"
+                height="30"
+                className="d-inline-block align-top __icon"
+                alt=""
+              />
+              PITARA
+            </div>
+            <hr />
+            <Nav />
+            <hr />
             <ul className="nav nav-pills flex-column mb-auto">
               <li>
                 <NavLink
-                  to="/d/company"
-                  className="nav-link text-white"
-                  aria-current="page"
-                >
-                  <svg className="m_icon bi me-2" width="16" height="16">
-                    <use xlinkHref="#home"></use>
-                  </svg>
-                  Company
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/chartofaccount" className="nav-link text-white">
-                  <i className="m_icon bi bi-bar-chart-steps me-2"></i>
-                  Chart Of Account
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/customer" className="nav-link text-white">
-                  <svg className="m_icon bi me-2" width="16" height="16">
-                    <use xlinkHref="#table" />
-                  </svg>
-                  Customer
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/user" className="nav-link text-white">
-                  <i className="m_icon bi bi-person-square"></i>
-                  User
-                </NavLink>
-              </li>
-              <hr />
-              <p className="__subtitle" style={{ paddingLeft: "15px" }}>
-                ACTIVITY
-              </p>
-              <li>
-                <NavLink to="/d/journal" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-break"></i>
-                  Journal
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/profitandloss" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-diff"></i>Profit &
-                  Loss
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/cashflow" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-medical"></i>Cash Flow
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/generalledger" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-spreadsheet"></i>
-                  General Ledger
-                </NavLink>
-              </li>
-              <hr />
-              <p className="__subtitle" style={{ paddingLeft: "15px" }}>
-                SALES
-              </p>
-              <li>
-                <NavLink to="/d/order" className="nav-link text-white">
-                  <i className="m_icon bi bi-file-earmark-plus"></i>
-                  Order
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/d/payment" className="nav-link text-white">
-                  <i className="m_icon bi bi-journal-plus"></i>
-                  Payment
-                </NavLink>
-              </li>
-              <hr />
-              <li>
-                <NavLink
-                  to={"/login"}
+                  to={'/login'}
                   className="nav-link text-white"
                   onClick={handleLogout}
                 >
-                  <span className="glyphicon glyphicon-log-out me2"></span>
+                  <i className="m_icon bi bi-box-arrow-right"></i>
                   Log Out
                 </NavLink>
               </li>
@@ -417,7 +351,7 @@ const SideNav = (props) => {
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default SideNav;
+export default SideNav

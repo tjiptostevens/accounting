@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import "./assets/css/home.css";
-import Coa from "./coa";
-import Company from "./company";
-import Customer from "./customer";
-import User from "./user";
-import Nav from "./nav";
-import SideNav from "./sideNav";
-import Journal from "./journal";
-import Order from "./order";
-import Payment from "./payment";
-import ProfitAndLoss from "./profitandloss";
-import CashFlow from "./cashflow";
-import GeneralLedger from "./generalledger";
+import React, { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
+import './assets/css/home.css'
+import Coa from './coa'
+import Company from './company'
+import Customer from './customer'
+import User from './user'
+import Nav from './nav'
+import SideNav from './sideNav'
+import Journal from './journal'
+import Order from './order'
+import Payment from './payment'
+import ProfitAndLoss from './profitandloss'
+import CashFlow from './cashflow'
+import GeneralLedger from './generalledger'
 
 const Home = (props) => {
-  const [data, setData] = useState("");
+  const [data, setData] = useState('')
   return (
     <>
       <Nav />
@@ -37,7 +37,7 @@ const Home = (props) => {
           </div> */}
           <div
             className="w-100"
-            style={{ display: "flex", flexDirection: "row", height: "85vh" }}
+            style={{ display: 'flex', flexDirection: 'row', height: '85vh' }}
           >
             {/* Sidebar */}
             <div className="__side_bar">
@@ -71,7 +71,7 @@ const Home = (props) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

@@ -1,30 +1,44 @@
-import React, { useState, useEffect } from "react";
-import useFetch from "./useFetch";
-import "./assets/css/form.css";
+import React, { useState, useEffect } from 'react'
+import useFetch from './useFetch'
+import './assets/css/form.css'
 const Entry = (props) => {
-  const { data: coa } = useFetch("getcoa.php");
-  const [data, setData] = useState({ delete: false });
+  const { data: coa } = useFetch('getcoa.php')
+  const [data, setData] = useState({ delete: false })
   const [list, setList] = useState({
     idx: (props.i + 1).toString(),
-    parent: `${props.parent.replace("####", "")}${props.last}`,
+    parent: `${props.parent.replace('####', '')}${props.last}`,
     acc: props.data.acc,
     party_type: props.data.party_type,
     party: props.data.party,
     debit: props.data.debit,
     credit: props.data.credit,
-  });
+    disable: props.data.disable,
+  })
   const handleChange = (e) => {
     setList({
       ...list,
       [e.target.name]: e.target.value,
-      parent: `${props.parent.replace("####", "")}${props.last}`,
-    });
-    props.handleRow({ list, e });
-  };
+      parent: `${props.parent.replace('####', '')}${props.last}`,
+    })
+    props.handleRow({ list, e })
+  }
+  const handleAcc = (e) => {
+    let acc = e.target.value
+    let accArr = acc.split(' - ')
+    setList({
+      ...list,
+      acc: e.target.value,
+      acc_number: accArr[0],
+      acc_name: accArr[1],
+      parent: `${props.parent.replace('####', '')}${props.last}`,
+    })
+    // console.log(accArr)
+    props.handleRow({ list, e })
+  }
   const handleDelete = (e) => {
-    setData({ ...data, delete: !data.delete });
-    props.handleDelete(props.i, data.delete);
-  };
+    setData({ ...data, delete: !data.delete })
+    props.handleDelete(props.i, data.delete)
+  }
   return (
     <>
       {/* {console.log("entry", data)} */}
@@ -35,38 +49,39 @@ const Entry = (props) => {
           key={props.i}
           className="row col-md-12 "
           style={{
-            margin: "0px",
-            padding: "0px",
+            margin: '0px',
+            padding: '0px',
           }}
         >
           <div
             className="col-md-1"
-            style={{ padding: "5px 10px", border: "none" }}
+            style={{ padding: '5px 10px', border: 'none' }}
             onClick={handleDelete}
             onMouseOver={() => setData({ delete: true })}
             onMouseOut={() => setData({ delete: false })}
           >
             <i
-              className={data.delete ? "bi bi-x-square-fill" : "bi bi-square"}
-              style={data.delete ? { color: "red" } : { color: "white" }}
-            ></i>{" "}
+              className={data.delete ? 'bi bi-x-square-fill' : 'bi bi-square'}
+              style={data.delete ? { color: 'red' } : { color: 'white' }}
+            ></i>{' '}
             {props.data.idx}
           </div>
           <input
             list="coa"
             className="col-md-3"
-            style={{ padding: "5px 10px", border: "none" }}
+            style={{ padding: '5px 10px', border: 'none' }}
             type="text"
             name="acc"
             id={props.i}
             value={list.acc}
             onChange={handleChange}
             onBlur={handleChange}
+            disabled={list.disable && list.disable ? list.disable : false}
           />
           <datalist id="coa">
             {coa &&
               coa
-                .filter((e) => e.is_group === "0")
+                .filter((e) => e.is_group === '0')
                 .map((e, i) => (
                   <option key={i} value={e.number}>
                     {e.number} - {e.name}
@@ -76,54 +91,50 @@ const Entry = (props) => {
           <input
             type="text"
             className="col-md-2"
-            style={{ padding: "5px 10px", border: "none" }}
+            style={{ padding: '5px 10px', border: 'none' }}
             name="party_type"
             id={props.i}
             value={list.party_type}
             onChange={handleChange}
             onBlur={handleChange}
-            // value={e.party_type}
           />
           <input
             type="text"
             className="col-md-2"
-            style={{ padding: "5px 10px", border: "none" }}
+            style={{ padding: '5px 10px', border: 'none' }}
             name="party"
             id={props.i}
             value={list.party}
             onChange={handleChange}
             onBlur={handleChange}
-            // value={e.party}
           />
           <input
             type="number"
             className="col-md-2 inp-number"
-            style={{ padding: "5px 10px", border: "none" }}
+            style={{ padding: '5px 10px', border: 'none' }}
             name="debit"
             id={props.i}
             value={list.debit}
             onChange={handleChange}
             onBlur={handleChange}
             pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}"
-            // value={e.debit}
           />
           <input
             type="number"
             className="col-md-2 inp-number"
-            style={{ padding: "5px 10px", border: "none" }}
+            style={{ padding: '5px 10px', border: 'none' }}
             name="credit"
             id={props.i}
             value={list.credit}
             onChange={handleChange}
             onBlur={handleChange}
-            // value={e.credit}
           />
 
           {/* <p>{JSON.stringify(list)}</p> */}
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Entry;
+export default Entry

@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
-import useFetch from "./useFetch";
-import urlLink from "./config/urlLink";
-import useDate from "./useDate";
-import AddJournalEntry from "./addJournalEntry";
-import Entry from "./entry";
+import React, { useState, useEffect } from 'react'
+import useFetch from './useFetch'
+import urlLink from './config/urlLink'
+import useDate from './useDate'
+import AddJournalEntry from './addJournalEntry'
+import Entry from './entry'
 
 const AddJournal = (props) => {
-  const { data: coa } = useFetch("getcoa.php");
-  const { now, YY, DD, MM, ss } = useDate();
-  const [lists, setLists] = useState([]);
+  const { data: coa } = useFetch('getcoa.php')
+  const { now, YY, DD, MM, ss } = useDate()
+  const [lists, setLists] = useState([])
   const [data, setData] = useState({
-    type: "Journal Umum",
+    type: 'Journal Umum',
     type_number: 6,
     required: true,
     name: `JV/${MM}/####`,
-    title: "",
-    last: "0000",
+    title: '',
+    last: '0000',
     now: `${YY}-${MM}-${DD}`,
     entry: [
       // { idx: "1", acc: "", party_type: "", party: "", debit: "", credit: "" },
@@ -24,25 +24,27 @@ const AddJournal = (props) => {
     minute: ss,
     posting_date: `${YY}-${MM}-${DD}`,
     opening: false,
-  });
+    pay_to_recd_from: '',
+    user_remark: '',
+  })
 
   useEffect(() => {
-    const abortCtr = new AbortController();
+    const abortCtr = new AbortController()
     const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": window.location.origin,
-    };
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': window.location.origin,
+    }
     setTimeout(() => {
       fetch(`${urlLink.url}getjournallast.php?type=${data.type}`, {
         signal: abortCtr.signal,
-        method: "GET",
+        method: 'GET',
         headers: headers,
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log(res);
-          setData({ ...data, last: res });
+          console.log(res)
+          setData({ ...data, last: res })
         })
 
         // display an alert message for an error
@@ -50,311 +52,319 @@ const AddJournal = (props) => {
           // console.log(err);
           setData({
             ...data,
-            last: "0000",
-            msg: "Error Connection",
-          });
-        });
-    }, 0);
-    return data;
-  }, [data.name, data.title]);
+            last: '0000',
+            msg: 'Error Connection',
+          })
+        })
+    }, 0)
+    return data
+  }, [data.name, data.title])
 
   const handleChange = (e) => {
-    console.log(`${[e.target.name]}`, typeof e.target.value);
-    let nam = e.target.name;
-    let val = e.target.value;
-    if (nam === "type") {
-      // console.log("1", data);
-      // setData({ ...data, entry: [] });
+    console.log(`${[e.target.name]}`, typeof e.target.value)
+    let nam = e.target.name
+    let val = e.target.value
+    if (nam === 'type') {
       switch (Number(val)) {
         case 1:
           setData({
             ...data,
             name: `SC/Track/${data.month}/####`,
-            type: "Penjualan Tracking Kredit",
+            type: 'Penjualan Tracking Kredit',
             type_number: 1,
             entry: [
               {
-                idx: "1",
-                acc: "101-3",
-                party_type: "",
-                party: "",
+                idx: '1',
+                acc: '101-3',
+                party_type: '',
+                party: '',
                 debit: 0,
-                credit: "",
+                credit: '',
+                disable: true,
               },
               {
-                idx: "2",
-                acc: "401",
-                party_type: "",
-                party: "",
-                debit: "",
+                idx: '2',
+                acc: '401',
+                party_type: '',
+                party: '',
+                debit: '',
                 credit: 0,
+                disable: true,
               },
             ],
-          });
-          break;
+          })
+          break
         case 2:
           setData({
             ...data,
             name: `SC/Conta/${data.month}/####`,
-            type: "Penjualan Container Kredit",
+            type: 'Penjualan Container Kredit',
             type_number: 2,
             entry: [
               {
-                idx: "1",
-                acc: "101-3",
-                party_type: "",
-                party: "",
+                idx: '1',
+                acc: '101-3',
+                party_type: '',
+                party: '',
                 debit: 0,
-                credit: "",
+                credit: '',
+                disable: true,
               },
               {
-                idx: "2",
-                acc: "402",
-                party_type: "",
-                party: "",
-                debit: "",
+                idx: '2',
+                acc: '402',
+                party_type: '',
+                party: '',
+                debit: '',
                 credit: 0,
+                disable: true,
               },
             ],
-          });
-          break;
+          })
+          break
         case 3:
           setData({
             ...data,
             name: `PC/${data.month}/####`,
-            type: "Pembelian Kredit",
+            type: 'Pembelian Kredit',
             type_number: 3,
             entry: [
               {
-                idx: "1",
-                acc: "",
-                party_type: "",
-                party: "",
+                idx: '1',
+                acc: '',
+                party_type: '',
+                party: '',
                 debit: 0,
-                credit: "",
+                credit: '',
+                disable: false,
               },
               {
-                idx: "2",
-                acc: "201-1",
-                party_type: "",
-                party: "",
-                debit: "",
+                idx: '2',
+                acc: '201-1',
+                party_type: '',
+                party: '',
+                debit: '',
                 credit: 0,
+                disable: true,
               },
             ],
-          });
-          break;
+          })
+          break
         case 4:
           setData({
             ...data,
             name: `CR/${data.month}/####`,
-            type: "Penerimaan Kas",
+            type: 'Penerimaan Kas',
             type_number: 4,
             entry: [
               {
-                idx: "1",
-                acc: "101-2",
-                party_type: "",
-                party: "",
+                idx: '1',
+                acc: '101-2',
+                party_type: '',
+                party: '',
                 debit: 0,
-                credit: "",
+                credit: '',
+                disable: true,
               },
               {
-                idx: "2",
-                acc: "101-3",
-                party_type: "",
-                party: "",
-                debit: "",
+                idx: '2',
+                acc: '101-3',
+                party_type: '',
+                party: '',
+                debit: '',
                 credit: 0,
+                disable: false,
               },
             ],
-          });
-          break;
+          })
+          break
         case 5:
           setData({
             ...data,
             name: `CP/${data.month}/####`,
-            type: "Pembayaran Kas",
+            type: 'Pembayaran Kas',
             type_number: 5,
             entry: [
               {
-                idx: "1",
-                acc: "",
-                party_type: "",
-                party: "",
+                idx: '1',
+                acc: '',
+                party_type: '',
+                party: '',
                 debit: 0,
-                credit: "",
+                credit: '',
+                disable: false,
               },
               {
-                idx: "2",
-                acc: "101-2",
-                party_type: "",
-                party: "",
-                debit: "",
+                idx: '2',
+                acc: '101-2',
+                party_type: '',
+                party: '',
+                debit: '',
                 credit: 0,
+                disable: true,
               },
             ],
-          });
-          break;
+          })
+          break
         case 6:
           setData({
             ...data,
             name: `JV/${data.month}/####`,
-            type: "Journal Umum",
+            type: 'Journal Umum',
             type_number: 6,
             entry: [],
-          });
-          break;
+          })
+          break
 
         default:
           setData({
             ...data,
             [e.target.name]: e.target.value,
-          });
-          break;
+          })
+          break
       }
     } else {
       setData({
         ...data,
         [e.target.name]: e.target.value,
-      });
+      })
     }
-  };
+  }
   const handleClose = (e) => {
-    console.log(data);
+    console.log(data)
     setData({
       ...data,
-      type: "",
+      type: '',
       type_number: 6,
       required: !data.required,
-      name: "",
-      title: "",
-      last: "0000",
+      name: '',
+      title: '',
+      last: '0000',
       now: `${YY}-${MM}-${DD}`,
       entry: [],
       month: MM,
       minute: ss,
       posting_date: `${YY}-${MM}-${DD}`,
-    });
-    props.handleClose(e);
-  };
+    })
+    props.handleClose(e)
+  }
   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(data);
+    e.preventDefault()
+    console.log(data)
 
-    const abortCtr = new AbortController();
+    const abortCtr = new AbortController()
     const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": window.location.origin,
-    };
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': window.location.origin,
+    }
     setTimeout(() => {
       fetch(`${urlLink.url}addjournal.php`, {
         signal: abortCtr.signal,
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(data),
         headers: headers,
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log(res);
+          console.log(res)
           if (res.error) {
-            console.log(res.error);
-            setData({ ...data, message: res.message });
+            console.log(res.error)
+            setData({ ...data, message: res.message })
           } else {
             data.entry.map((e, i) => {
               setTimeout(() => {
                 fetch(`${urlLink.url}addjournalentry.php`, {
                   signal: abortCtr.signal,
-                  method: "POST",
+                  method: 'POST',
                   body: JSON.stringify(data.entry[i]),
                   headers: headers,
                 })
                   .then((res) => res.json())
                   .then((res) => {
-                    console.log(res);
+                    console.log(res)
                     setData({
                       ...data,
                       message: res.message,
-                    });
+                    })
                   })
 
                   // display an alert message for an error
                   .catch((err) => {
-                    console.log(err);
+                    console.log(err)
                     setData({
                       ...data,
-                      msg: "Error Connection",
-                    });
-                  });
-              }, 50);
-            });
+                      msg: 'Error Connection',
+                    })
+                  })
+              }, 50)
+            })
           }
         })
 
         // display an alert message for an error
         .catch((err) => {
-          console.log(err);
+          console.log(err)
           setData({
             ...data,
-            msg: "Error Connection",
-          });
-        });
-    }, 50);
-  };
+            msg: 'Error Connection',
+          })
+        })
+    }, 50)
+  }
   // Hitung Debit & Credit
   useEffect(() => {
-    let td = TotalDebit();
-    let tc = TotalCredit();
+    let td = TotalDebit()
+    let tc = TotalCredit()
     setData({
       ...data,
       total_debit: td,
       total_credit: tc,
-    });
-  }, [data.entry]);
+    })
+  }, [data.entry])
   const TotalDebit = () => {
-    let debit = data.entry.map((e) => Number(e.debit));
+    let debit = data.entry.map((e) => Number(e.debit))
 
     // console.log(debit);
     let sum = debit.reduce(function (a, b) {
-      return a + b;
-    }, 0);
+      return a + b
+    }, 0)
     // console.log(sum);
     // setData({ ...data, total_debit: sum });
-    return sum;
-  };
+    return sum
+  }
   const TotalCredit = () => {
-    let credit = data.entry.map((e) => Number(e.credit));
+    let credit = data.entry.map((e) => Number(e.credit))
 
     // console.log(credit);
     let sum = credit.reduce(function (a, b) {
-      return a + b;
-    }, 0);
+      return a + b
+    }, 0)
     // console.log(sum);
     // setData({ ...data, total_credit: sum });
-    return sum;
-  };
+    return sum
+  }
   // Handling Row
   function handleRow({ e, list }) {
     // console.log(e.target.id, `${[e.target.name]}`, e.target.value);
-    let i = Number(e.target.id);
+    let i = Number(e.target.id)
     // let nam = e.target.name;
     // let val = e.target.val;
     // let dat = data.entry[i];
     // let newArr = [...dat];
-    let listDat = [...data.entry];
-    listDat[i] = list;
+    let listDat = [...data.entry]
+    listDat[i] = list
     // console.log("e", e);
-    console.log("handleRow", list);
-    console.log("list", listDat);
+    console.log('handleRow', list)
+    console.log('list', listDat)
     setData({
       ...data,
       entry: listDat,
-    });
+    })
   }
   const handleAddRow = (e) => {
-    e.preventDefault();
-    let idx = data.entry.length + 1;
+    e.preventDefault()
+    let idx = data.entry.length + 1
 
     setData({
       ...data,
@@ -362,70 +372,70 @@ const AddJournal = (props) => {
         ...data.entry,
         {
           idx: idx.toString(),
-          parent: "",
-          acc: "",
-          party_type: "",
-          party: "",
-          debit: "",
-          credit: "",
+          parent: '',
+          acc: '',
+          party_type: '',
+          party: '',
+          debit: '',
+          credit: '',
         },
       ],
-    });
-    console.log("handleAddRow", data);
-  };
+    })
+    console.log('handleAddRow', data)
+  }
   const handleDelete = (e, vis) => {
-    let i = e;
-    let listDat = [...data.entry];
-    let list = listDat[i];
-    console.log(vis, list);
-    listDat.splice(i, 1);
-    console.log("list", listDat);
+    let i = e
+    let listDat = [...data.entry]
+    let list = listDat[i]
+    console.log(vis, list)
+    listDat.splice(i, 1)
+    console.log('list', listDat)
     setData({
       ...data,
       entry: listDat,
-    });
-  };
+    })
+  }
   const handleOpening = (e) => {
-    console.log(e);
-    let ent = coa.filter((e) => e.is_group === "0").map((e) => e.number);
-    console.log(ent);
-    let obj = [];
+    console.log(e)
+    let ent = coa.filter((e) => e.is_group === '0').map((e) => e.number)
+    console.log(ent)
+    let obj = []
     for (let i = 0; i < ent.length; ++i) {
       obj.push({
         idx: i + 1,
         acc: ent[i],
-        credit: "",
-        debit: "",
-        parent: `${data.parent.replace("####", "")}${data.last}`,
-        party: "",
-        party_type: "",
-      });
+        credit: '',
+        debit: '',
+        parent: `${data.name.replace('####', '')}${data.last}`,
+        party: '',
+        party_type: '',
+      })
     }
 
-    console.log(obj);
+    console.log(obj)
     setData({
       ...data,
       name: `OP/${data.month}/####`,
-      type: "Opening",
+      type: 'Opening',
       type_number: 7,
       entry: [...obj],
       opening: true,
-    });
-  };
+    })
+  }
   return (
     <>
       <div className="modal_title">
         <b>Add Jounal</b>
-        <div style={{ margin: "0px", padding: "5px 0" }}>
+        <div style={{ margin: '0px', padding: '5px 0' }}>
           {data.opening ? (
             <button
-              style={{ padding: "0 5px", minWidth: "unset" }}
+              style={{ padding: '0 5px', minWidth: 'unset' }}
               className="btn btn-primary btn-sm"
               onClick={() =>
                 setData({
                   ...data,
                   opening: false,
-                  type: "Journal Entry",
+                  type: 'Journal Entry',
                   type_number: 6,
                   name: `JV/${data.month}/####`,
                   entry: [],
@@ -436,7 +446,7 @@ const AddJournal = (props) => {
             </button>
           ) : (
             <button
-              style={{ padding: "0 5px", minWidth: "unset" }}
+              style={{ padding: '0 5px', minWidth: 'unset' }}
               className="btn btn-primary btn-sm"
               onClick={handleOpening}
             >
@@ -451,12 +461,12 @@ const AddJournal = (props) => {
         <form onSubmit={handleSubmit} method="post">
           <div
             className="row col-md-12"
-            style={{ margin: "0px", padding: "0px" }}
+            style={{ margin: '0px', padding: '0px' }}
           >
             {/* Journal Type */}
             <div
               className="row col-md-12"
-              style={{ margin: "0px", padding: "0px" }}
+              style={{ margin: '0px', padding: '0px' }}
             >
               <label className="label_title">Journal Type :</label>
               <select
@@ -466,6 +476,7 @@ const AddJournal = (props) => {
                 name="type"
                 value={data.type_number}
                 onChange={handleChange}
+                onClick={() => setData({ ...data, entry: [] })}
               >
                 <option value="1">Penjualan Tracking Kredit</option>
                 <option value="2">Penjualan Container Kredit</option>
@@ -481,7 +492,7 @@ const AddJournal = (props) => {
             {/* Numbering */}
             <div
               className="row col-md-6"
-              style={{ margin: "0px", padding: "0px" }}
+              style={{ margin: '0px', padding: '0px' }}
             >
               <label className="label_title">
                 Number <span className="text-danger">*</span>
@@ -500,7 +511,7 @@ const AddJournal = (props) => {
             {/* Posting Date */}
             <div
               className="row col-md-6"
-              style={{ margin: "0px", padding: "0px" }}
+              style={{ margin: '0px', padding: '0px' }}
             >
               <label className="label_title">
                 Posting Date <span className="text-danger">*</span>
@@ -510,11 +521,7 @@ const AddJournal = (props) => {
                 onChange={handleChange}
                 type="date"
                 className="form-control mb-2"
-                value={
-                  data.posting_date && data.posting_date
-                    ? data.posting_date
-                    : data.today
-                }
+                value={data.posting_date}
                 name="posting_date"
                 id="posting_date"
               />
@@ -523,7 +530,7 @@ const AddJournal = (props) => {
           {/* Customer Mobile */}
           <div
             className="row col-md-12"
-            style={{ margin: "0px", padding: "0px" }}
+            style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">
               Title <span className="text-danger">*</span>
@@ -541,7 +548,7 @@ const AddJournal = (props) => {
           {/* Input data Accounting */}
           <div
             className="row col-md-12"
-            style={{ margin: "0px", padding: "0px" }}
+            style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">Accounting Entries</label>
             {/* <small>{JSON.stringify(data)}</small> */}
@@ -550,43 +557,43 @@ const AddJournal = (props) => {
             <div
               className="row col-md-12 "
               style={{
-                margin: "0px",
-                padding: "5px 0 0 0",
+                margin: '0px',
+                padding: '5px 0 0 0',
               }}
             >
               <div
                 className="col-md-1"
-                style={{ padding: "5px 10px", border: "1px solid #b3b3b3" }}
+                style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
               >
                 No.
               </div>
               <div
                 className="col-md-3"
-                style={{ padding: "5px 10px", border: "1px solid #b3b3b3" }}
+                style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
               >
                 Account
               </div>
               <div
                 className="col-md-2"
-                style={{ padding: "5px 10px", border: "1px solid #b3b3b3" }}
+                style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
               >
                 Party Type
               </div>
               <div
                 className="col-md-2"
-                style={{ padding: "5px 10px", border: "1px solid #b3b3b3" }}
+                style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
               >
                 Party
               </div>
               <div
                 className="col-md-2"
-                style={{ padding: "5px 10px", border: "1px solid #b3b3b3" }}
+                style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
               >
                 Debit
               </div>
               <div
                 className="col-md-2"
-                style={{ padding: "5px 10px", border: "1px solid #b3b3b3" }}
+                style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
               >
                 Credit
               </div>
@@ -607,16 +614,16 @@ const AddJournal = (props) => {
             <div
               className="row col-md-12 "
               style={{
-                margin: "0px",
-                padding: "0px",
+                margin: '0px',
+                padding: '0px',
               }}
             >
               <div
                 className="col-md-4"
-                style={{ margin: "0px", padding: "5px 0" }}
+                style={{ margin: '0px', padding: '5px 0' }}
               >
                 <button
-                  style={{ padding: "0 5px", minWidth: "unset" }}
+                  style={{ padding: '0 5px', minWidth: 'unset' }}
                   className="btn btn-primary btn-sm"
                   onClick={handleAddRow}
                 >
@@ -628,8 +635,8 @@ const AddJournal = (props) => {
                   <div
                     className="col-md-4"
                     style={{
-                      padding: "5px 10px",
-                      textAlign: "right",
+                      padding: '5px 10px',
+                      textAlign: 'right',
                     }}
                   >
                     Total
@@ -637,9 +644,9 @@ const AddJournal = (props) => {
                   <div
                     className="col-md-2"
                     style={{
-                      padding: "5px 10px",
-                      border: "1px solid #b3b3b3",
-                      background: "white",
+                      padding: '5px 10px',
+                      border: '1px solid #b3b3b3',
+                      background: 'white',
                     }}
                   >
                     {TotalDebit()}
@@ -647,9 +654,9 @@ const AddJournal = (props) => {
                   <div
                     className="col-md-2"
                     style={{
-                      padding: "5px 10px",
-                      border: "1px solid #b3b3b3",
-                      background: "white",
+                      padding: '5px 10px',
+                      border: '1px solid #b3b3b3',
+                      background: 'white',
                     }}
                   >
                     {TotalCredit()}
@@ -662,7 +669,7 @@ const AddJournal = (props) => {
           {/* Pay to / Received By */}
           <div
             className="row col-md-12"
-            style={{ margin: "0px", padding: "0px" }}
+            style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">Pay To / Received By :</label>
             <input
@@ -677,7 +684,7 @@ const AddJournal = (props) => {
           {/* User Remark */}
           <div
             className="row col-md-12 mb-5"
-            style={{ margin: "0px", padding: "0px" }}
+            style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">User Remark</label>
             <textarea
@@ -700,7 +707,7 @@ const AddJournal = (props) => {
         </form>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default AddJournal;
+export default AddJournal

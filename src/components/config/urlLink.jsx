@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
-const site = window.location.hostname;
+const site = window.location.hostname
 const apiSite =
-  site === "localhost"
+  site === 'localhost'
     ? `http://${window.location.hostname}/accounting/public/php/`
-    : `https://${window.location.hostname}/php/`;
+    : `https://${window.location.hostname}/php/`
+
+// const apiSite = `https://pitaramulia.tjip.work/php/`;
 
 const urlLink = {
   url: apiSite,
-};
+}
 
-export default urlLink;
+export default urlLink
