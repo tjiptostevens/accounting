@@ -311,7 +311,7 @@ const Journal = () => {
                             >
                               <div className="col-md-5 col-4">
                                 <i className="bi bi-dash"></i>
-                                {e.acc} - {e.name}
+                                {e.acc} - {e.acc_name}
                               </div>
                               <div
                                 className="col-md-3 col-4"

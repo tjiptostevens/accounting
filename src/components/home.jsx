@@ -13,6 +13,8 @@ import Payment from './payment'
 import ProfitAndLoss from './profitandloss'
 import CashFlow from './cashflow'
 import GeneralLedger from './generalledger'
+import GeneralJournal from './report/generalJournal'
+import ReadXlsx from './excel/readXlsx'
 
 const Home = (props) => {
   const [data, setData] = useState('')
@@ -52,6 +54,12 @@ const Home = (props) => {
                 <Route exact path="/customer" element={<Customer />} />
                 <Route exact path="/user" element={<User />} />
                 <Route exact path="/journal" element={<Journal />} />
+                {/* <Route exact path="/depreciation" element={<Depreciation />} /> */}
+                <Route
+                  exact
+                  path="/generaljournal"
+                  element={<GeneralJournal />}
+                />
                 <Route
                   exact
                   path="/profitandloss"
@@ -63,6 +71,7 @@ const Home = (props) => {
                   path="/generalledger"
                   element={<GeneralLedger />}
                 />
+                <Route exact path="/read" element={<ReadXlsx />} />
                 <Route exact path="/order" element={<Order />} />
                 <Route exact path="/payment" element={<Payment />} />
               </Routes>

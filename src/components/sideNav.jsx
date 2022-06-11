@@ -118,7 +118,7 @@ const SideNav = (props) => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/d/cashflow" className="nav-link text-white">
+            <NavLink to="/d/read" className="nav-link text-white">
               <i className="m_icon bi bi-file-earmark-medical"></i>Cash Flow
             </NavLink>
           </li>

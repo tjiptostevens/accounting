@@ -27,15 +27,24 @@ include 'conn.php';
 
 
 $sql = $conn->query("SELECT
-	tabchartofaccount.`name`, 
-	tabjournalentry.*, 
-	tabjournalentry.acc
+IF
+	( tabjournalentry.acc <=> NULL, 'Total', tabjournalentry.acc ) AS acc,
+	tabchartofaccount.`name` as acc_name,
+	tabjournalentry.idx,
+IF
+	( tabjournalentry.acc <=> NULL, '', IF ( tabjournalentry.parent = '', 'Grand', tabjournalentry.parent ) ) AS parent,
+IF
+	( tabjournalentry.acc <=> NULL, sum( tabjournalentry.debit ), tabjournalentry.debit ) AS debit,
+IF
+	( tabjournalentry.acc <=> NULL, sum( tabjournalentry.credit ), tabjournalentry.credit ) AS credit,
+	tabjournalentry.created_date 
 FROM
 	tabjournalentry
-	INNER JOIN
-	tabchartofaccount
-	ON 
-		tabjournalentry.acc = tabchartofaccount.number");
+	INNER JOIN tabchartofaccount ON tabjournalentry.acc = tabchartofaccount.number
+	INNER JOIN tabjournal ON tabjournalentry.parent = tabjournal.`name` 
+GROUP BY
+	tabjournalentry.parent,
+	tabjournalentry.acc WITH ROLLUP");
 $result = array();
 
 while ($data = $sql->fetch_assoc()) {
