@@ -34,6 +34,13 @@ const ReadXlsx = () => {
         setData({ error: err })
       })
   }
+  const exportExcel = () => {
+    let wb = XLSX.utils.book_new(),
+      ws = XLSX.utils.json_to_sheet(data)
+    console.log(wb, ws)
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1')
+    XLSX.writeFile(wb, 'excel.xlsx')
+  }
   return (
     <>
       <div>
@@ -48,6 +55,7 @@ const ReadXlsx = () => {
           onClick={(e) => (e.target.value = null)}
         />
       </div>
+      <button onClick={() => exportExcel()}></button>
       <div style={{ overflow: 'auto', height: '100%', width: '100%' }}>
         <table className="table table-striped table-dark table-hover">
           <thead style={{ position: 'sticky', top: '0' }}>
