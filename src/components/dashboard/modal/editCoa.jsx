@@ -1,82 +1,82 @@
-import React, { useState, useMemo } from "react";
-import useFetch from "./useFetch";
-import urlLink from "./config/urlLink";
+import React, { useState, useMemo } from 'react'
+import useFetch from '../../useFetch'
+import urlLink from '../../config/urlLink'
 
 const EditCoa = (props) => {
-  const { data: coa } = useFetch("getcoa.php");
+  const { data: coa } = useFetch('getcoa.php')
   const [data, setData] = useState({
-    is_group: props.data.is_group === "0" ? false : true,
+    is_group: props.data.is_group === '0' ? false : true,
     required: true,
     parent: props.data.parent,
     number: props.data.number,
     last: props.data.number,
     name: props.data.name,
     type: props.data.type,
-  });
+  })
   const handleChange = (e) => {
-    console.log(`${[e.target.name]}`, e.target.value);
+    console.log(`${[e.target.name]}`, e.target.value)
     setData({
       ...data,
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
   let coaFil = useMemo(() => {
     const searchRegex =
-      data.number && new RegExp(`${data.number.substring(0, 1)}`, "gi");
+      data.number && new RegExp(`${data.number.substring(0, 1)}`, 'gi')
     return (
       coa &&
       coa
         .sort((a, b) => (a.number > b.number ? 1 : -1))
         .filter(
-          (d) => !searchRegex || searchRegex.test(d.number.substring(0, 2))
+          (d) => !searchRegex || searchRegex.test(d.number.substring(0, 2)),
         )
-    );
-  }, [coa, data.number]);
+    )
+  }, [coa, data.number])
   const handleClose = (e) => {
-    e.preventDefault();
-    console.log(data);
-    setData({ ...data, required: !data.required });
-    props.handleClose(e);
-  };
+    e.preventDefault()
+    console.log(data)
+    setData({ ...data, required: !data.required })
+    props.handleClose(e)
+  }
   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(data);
-    const abortCtr = new AbortController();
+    e.preventDefault()
+    console.log(data)
+    const abortCtr = new AbortController()
     const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": window.location.origin,
-    };
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': window.location.origin,
+    }
     setTimeout(() => {
       fetch(`${urlLink.url}editcoa.php`, {
         signal: abortCtr.signal,
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(data),
         headers: headers,
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log(res);
+          console.log(res)
           setData({
-            number: "",
-            name: "",
-            parent: "",
+            number: '',
+            name: '',
+            parent: '',
             is_group: null,
             required: true,
             message: res.message,
-          });
+          })
         })
 
         // display an alert message for an error
         .catch((err) => {
-          console.log(err);
+          console.log(err)
           setData({
             ...data,
-            msg: "Error Connection",
-          });
-        });
-    }, 50);
-  };
+            msg: 'Error Connection',
+          })
+        })
+    }, 50)
+  }
   return (
     <>
       <div className="modal_title">
@@ -90,7 +90,7 @@ const EditCoa = (props) => {
           {/* Account Number */}
           <div
             className="row col-md-12"
-            style={{ margin: "0px", padding: "0px" }}
+            style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">
               Account Number <span className="text-danger">*</span>
@@ -108,7 +108,7 @@ const EditCoa = (props) => {
           {/* Account Name */}
           <div
             className="row col-md-12"
-            style={{ margin: "0px", padding: "0px" }}
+            style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">
               Account Name <span className="text-danger">*</span>
@@ -126,7 +126,7 @@ const EditCoa = (props) => {
           {/* Account Type*/}
           <div
             className="row col-md-12"
-            style={{ margin: "0px", padding: "0px" }}
+            style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">
               Account Type <span className="text-danger">*</span>
@@ -151,15 +151,15 @@ const EditCoa = (props) => {
           <div
             className="row col-md-12 mb-2"
             style={{
-              margin: "0px",
-              padding: "0px",
-              flexWrap: "nowrap",
-              alignItems: "center",
+              margin: '0px',
+              padding: '0px',
+              flexWrap: 'nowrap',
+              alignItems: 'center',
             }}
           >
             <input
               disabled={
-                props.data.child.length > 0 || props.data.parent === "0"
+                props.data.child.length > 0 || props.data.parent === '0'
               }
               className="modal-check"
               type="checkbox"
@@ -170,17 +170,17 @@ const EditCoa = (props) => {
                   is_group: !data.is_group,
                 })
               }
-              checked={data.parent === "0" ? true : data.is_group}
+              checked={data.parent === '0' ? true : data.is_group}
               // onChange={handleChange}
             />
-            <label className="label_title" style={{ paddingLeft: "15px" }}>
+            <label className="label_title" style={{ paddingLeft: '15px' }}>
               is Group
             </label>
           </div>
           {/* Parent Name */}
           <div
             className="row col-md-12 mb-5"
-            style={{ margin: "0px", padding: "0px" }}
+            style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">
               Parent Name <span className="text-danger">*</span>
@@ -192,15 +192,15 @@ const EditCoa = (props) => {
               onChange={handleChange}
               value={data.parent}
             >
-              {data.parent ? "" : <option value="null">Select Parent</option>}
-              {data.parent === "0" ? (
+              {data.parent ? '' : <option value="null">Select Parent</option>}
+              {data.parent === '0' ? (
                 <option value="0">Root Parent</option>
               ) : (
-                ""
+                ''
               )}
               {coaFil &&
                 coaFil
-                  .filter((e) => e.is_group === "1")
+                  .filter((e) => e.is_group === '1')
                   .map((e, i) => (
                     <option key={i} value={e.number}>
                       {e.number} - {e.name}
@@ -223,7 +223,7 @@ const EditCoa = (props) => {
         </form>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default EditCoa;
+export default EditCoa

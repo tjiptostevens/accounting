@@ -1,34 +1,34 @@
-import React, { useState } from "react";
-import useFetch from "./useFetch";
+import React, { useState } from 'react'
+import useFetch from '../../useFetch'
 
 const Company = () => {
-  const { data: company } = useFetch("getcompany.php");
-  const [file, setFile] = useState('comp ? comp.logo : "nofile.png"');
+  const { data: company } = useFetch('getcompany.php')
+  const [file, setFile] = useState('comp ? comp.logo : "nofile.png"')
   const [data, setData] = useState({
-    company: "",
+    company: '',
     edit: true,
-  });
-  const [percentage, setPercentage] = useState("");
+  })
+  const [percentage, setPercentage] = useState('')
   const handleChange = (e) => {
-    console.log(`${[e.target.name]}`, e.target.value);
+    console.log(`${[e.target.name]}`, e.target.value)
     setData({
       ...data,
       company: { ...data.company, [e.target.name]: e.target.value },
-    });
-  };
+    })
+  }
   const handleUpdate = (e) => {
-    console.log(e);
-  };
+    console.log(e)
+  }
   return (
     <>
       {/* Component Title */}
       <div
         className="w-100"
-        style={{ display: "flex", justifyContent: "space-between" }}
+        style={{ display: 'flex', justifyContent: 'space-between' }}
       >
         <span className="__content_title">Company Info</span>
         {/* add User + search */}
-        <span style={{ display: "flex" }}>
+        <span style={{ display: 'flex' }}>
           <button
             className="btn btn-primary m-1"
             onClick={() => setData({ ...data, vis: !data.vis, value: 1 })}
@@ -38,23 +38,23 @@ const Company = () => {
         </span>
       </div>
 
-      <hr style={{ margin: "0" }} />
+      <hr style={{ margin: '0' }} />
       {company && company ? (
         <>
           {/* {JSON.stringify(data)} */}
           {console.log(company[0])}
-          <div className="w-100" style={{ height: "80vh", overflowY: "auto" }}>
+          <div className="w-100" style={{ height: '80vh', overflowY: 'auto' }}>
             {/* Logo */}
-            <div className="row col-md-12" style={{ margin: "0px" }}>
-              <div className="w-100" style={{ padding: "25px" }}>
+            <div className="row col-md-12" style={{ margin: '0px' }}>
+              <div className="w-100" style={{ padding: '25px' }}>
                 <div className="row">
-                  <div className="col-md-4" style={{ maxWidth: "250px" }}>
+                  <div className="col-md-4" style={{ maxWidth: '250px' }}>
                     <div
                       className="dashProfile"
                       style={{
                         background: `url(../assets/img/${company[0].logo}) center center /cover `,
-                        width: "100px",
-                        height: "100px",
+                        width: '100px',
+                        height: '100px',
                       }}
                     ></div>
                   </div>
@@ -74,29 +74,29 @@ const Company = () => {
                         name="logo"
                         id="logo"
                         accept=".jpg, .jpeg, .png"
-                        style={{ display: "none" }}
+                        style={{ display: 'none' }}
                         value=""
                         onChange={async ({ target: { files } }) => {
-                          console.log(files[0]);
-                          let dat = new FormData();
-                          dat.append("photo", files[0]);
-                          dat.append("id", "");
+                          console.log(files[0])
+                          let dat = new FormData()
+                          dat.append('photo', files[0])
+                          dat.append('id', '')
 
                           const options = {
                             onUploadProgress: (progressEvent) => {
-                              const { loaded, total } = progressEvent;
-                              let percent = Math.floor((loaded * 100) / total);
+                              const { loaded, total } = progressEvent
+                              let percent = Math.floor((loaded * 100) / total)
                               console.log(
-                                `${loaded} byte of ${total} byte | ${percent}%`
-                              );
+                                `${loaded} byte of ${total} byte | ${percent}%`,
+                              )
 
                               if (percent < 100) {
-                                setPercentage(percent);
+                                setPercentage(percent)
                               } else if (percent === 100) {
-                                setPercentage("Uploaded");
+                                setPercentage('Uploaded')
                               }
                             },
-                          };
+                          }
 
                           // await API.post("user/photo", dat, options).then((res) => {
                           //   console.log(res);
@@ -112,9 +112,9 @@ const Company = () => {
                       />
                     </label>
                     {percentage === 0
-                      ? ""
+                      ? ''
                       : percentage === 100
-                      ? "message"
+                      ? 'message'
                       : percentage}
                   </div>
                 </div>
@@ -122,12 +122,12 @@ const Company = () => {
             </div>
             <div
               className="row col-md-12"
-              style={{ margin: "0px", padding: "10px" }}
+              style={{ margin: '0px', padding: '10px' }}
             >
               {/* Company Name */}
               <div
                 className="row col-md-6 p-1"
-                style={{ margin: "0px", padding: "0px" }}
+                style={{ margin: '0px', padding: '0px' }}
               >
                 <label className="col-md-4 col-4" htmlFor="CompanyName">
                   Perusahaan <span className="text-danger">*</span>
@@ -153,7 +153,7 @@ const Company = () => {
               {/* Company Abbreviation */}
               <div
                 className="row col-md-6 p-1"
-                style={{ margin: "0px", padding: "0px" }}
+                style={{ margin: '0px', padding: '0px' }}
               >
                 <label className="col-md-4 col-4" htmlFor="CompanyName">
                   Singkatan <span className="text-danger">*</span>
@@ -179,7 +179,7 @@ const Company = () => {
               {/* Phone Number */}
               <div
                 className="row col-md-6 p-1"
-                style={{ margin: "0px", padding: "0px" }}
+                style={{ margin: '0px', padding: '0px' }}
               >
                 <label className="col-md-4 col-4" htmlFor="PhoneNumber">
                   Telepon <span className="text-danger">*</span>
@@ -205,7 +205,7 @@ const Company = () => {
               {/* Mobile */}
               <div
                 className="row col-md-6 p-1"
-                style={{ margin: "0px", padding: "0px" }}
+                style={{ margin: '0px', padding: '0px' }}
               >
                 <label className="col-md-4 col-4" htmlFor="Mobile">
                   Handphone <span className="text-danger">*</span>
@@ -231,7 +231,7 @@ const Company = () => {
               {/* E-mail */}
               <div
                 className="row col-md-6 p-1"
-                style={{ margin: "0px", padding: "0px" }}
+                style={{ margin: '0px', padding: '0px' }}
               >
                 <label className="col-md-4 col-4" htmlFor="email">
                   Surel <span className="text-danger">*</span>
@@ -257,7 +257,7 @@ const Company = () => {
               {/* Website */}
               <div
                 className="row col-md-6 p-1"
-                style={{ margin: "0px", padding: "0px" }}
+                style={{ margin: '0px', padding: '0px' }}
               >
                 <label className="col-md-4 col-4" htmlFor="website">
                   Website <span className="text-danger">*</span>
@@ -285,12 +285,12 @@ const Company = () => {
             </div>
             <div
               className="row col-md-12"
-              style={{ margin: "0px", padding: "10px" }}
+              style={{ margin: '0px', padding: '10px' }}
             >
               {/* Address */}
               <div
                 className="row col-md-12 p-1"
-                style={{ margin: "0px", padding: "0px" }}
+                style={{ margin: '0px', padding: '0px' }}
               >
                 <label className="col-md-2 col-4" htmlFor="address">
                   Alamat <span className="text-danger">*</span>
@@ -319,7 +319,7 @@ const Company = () => {
               {/* City */}
               <div
                 className="row col-md-6 p-1"
-                style={{ margin: "0px", padding: "0px" }}
+                style={{ margin: '0px', padding: '0px' }}
               >
                 <label className="col-md-4 col-4" htmlFor="city">
                   Kota <span className="text-danger">*</span>
@@ -345,7 +345,7 @@ const Company = () => {
               {/* Country */}
               <div
                 className="row col-md-6 p-1"
-                style={{ margin: "0px", padding: "0px" }}
+                style={{ margin: '0px', padding: '0px' }}
               >
                 <label className="col-md-4 col-4" htmlFor="Country">
                   Negara <span className="text-danger">*</span>
@@ -374,7 +374,7 @@ const Company = () => {
               {/* Other Info */}
               <div
                 className="row col-md-12 p-1"
-                style={{ margin: "0px", padding: "0px" }}
+                style={{ margin: '0px', padding: '0px' }}
               >
                 <label className="col-md-2 col-4" htmlFor="other">
                   Info Lain <span className="text-danger">*</span>
@@ -398,7 +398,7 @@ const Company = () => {
                 </div>
               </div>
             </div>
-            <div className="w-100" style={{ margin: "0px", padding: "25px" }}>
+            <div className="w-100" style={{ margin: '0px', padding: '25px' }}>
               {data.edit ? (
                 <button
                   className="btn btn-primary"
@@ -430,7 +430,7 @@ const Company = () => {
         </>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Company;
+export default Company

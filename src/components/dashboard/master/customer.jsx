@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react'
-import AddUser from './addUser'
-import useFetch from './useFetch'
+import AddCustomer from '../modal/addCustomer'
+import useFetch from '../../useFetch'
 
-const User = () => {
-  const { data: user } = useFetch('getuser.php')
+const Customer = () => {
+  const { data: customer } = useFetch('getcustomer.php')
   const [data, setData] = useState({ vis: false })
   const handleClose = (e) => {
     setData({ ...data, vis: false })
@@ -15,11 +15,17 @@ const User = () => {
       [e.target.name]: e.target.value,
     })
   }
-  let userFil = useMemo(() => {
+  const handleEdit = (e) => {
+    setData({ ...data, vis: true, value: 2 })
+  }
+  const handleDelete = (e) => {
+    setData({ ...data, vis: true, value: 3 })
+  }
+  let customerFil = useMemo(() => {
     const searchRegex = data.search && new RegExp(`${data.search}`, 'gi')
     return (
-      user &&
-      user
+      customer &&
+      customer
         .sort((a, b) => (a.name > b.name ? 1 : -1))
         .filter(
           (d) =>
@@ -27,7 +33,7 @@ const User = () => {
             searchRegex.test(d.name + d.mobile + d.email + d.address),
         )
     )
-  }, [user, data.search])
+  }, [customer, data.search])
   return (
     <>
       {/* Modal Window */}
@@ -70,19 +76,20 @@ const User = () => {
           >
             {
               {
-                1: <AddUser handleClose={handleClose} />,
+                1: <AddCustomer handleClose={handleClose} />,
                 2: '',
               }[data.value]
             }
           </div>
         </div>
       </div>
+
       {/* Component Title */}
       <div
         className="w-100"
         style={{ display: 'flex', justifyContent: 'space-between' }}
       >
-        <span className="__content_title">User Data</span>
+        <span className="__content_title">Customer Data</span>
         {/* add User + search */}
         <span style={{ display: 'flex' }}>
           <span style={{ display: 'flex', alignItems: 'center' }}>
@@ -103,10 +110,9 @@ const User = () => {
           </button>
         </span>
       </div>
-
       <hr style={{ margin: '0' }} />
+      {/* <div className="col-md-12">{JSON.stringify(customer)}</div> */}
 
-      {/* User View */}
       <div className="w-100" style={{ height: '25px' }}></div>
       <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
         <div
@@ -118,52 +124,77 @@ const User = () => {
             fontWeight: '600',
           }}
         >
-          <div style={{ width: '15%' }}>First Name</div>
-          <div style={{ width: '15%' }}>Last Name</div>
-          <div style={{ width: '15%' }}>Mobile</div>
-          <div style={{ width: '15%' }}>Email</div>
-          <div style={{ width: '15%' }}>Username</div>
-
-          <div style={{ width: '15%' }}>Password</div>
+          <div style={{ width: '20%' }}>Name</div>
+          <div style={{ width: '11%' }}>Status</div>
+          <div style={{ width: '12%' }}>Mobile</div>
+          <div style={{ width: '22%' }}>Email</div>
+          <div style={{ width: '25%' }}>Address</div>
+          <div style={{ width: '10%' }}></div>
         </div>
         <hr />
       </div>
       <div
         className="row col-md-12"
-        style={{ paddingLeft: '25px', maxHeight: '60vh', overflowY: 'auto' }}
+        style={{ paddingLeft: '25px', maxHeight: '70vh', overflowY: 'auto' }}
       >
-        {userFil &&
-          userFil.map((d, i) => (
-            <>
-              <div key={i} className="row col-md-12">
-                <div style={{ width: '15%' }}>{d.first_name}</div>
-                <div style={{ width: '15%' }}>
-                  {d.last_name === null ? 'null' : d.last_name}
-                </div>
-                <div style={{ width: '15%' }}>{d.mobile}</div>
-                <div style={{ width: '15%' }}>{d.email}</div>
-                <div style={{ width: '15%' }}>{d.usr}</div>
+        {customerFil &&
+          customerFil.map((d, i) => (
+            <div key={i} className="row col-md-12">
+              <div style={{ width: '20%' }}>{d.name}</div>
 
-                <div style={{ width: '15%' }}>
-                  <span
-                    onClick={(e) => {
-                      console.log(e.target.innerHTML)
-                      e.target.innerHTML = `<i class="bi bi-eye-slash"></i> ${d.pwd}`
-                      setTimeout(() => {
-                        e.target.innerHTML = `<i class="bi bi-eye-slash"></i> ******`
-                      }, 5000)
-                    }}
-                  >
-                    <i className="bi bi-eye-slash"></i> *****
-                  </span>
-                </div>
-                <hr />
+              {
+                {
+                  0: (
+                    <div
+                      // ref={elementRef}
+                      className="text-warning"
+                      style={{ width: '11%' }}
+                    >
+                      <i className="bi bi-check-all text-warning"></i>Inactive
+                    </div>
+                  ),
+                  1: (
+                    <div
+                      // ref={elementRef}
+                      className="text-success"
+                      style={{ width: '11%' }}
+                    >
+                      <i className="bi bi-check-all text-success"></i>Active
+                    </div>
+                  ),
+                }[d.status]
+              }
+
+              <div style={{ width: '12%' }}>{d.mobile}</div>
+              <div style={{ width: '22%' }}>{d.email}</div>
+              <div style={{ width: '25%' }}>{d.address}</div>
+
+              <div
+                className="btn-group btn-group-toggle"
+                style={{ padding: '0 10px', width: '10%' }}
+              >
+                <button
+                  className="btn btn-sm btn-warning"
+                  style={{ padding: '2px 7px', fontSize: '10px' }}
+                  onClick={handleEdit}
+                >
+                  Edit
+                </button>
+
+                <button
+                  className="btn btn-sm btn-danger"
+                  style={{ padding: '2px 7px', fontSize: '10px' }}
+                  onClick={handleDelete}
+                >
+                  Delete
+                </button>
               </div>
-            </>
+              <hr />
+            </div>
           ))}
       </div>
     </>
   )
 }
 
-export default User
+export default Customer

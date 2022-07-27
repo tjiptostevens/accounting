@@ -1,14 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import logo from "./assets/img/env.png";
-import "./assets/css/nav.css";
-import useWindow from "./useWindow";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import logo from '../assets/img/env.png'
+import '../assets/css/nav.css'
+import useWindow from '../useWindow'
 
 const Nav = () => {
-  const { width } = useWindow();
+  const { width } = useWindow()
   return (
     <>
-      <div className="w-100" style={{ backgroundColor: "#1c2126" }}>
+      <div className="no-print w-100" style={{ backgroundColor: '#1c2126' }}>
         <div className="container-fluid">
           <nav className="navbar navbar-expand navbar-dark justify-content-between sticky-top">
             <Link className="navbar-brand" to="/d">
@@ -19,7 +19,7 @@ const Nav = () => {
                 className="d-inline-block align-top __icon"
                 alt=""
               />
-              {width > 450 ? "PITARA" : ""}
+              {width > 450 ? 'PITARA' : ''}
             </Link>
             <div className="form-inline">
               {/* Search Bar */}
@@ -46,7 +46,7 @@ const Nav = () => {
                 />
               </div>
               {/* Login Information */}
-              <div style={{ display: "flex" }}>
+              <div style={{ display: 'flex' }}>
                 {width > 450 ? (
                   <>
                     <div className="">
@@ -55,15 +55,15 @@ const Nav = () => {
                     <div className="__help">Help</div>
                   </>
                 ) : (
-                  ""
+                  ''
                 )}
                 <div className="">
                   <div
                     className="__avatar"
                     style={{
-                      fontSize: "100%",
-                      color: "white",
-                      textAlign: "center",
+                      fontSize: '100%',
+                      color: 'white',
+                      textAlign: 'center',
                     }}
                   >
                     <span>T</span>
@@ -75,7 +75,7 @@ const Nav = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Nav;
+export default Nav

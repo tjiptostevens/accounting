@@ -1,61 +1,61 @@
-import React, { useState } from "react";
-import useFetch from "./useFetch";
-import urlLink from "./config/urlLink";
+import React, { useState } from 'react'
+import useFetch from '../../useFetch'
+import urlLink from '../../config/urlLink'
 
 const AddOrder = (props) => {
-  const { data: coa } = useFetch("getcoa.php");
-  const [data, setData] = useState({ required: true });
+  const { data: coa } = useFetch('getcoa.php')
+  const [data, setData] = useState({ required: true })
   const handleChange = (e) => {
-    console.log(`${[e.target.name]}`, e.target.value);
+    console.log(`${[e.target.name]}`, e.target.value)
     setData({
       ...data,
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
   const handleClose = (e) => {
-    console.log(data);
-    setData({ ...data, required: !data.required });
-    props.handleClose(e);
-  };
+    console.log(data)
+    setData({ ...data, required: !data.required })
+    props.handleClose(e)
+  }
   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(data);
-    const abortCtr = new AbortController();
+    e.preventDefault()
+    console.log(data)
+    const abortCtr = new AbortController()
     const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": window.location.origin,
-    };
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': window.location.origin,
+    }
     setTimeout(() => {
       fetch(`${urlLink.url}addorder.php`, {
         signal: abortCtr.signal,
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(data),
         headers: headers,
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log(res);
+          console.log(res)
           setData({
             required: true,
-            name: "",
-            mobile: "",
-            email: "",
-            address: "",
+            name: '',
+            mobile: '',
+            email: '',
+            address: '',
             message: res.message,
-          });
+          })
         })
 
         // display an alert message for an error
         .catch((err) => {
-          console.log(err);
+          console.log(err)
           setData({
             ...data,
-            msg: "Error Connection",
-          });
-        });
-    }, 50);
-  };
+            msg: 'Error Connection',
+          })
+        })
+    }, 50)
+  }
   return (
     <>
       <div className="modal_title">
@@ -69,7 +69,7 @@ const AddOrder = (props) => {
           {/* Customer Name */}
           <div
             className="row col-md-12"
-            style={{ margin: "0px", padding: "0px" }}
+            style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">
               Name <span className="text-danger">*</span>
@@ -87,7 +87,7 @@ const AddOrder = (props) => {
           {/* Customer Mobile */}
           <div
             className="row col-md-12"
-            style={{ margin: "0px", padding: "0px" }}
+            style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">
               Mobile <span className="text-danger">*</span>
@@ -105,7 +105,7 @@ const AddOrder = (props) => {
           {/* Customer Email */}
           <div
             className="row col-md-12"
-            style={{ margin: "0px", padding: "0px" }}
+            style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">
               E-Mail <span className="text-danger">*</span>
@@ -123,7 +123,7 @@ const AddOrder = (props) => {
           {/* Customer Address */}
           <div
             className="row col-md-12 mb-5"
-            style={{ margin: "0px", padding: "0px" }}
+            style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">
               Address <span className="text-danger">*</span>
@@ -151,7 +151,7 @@ const AddOrder = (props) => {
         </form>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default AddOrder;
+export default AddOrder

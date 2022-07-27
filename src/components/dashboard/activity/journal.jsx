@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from 'react'
-import AddJournal from './addJournal'
-import useFetch from './useFetch'
+import AddJournal from '../modal/addJournal'
+import useFetch from '../../useFetch'
 
 const Journal = () => {
   const { data: journal } = useFetch('getjournal.php')
   const { data: journalList } = useFetch('getjournallist.php')
   const [data, setData] = useState({ vis: false })
-  //   const elementRef = useRef(null);
+
   const handleClose = (e) => {
     setData({ ...data, vis: false })
     window.location.reload()

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import CoaLists from './coaLists'
-import useFetch from './useFetch'
-import AddCoa from './addCoa'
+import useFetch from '../../useFetch'
+import AddCoa from '../modal/addCoa'
 
 const Coa = () => {
   const { data: coa } = useFetch('getcoa.php')

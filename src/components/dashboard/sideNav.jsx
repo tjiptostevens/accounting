@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { NavLink, Link } from 'react-router-dom'
-import logo from './assets/img/env.png'
-import useWindow from './useWindow'
-import './assets/css/sideNav.css'
+import { NavLink } from 'react-router-dom'
+import logo from '../assets/img/env.png'
+import useWindow from '../useWindow'
+import '../assets/css/sideNav.css'
 
 const SideNav = (props) => {
   const { width } = useWindow()
@@ -70,7 +70,7 @@ const SideNav = (props) => {
           <li>
             <NavLink to="/d/depreciation" className="nav-link text-white">
               <i className="m_icon bi bi-file-earmark-break"></i>
-              Depresiasi
+              Depreciation
             </NavLink>
           </li>
         </ul>
@@ -129,7 +129,7 @@ const SideNav = (props) => {
 
   return (
     <>
-      <div>
+      <div className="no-print">
         <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
           <symbol id="bootstrap" viewBox="0 0 118 94">
             <title>Bootstrap</title>

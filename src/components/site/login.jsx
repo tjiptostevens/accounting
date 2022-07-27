@@ -1,116 +1,116 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "./assets/css/login.css";
-import "./assets/css/modal.css";
-import urlLink from "./config/urlLink";
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import '../assets/css/login.css'
+import '../assets/css/modal.css'
+import urlLink from '../config/urlLink'
 
 const Login = (props) => {
   const [data, setData] = useState({
     data: {
-      usr: "",
-      pwd: "",
+      usr: '',
+      pwd: '',
       isRemember: false,
-      error: "",
+      error: '',
     },
     vis: false,
-    msg: "",
-    token: "",
-    res: "",
-  });
+    msg: '',
+    token: '',
+    res: '',
+  })
   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(data);
-    const abortCtr = new AbortController();
+    e.preventDefault()
+    console.log(data)
+    const abortCtr = new AbortController()
     const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": window.location.origin,
-    };
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': window.location.origin,
+    }
     setTimeout(() => {
       fetch(`${urlLink.url}login.php`, {
         signal: abortCtr.signal,
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(data.data),
         headers: headers,
       })
         .then((res) => res.json())
         .then((res) => {
           if (res.token) {
-            console.log("Successfully Login");
-            sessionStorage.setItem("user_id", res.token);
+            console.log('Successfully Login')
+            sessionStorage.setItem('user_id', res.token)
             data.data.isRemember === true
-              ? localStorage.setItem("user_id", res.token)
-              : console.log("is");
+              ? localStorage.setItem('user_id', res.token)
+              : console.log('is')
             setData({
               ...data,
               msg: res.message,
               token: res.token,
               vis: !data.vis,
               res: res.data,
-            });
-            return res;
+            })
+            return res
           } else {
             setData({
               ...data,
               msg: res.message,
-            });
+            })
           }
         })
 
         // display an alert message for an error
         .catch((err) => {
-          console.log(err);
+          console.log(err)
           setData({
             ...data,
-            msg: "Error Connection",
-          });
-        });
-    }, 50);
-  };
+            msg: 'Error Connection',
+          })
+        })
+    }, 50)
+  }
   const handleChange = (e) => {
-    console.log(`${[e.target.name]}`, e.target.value);
+    console.log(`${[e.target.name]}`, e.target.value)
     setData({
       ...data,
       data: { ...data.data, [e.target.name]: e.target.value },
-      msg: "",
-    });
-  };
+      msg: '',
+    })
+  }
   return (
     <>
       <div
         className="__modal-window"
-        style={{ display: { true: "block", false: "none" }[data.vis] }}
+        style={{ display: { true: 'block', false: 'none' }[data.vis] }}
       >
         <div
           className="row col-md-7 col-11"
           style={{
-            maxHeight: "95vh",
-            overflowY: "auto",
-            margin: "0px",
-            padding: "15px",
-            borderRadius: "5px",
+            maxHeight: '95vh',
+            overflowY: 'auto',
+            margin: '0px',
+            padding: '15px',
+            borderRadius: '5px',
           }}
         >
           <div
             className="w-100 justify-content-around"
             style={{
-              textAlign: "center",
-              height: "auto",
+              textAlign: 'center',
+              height: 'auto',
             }}
           >
-            <div style={{ fontSize: "24px" }}>{data.msg}</div>
+            <div style={{ fontSize: '24px' }}>{data.msg}</div>
             <hr />
           </div>
           <div
             className="w-100 justify-content-around"
             style={{
-              textAlign: "center",
-              height: "auto",
+              textAlign: 'center',
+              height: 'auto',
             }}
           >
             <Link
               to={{
-                pathname: "/d",
+                pathname: '/d',
                 state: { data: data },
               }}
             >
@@ -118,9 +118,9 @@ const Login = (props) => {
                 type="button"
                 className="btn btn-primary"
                 style={{
-                  textAlign: "center",
-                  width: "60px",
-                  height: "auto",
+                  textAlign: 'center',
+                  width: '60px',
+                  height: 'auto',
                 }}
               >
                 OK
@@ -132,13 +132,13 @@ const Login = (props) => {
 
       <div className="form-center text-center">
         {/* {JSON.stringify(data)} */}
-        <div className="w-100" style={{ margin: "0px", padding: "0px" }}>
+        <div className="w-100" style={{ margin: '0px', padding: '0px' }}>
           <div className="w-100">
             <b>PT. PITARA MULIA MAS LOGISTIK</b>
           </div>
           <hr />
           <form className="form-signin" method="post" onSubmit={handleSubmit}>
-            <div className="w-100" style={{ height: "50px" }}></div>
+            <div className="w-100" style={{ height: '50px' }}></div>
             <div className="d-none d-sm-block">
               <img
                 className="mb-4"
@@ -194,7 +194,7 @@ const Login = (props) => {
               Sign in
             </button>
 
-            <div className="w-100" style={{ height: "50px" }}></div>
+            <div className="w-100" style={{ height: '50px' }}></div>
             {/* <hr />
             <span>Don't have an account?</span>
             <hr /> */}
@@ -202,28 +202,28 @@ const Login = (props) => {
           <div
             className="w-100"
             style={{
-              textAlign: "left",
-              fontSize: "12px ",
+              textAlign: 'left',
+              fontSize: '12px ',
               background:
-                "rgba(255,255,255,0.3) url(./assets/img/truck.webp) no-repeat center center / cover",
-              filter: "grayscale(100%)",
+                'rgba(255,255,255,0.3) url(./assets/img/truck.webp) no-repeat center center / cover',
+              filter: 'grayscale(100%)',
             }}
           >
             <div
               className="w-100"
               style={{
-                margin: "0px",
-                padding: "25px 50px",
-                background: "rgba(255,255,255,0.9)",
+                margin: '0px',
+                padding: '25px 50px',
+                background: 'rgba(255,255,255,0.9)',
               }}
             >
               <p>PT. PITARA MULIA MAS LOGISTIK</p>
 
               <b> Office : </b>
 
-              <p style={{ padding: "0 15px" }}>
+              <p style={{ padding: '0 15px' }}>
                 <small>
-                  Ruko Delta Mas <br /> Jl. Klipang Raya Blok Z Kav. 54 <br />{" "}
+                  Ruko Delta Mas <br /> Jl. Klipang Raya Blok Z Kav. 54 <br />{' '}
                   Kel. Sendangmulyo Kec. Tembalang <br /> Kota Semarang Jawa
                   Tengah - 50272 <br /> Telp/Fax : 024-76739356 <br />
                   Phone : 0821-3615-1860
@@ -233,14 +233,14 @@ const Login = (props) => {
           </div>
           <p
             className="text-muted"
-            style={{ margin: "0px", padding: "25px 0px" }}
+            style={{ margin: '0px', padding: '25px 0px' }}
           >
             &copy; 2021-2022
           </p>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

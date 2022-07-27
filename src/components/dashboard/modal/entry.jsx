@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import useFetch from './useFetch'
-import './assets/css/form.css'
+import useFetch from '../../useFetch'
+import '../../assets/css/form.css'
 const Entry = (props) => {
   const { data: coa } = useFetch('getcoa.php')
   const [data, setData] = useState({ delete: false })

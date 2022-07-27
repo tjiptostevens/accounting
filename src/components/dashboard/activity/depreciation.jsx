@@ -1,13 +1,15 @@
-import React, { useState, useMemo } from 'react'
-import AddOrder from './dashboard/modal/addOrder'
-import useFetch from './useFetch'
+import React, { useState, useMemo, useEffect } from 'react'
+import ReportTable from '../../report/reportTable'
+import useFetch from '../../useFetch'
+import AddAssets from '../modal/addAssets'
 
-const Order = () => {
-  const { data: order } = useFetch('getorder.php')
+const Depreciation = () => {
+  const { data: assets } = useFetch('getassets.php')
   const [data, setData] = useState({ vis: false })
   //   const elementRef = useRef(null);
   const handleClose = (e) => {
     setData({ ...data, vis: false })
+    window.location.reload()
   }
   const handleChange = (e) => {
     console.log(`${[e.target.name]}`, e.target.value)
@@ -16,19 +18,31 @@ const Order = () => {
       [e.target.name]: e.target.value,
     })
   }
-  let orderFil = useMemo(() => {
+  let assetsFil = useMemo(() => {
     const searchRegex = data.search && new RegExp(`${data.search}`, 'gi')
     return (
-      order &&
-      order
-        .sort((a, b) => (a.name > b.name ? 1 : -1))
+      assets &&
+      assets
+        // .sort((a, b) => (a.name > b.name ? 1 : -1))
         .filter(
           (d) =>
-            !searchRegex ||
-            searchRegex.test(d.name + d.mobile + d.email + d.address),
+            (!searchRegex || searchRegex.test(d.name + d.title + d.type)) &&
+            (!data.search_type || d.type === data.search_type) &&
+            (!data.end_date || d.posting_date === data.end_date),
         )
     )
-  }, [order, data.search])
+  }, [assets, data.search, data.search_type, data.end_date])
+  //   useEffect(() => {
+  //     let array = assets && Object.keys(assets)
+  //     console.log(array)
+  //     let loop = []
+  //     array.forEach((element) => {
+  //       let obj = { title: element }
+  //       loop.push(obj)
+  //     })
+  //     console.log(loop)
+  //     setData({ ...data, header: loop, body: array })
+  //   }, [assets])
   return (
     <>
       {/* Modal Window */}
@@ -41,7 +55,7 @@ const Order = () => {
         }}
       >
         <div
-          className="row col-md-6 col-11"
+          className="row col-md-7 col-11"
           style={{
             maxHeight: '95vh',
             overflowY: 'auto',
@@ -71,7 +85,7 @@ const Order = () => {
           >
             {
               {
-                1: <AddOrder handleClose={handleClose} />,
+                1: <AddAssets handleClose={handleClose} />,
                 2: '',
               }[data.value]
             }
@@ -84,40 +98,41 @@ const Order = () => {
         className="w-100"
         style={{ display: 'flex', justifyContent: 'space-between' }}
       >
-        <span className="__content_title">Order Entries</span>
+        <div className=" __content_title">Assets</div>
         {/* add User + search */}
-        <span style={{ display: 'flex' }}>
-          <span style={{ display: 'flex', alignItems: 'center' }}>
+        <div className="" style={{ display: 'flex' }}>
+          <div
+            className="col"
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
             <input
               className="form-control m-1"
               type="search"
               name="search"
-              placeholder="Type to search"
+              placeholder="Search by text"
               onChange={handleChange}
             />
-          </span>
-          <span style={{ display: 'flex', alignItems: 'center' }}>
-            <input
-              className="form-control m-1"
-              type="date"
-              name="start_date"
-              placeholder="Type to search"
-              onChange={handleChange}
-            />
-            <input
-              className="form-control m-1"
-              type="date"
-              name="end_date"
-              placeholder="Type to search"
-              onChange={handleChange}
-            />
-          </span>
-        </span>
+          </div>
+
+          <button
+            className="btn btn-primary m-1"
+            onClick={() => setData({ ...data, vis: !data.vis, value: 1 })}
+          >
+            <i className="bi bi-plus"></i>
+            New
+          </button>
+        </div>
       </div>
 
       <hr style={{ margin: '0' }} />
+      {assets &&
+        assets.map((d, i) => (
+          <>
+            <div>{d.code}</div>
+          </>
+        ))}
     </>
   )
 }
 
-export default Order
+export default Depreciation

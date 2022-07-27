@@ -1,17 +1,15 @@
-import React from "react";
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import "./App.css";
-import "./components/assets/css/scrollbar.css";
-import Rute from "./components/config/routes";
-import Page404 from "./components/Page404";
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import './App.css'
+import './components/assets/css/scrollbar.css'
+import Rute from './components/config/routes'
+import Page404 from './components/site/Page404'
 
 function App() {
   return (
     <Router>
-      {/* <Router basename={"/accounting/build/"}> */}
       <Routes>
         {Rute.web.map((r) => (
-          // console.log(r)
           <Route
             exact
             key={r.path}
@@ -19,10 +17,10 @@ function App() {
             element={r.component}
           />
         ))}
-        <Route path={"/*"} element={<Page404 />} />
+        <Route path={'/*'} element={<Page404 />} />
       </Routes>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App

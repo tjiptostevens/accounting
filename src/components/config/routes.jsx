@@ -1,21 +1,17 @@
-import Home from "../home";
-import Login from "../login";
+import Home from '../home'
+import Login from '../site/login'
 
 const routes = {
   web: [
     {
-      path: "/",
+      path: '/',
       component: <Login />,
     },
     {
-      path: "/login",
-      component: <Login />,
-    },
-    {
-      path: "/d",
+      path: '/d',
       component: <Home />,
     },
   ],
-};
+}
 
-export default routes;
+export default routes

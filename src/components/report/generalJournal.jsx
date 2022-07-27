@@ -1,9 +1,11 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import useFetch from '../useFetch'
+import ReportTable from './reportTable'
 
 const GeneralJournal = () => {
-  const { data: generalJournal } = useFetch()
+  const { data: generalJournal } = useFetch('getjournalentry.php')
   const [data, setData] = useState('')
+
   const handleChange = (e) => {
     console.log(`${[e.target.name]}`, e.target.value)
     setData({
@@ -14,8 +16,8 @@ const GeneralJournal = () => {
   let generalJournalFil = useMemo(() => {
     const searchRegex = data.search && new RegExp(`${data.search}`, 'gi')
     return (
-      generalJournal &&
-      generalJournal
+      data &&
+      data
         // .sort((a, b) => (a.name > b.name ? 1 : -1))
         .filter(
           (d) =>
@@ -24,7 +26,7 @@ const GeneralJournal = () => {
             (!data.end_date || d.posting_date === data.end_date),
         )
     )
-  }, [generalJournal, data.search, data.search_type, data.end_date])
+  }, [data, data.search, data.search_type, data.end_date])
   return (
     <>
       {/* Component Title */}
@@ -34,7 +36,7 @@ const GeneralJournal = () => {
       >
         <div className=" __content_title">General Journal</div>
         {/* add User + search */}
-        <div className="" style={{ display: 'flex' }}>
+        <div className="no-print __search_bar">
           <div
             className="col"
             style={{ display: 'flex', alignItems: 'center' }}
@@ -94,7 +96,7 @@ const GeneralJournal = () => {
             onClick={() => window.print()}
             style={{ minWidth: 'fit-content' }}
           >
-            <i class="bi bi-arrow-right-square"></i>
+            <i className="bi bi-arrow-right-square"></i>
           </button>
           <button
             className="btn btn-primary m-1"
@@ -107,6 +109,20 @@ const GeneralJournal = () => {
       </div>
 
       <hr style={{ margin: '0' }} />
+      <div className="w-100" style={{ height: '25px' }}></div>
+      <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
+        <div
+          className="row col-md-12"
+          style={{
+            color: 'white',
+            textAlign: 'left',
+            padding: '7px 0',
+            fontWeight: '600',
+          }}
+        >
+          {generalJournal && <ReportTable data={generalJournal} />}
+        </div>
+      </div>
     </>
   )
 }

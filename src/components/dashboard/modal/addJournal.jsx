@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import useFetch from './useFetch'
-import urlLink from './config/urlLink'
-import useDate from './useDate'
+import useFetch from '../../useFetch'
+import urlLink from '../../config/urlLink'
+import useDate from '../../useDate'
 import AddJournalEntry from './addJournalEntry'
 import Entry from './entry'
 

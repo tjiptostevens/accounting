@@ -41,6 +41,10 @@
     align-self: center;
 }
 
+.__search_bar {
+    display: flex;
+}
+
 .btn-primary {
     color: #fff;
     background-color: green;
