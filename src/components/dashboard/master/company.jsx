@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import useFetch from '../../useFetch'
+import urlLink from '../../config/urlLink'
 
 const Company = () => {
   const { data: company } = useFetch('getcompany.php')
@@ -16,8 +17,31 @@ const Company = () => {
       company: { ...data.company, [e.target.name]: e.target.value },
     })
   }
-  const handleUpdate = (e) => {
-    console.log(e)
+  const handleUpdate = async (e) => {
+    e.preventDefault()
+    console.log(data)
+
+    try {
+      const abortCtr = new AbortController()
+      const headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': window.location.origin,
+      }
+      let res
+      setTimeout(async () => {
+        res = await fetch(`${urlLink.url}updatecompany.php`, {
+          signal: abortCtr.signal,
+          method: 'POST',
+          body: JSON.stringify(data.company),
+          headers: headers,
+        })
+        console.log(res)
+        window.location.reload()
+      }, 500)
+    } catch (error) {
+      console.log(error)
+    }
   }
   return (
     <>
@@ -42,7 +66,7 @@ const Company = () => {
       {company && company ? (
         <>
           {/* {JSON.stringify(data)} */}
-          {console.log(company[0])}
+          {/* {console.log(company[0])} */}
           <div className="w-100" style={{ height: '80vh', overflowY: 'auto' }}>
             {/* Logo */}
             <div className="row col-md-12" style={{ margin: '0px' }}>
@@ -300,19 +324,18 @@ const Company = () => {
                   </small>
                 </label>
                 <div className="col-md-10 col-8">
-                  <input
-                    required
-                    onChange={handleChange}
-                    type="text"
+                  <textarea
                     className="form-control"
                     name="address"
                     id="address"
+                    rows="5"
                     value={
                       data.edit ? company[0].address : data.company.address
                     }
                     readOnly={data.edit}
-                    aria-describedby="address"
-                  />
+                    required
+                    onChange={handleChange}
+                  ></textarea>
                 </div>
               </div>
 

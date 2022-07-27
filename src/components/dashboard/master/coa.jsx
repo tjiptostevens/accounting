@@ -4,7 +4,7 @@ import useFetch from '../../useFetch'
 import AddCoa from '../modal/addCoa'
 
 const Coa = () => {
-  const { data: coa } = useFetch('getcoa.php')
+  const { data: coa } = useFetch('getcoav2.php')
   const [data, setData] = useState({ vis: false })
   const handleClose = (e) => {
     setData({ ...data, vis: false })

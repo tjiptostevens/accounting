@@ -4,7 +4,7 @@ import '../../assets/css/form.css'
 const Entry = (props) => {
   const { data: coa } = useFetch('getcoa.php')
   const [data, setData] = useState({ delete: false })
-  const [list, setList] = useState({
+  const dataList = {
     idx: (props.i + 1).toString(),
     parent: `${props.parent.replace('####', '')}${props.last}`,
     acc: props.data.acc,
@@ -13,7 +13,8 @@ const Entry = (props) => {
     debit: props.data.debit,
     credit: props.data.credit,
     disable: props.data.disable,
-  })
+  }
+  const [list, setList] = useState(dataList)
   const handleChange = (e) => {
     setList({
       ...list,

@@ -127,7 +127,7 @@ function CoaList({ list }) {
               width: '50%',
             }}
           >
-            Rp 0.00
+            {list.total.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} Rp
           </div>
         </div>
         {nestedCoa}

@@ -35,29 +35,28 @@ const AddJournal = (props) => {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': window.location.origin,
     }
-    setTimeout(() => {
-      fetch(`${urlLink.url}getjournallast.php?type=${data.type}`, {
-        signal: abortCtr.signal,
-        method: 'GET',
-        headers: headers,
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          console.log(res)
-          setData({ ...data, last: res })
+    setTimeout(async () => {
+      try {
+        let res = await fetch(
+          `${urlLink.url}getjournallast.php?type=${data.type}`,
+          {
+            signal: abortCtr.signal,
+            method: 'GET',
+            headers: headers,
+          },
+        )
+        res = await res.json()
+        setData({ ...data, last: res.last })
+      } catch (error) {
+        console.log(error)
+        setData({
+          ...data,
+          last: '0000',
+          msg: 'Error Connection',
         })
-
-        // display an alert message for an error
-        .catch((err) => {
-          // console.log(err);
-          setData({
-            ...data,
-            last: '0000',
-            msg: 'Error Connection',
-          })
-        })
-    }, 0)
-    return data
+      }
+    }, 10)
+    // return data
   }, [data.name, data.title])
 
   const handleChange = (e) => {
@@ -258,70 +257,50 @@ const AddJournal = (props) => {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': window.location.origin,
     }
-    setTimeout(() => {
-      fetch(`${urlLink.url}addjournal.php`, {
-        signal: abortCtr.signal,
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: headers,
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          console.log(res)
-          if (res.error) {
-            console.log(res.error)
-            setData({ ...data, message: res.message })
-          } else {
-            data.entry.map((e, i) => {
-              setTimeout(() => {
-                fetch(`${urlLink.url}addjournalentry.php`, {
-                  signal: abortCtr.signal,
-                  method: 'POST',
-                  body: JSON.stringify(data.entry[i]),
-                  headers: headers,
-                })
-                  .then((res) => res.json())
-                  .then((res) => {
-                    console.log(res)
-                    setData({
-                      ...data,
-                      message: res.message,
-                    })
-                  })
-
-                  // display an alert message for an error
-                  .catch((err) => {
-                    console.log(err)
-                    setData({
-                      ...data,
-                      msg: 'Error Connection',
-                    })
-                  })
-              }, 50)
-            })
-          }
+    setTimeout(async () => {
+      try {
+        let res = await fetch(`${urlLink.url}addjournal.php`, {
+          signal: abortCtr.signal,
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: headers,
         })
+        res = await res.json()
+        console.log(res)
 
+        data.entry.map((e, i) => {
+          setTimeout(async () => {
+            try {
+              let res1 = await fetch(`${urlLink.url}addjournalentry.php`, {
+                signal: abortCtr.signal,
+                method: 'POST',
+                body: JSON.stringify(data.entry[i]),
+                headers: headers,
+              })
+              res1 = await res1.json()
+              setData({
+                ...data,
+                message: res1.message,
+              })
+            } catch (error) {
+              console.log(error)
+              setData({
+                ...data,
+                msg: 'Error Connection',
+              })
+            }
+          }, 10)
+        })
+      } catch (error) {
         // display an alert message for an error
-        .catch((err) => {
-          console.log(err)
-          setData({
-            ...data,
-            msg: 'Error Connection',
-          })
+        console.log(error)
+        setData({
+          ...data,
+          msg: 'Error Connection',
         })
-    }, 50)
+      }
+    }, 10)
   }
-  // Hitung Debit & Credit
-  useEffect(() => {
-    let td = TotalDebit()
-    let tc = TotalCredit()
-    setData({
-      ...data,
-      total_debit: td,
-      total_credit: tc,
-    })
-  }, [data.entry])
   const TotalDebit = () => {
     let debit = data.entry.map((e) => Number(e.debit))
 
@@ -344,17 +323,24 @@ const AddJournal = (props) => {
     // setData({ ...data, total_credit: sum });
     return sum
   }
+
+  // Hitung Debit & Credit
+  useEffect(() => {
+    setTimeout(() => {
+      let td = TotalDebit()
+      let tc = TotalCredit()
+      setData({
+        ...data,
+        total_debit: td,
+        total_credit: tc,
+      })
+    }, 10)
+  }, [data.entry])
   // Handling Row
   function handleRow({ e, list }) {
-    // console.log(e.target.id, `${[e.target.name]}`, e.target.value);
     let i = Number(e.target.id)
-    // let nam = e.target.name;
-    // let val = e.target.val;
-    // let dat = data.entry[i];
-    // let newArr = [...dat];
     let listDat = [...data.entry]
     listDat[i] = list
-    // console.log("e", e);
     console.log('handleRow', list)
     console.log('list', listDat)
     setData({
@@ -365,21 +351,19 @@ const AddJournal = (props) => {
   const handleAddRow = (e) => {
     e.preventDefault()
     let idx = data.entry.length + 1
+    let entry = {
+      idx: idx.toString(),
+      parent: '',
+      acc: '',
+      party_type: '',
+      party: '',
+      debit: '',
+      credit: '',
+    }
 
     setData({
       ...data,
-      entry: [
-        ...data.entry,
-        {
-          idx: idx.toString(),
-          parent: '',
-          acc: '',
-          party_type: '',
-          party: '',
-          debit: '',
-          credit: '',
-        },
-      ],
+      entry: [...data.entry, entry],
     })
     console.log('handleAddRow', data)
   }

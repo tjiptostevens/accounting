@@ -35,11 +35,11 @@ while ($data = $sql->fetch_assoc()) {
 $series =  $result[0]['last'] + 1;
 $series = str_pad($series, 4, '0', STR_PAD_LEFT);
 
-echo json_encode($series);
-// echo json_encode(
-//     [
-//        "message" => $type,
-//     ]
-// ); 
+// echo json_encode($series);
+echo json_encode(
+    [
+        "last" => $series,
+    ]
+);
 
 mysqli_close($conn);
