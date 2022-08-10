@@ -1,13 +1,52 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AddCoa from '../modal/addCoa'
 import DeleteCoa from '../modal/deleteCoa'
 import EditCoa from '../modal/editCoa'
 
+let Array = []
+const coaTotal = (group, child, parent, total) => {
+  // console.log(group, child, parent, '=>', total)
+  let arr = {}
+  let gr = {}
+  let x = 0
+  console.log(child)
+  if (child.length > 0) {
+    for (let i = 0; i < child.length; i++) {
+      const element = parseInt(child[i].total)
+      x += element
+    }
+    console.log('for', x)
+    arr = [...Array, { parent: parent, total: x }]
+    Array = arr
+    console.log('x', Array)
+  }
+  // if (group === '0') {
+  //   arr = [...Array, parseInt(total)]
+  //   Array = arr
+  //   console.log('0', Array)
+  //   x = 0
+  // } else {
+  //   x = x
+  //   for (let i = 0; i < Array.length; i++) {
+  //     const element = Array[i]
+  //     x += element
+  //     console.log('for', element)
+  //   }
+  //   console.log('x', x)
+  //   gr = { ...gr, [parent]: { data: Array, total: x } }
+  //   Array = gr
+  //   console.log('1', Array)
+  // }
+}
 function CoaList({ list }) {
   const [data, setData] = useState({ vis: false, toggle: false })
   const nestedCoa = (list.child || []).map((d) => {
     return <CoaList key={d.number} list={d} type="child" />
   })
+  useEffect(() => {
+    coaTotal(list.is_group, list.child, list.number, list.total)
+    // eslint-disable-next-line
+  }, [])
   const handleClose = (e) => {
     setData({ ...data, vis: false })
   }
@@ -20,8 +59,10 @@ function CoaList({ list }) {
   const handleDelete = (e) => {
     setData({ ...data, vis: true, value: 3 })
   }
+
   return (
     <>
+      {/* {console.log(Array)} */}
       <div
         className="__modal-window"
         style={{ display: { true: 'block', false: 'none' }[data.vis] }}

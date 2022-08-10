@@ -131,7 +131,7 @@ const Login = (props) => {
           </div>
         </div>
       </div>
-      {console.log(company)}
+      {/* {console.log(company)} */}
       <div className="form-center text-center">
         {/* {JSON.stringify(data)} */}
         {company && (

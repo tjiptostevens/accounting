@@ -56,11 +56,11 @@ const AddJournal = (props) => {
         })
       }
     }, 10)
-    // return data
+    // return () => abortCtr.abort()
   }, [data.name, data.title])
 
   const handleChange = (e) => {
-    console.log(`${[e.target.name]}`, typeof e.target.value)
+    // console.log(`${[e.target.name]}`, typeof e.target.value)
     let nam = e.target.name
     let val = e.target.value
     if (nam === 'type') {
@@ -215,12 +215,12 @@ const AddJournal = (props) => {
           })
           break
 
-        default:
-          setData({
-            ...data,
-            [e.target.name]: e.target.value,
-          })
-          break
+        // default:
+        //   setData({
+        //     ...data,
+        //     [e.target.name]: e.target.value,
+        //   })
+        //   break
       }
     } else {
       setData({
@@ -300,6 +300,7 @@ const AddJournal = (props) => {
         })
       }
     }, 10)
+    return () => abortCtr.abort()
   }
   const TotalDebit = () => {
     let debit = data.entry.map((e) => Number(e.debit))
@@ -329,15 +330,17 @@ const AddJournal = (props) => {
     setTimeout(() => {
       let td = TotalDebit()
       let tc = TotalCredit()
-      setData({
-        ...data,
-        total_debit: td,
-        total_credit: tc,
-      })
-    }, 10)
+      setData((d) => ({ ...d, total_debit: td, total_credit: tc }))
+      // setData({
+      //   ...data,
+      //   total_debit: td,
+      //   total_credit: tc,
+      // })
+    }, 0)
+    //
   }, [data.entry])
   // Handling Row
-  function handleRow({ e, list }) {
+  const handleRow = ({ e, list }) => {
     let i = Number(e.target.id)
     let listDat = [...data.entry]
     listDat[i] = list
