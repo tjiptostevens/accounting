@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react'
 import useFetch from '../../useFetch'
 import urlLink from '../../config/urlLink'
 import useDate from '../../useDate'
-import AddJournalEntry from './addJournalEntry'
 import Entry from './entry'
 
 const AddJournal = (props) => {
   const { data: coa } = useFetch('getcoa.php')
-  const { now, YY, DD, MM, ss } = useDate()
-  const [lists, setLists] = useState([])
+  const { YY, DD, MM, ss } = useDate()
   const [data, setData] = useState({
     type: 'Journal Umum',
     type_number: 6,
@@ -49,22 +47,23 @@ const AddJournal = (props) => {
         setData({ ...data, last: res.last })
       } catch (error) {
         console.log(error)
-        setData({
-          ...data,
+        setData((d) => ({
+          ...d,
           last: '0000',
           msg: 'Error Connection',
-        })
+        }))
       }
-    }, 10)
+    }, 0)
     // return () => abortCtr.abort()
+    // eslint-disable-next-line
   }, [data.name, data.title])
 
   const handleChange = (e) => {
-    // console.log(`${[e.target.name]}`, typeof e.target.value)
+    // console.log(`${[e.target.name]}`, e.target.value)
     let nam = e.target.name
     let val = e.target.value
     if (nam === 'type') {
-      switch (Number(val)) {
+      switch (parseInt(val)) {
         case 1:
           setData({
             ...data,
@@ -215,12 +214,12 @@ const AddJournal = (props) => {
           })
           break
 
-        // default:
-        //   setData({
-        //     ...data,
-        //     [e.target.name]: e.target.value,
-        //   })
-        //   break
+        default:
+          setData({
+            ...data,
+            [e.target.name]: e.target.value,
+          })
+          break
       }
     } else {
       setData({
@@ -247,6 +246,7 @@ const AddJournal = (props) => {
     })
     props.handleClose(e)
   }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log(data)
@@ -290,6 +290,8 @@ const AddJournal = (props) => {
               })
             }
           }, 10)
+          console.log(e)
+          return e
         })
       } catch (error) {
         // display an alert message for an error
@@ -304,24 +306,16 @@ const AddJournal = (props) => {
   }
   const TotalDebit = () => {
     let debit = data.entry.map((e) => Number(e.debit))
-
-    // console.log(debit);
     let sum = debit.reduce(function (a, b) {
       return a + b
     }, 0)
-    // console.log(sum);
-    // setData({ ...data, total_debit: sum });
     return sum
   }
   const TotalCredit = () => {
     let credit = data.entry.map((e) => Number(e.credit))
-
-    // console.log(credit);
     let sum = credit.reduce(function (a, b) {
       return a + b
     }, 0)
-    // console.log(sum);
-    // setData({ ...data, total_credit: sum });
     return sum
   }
 
@@ -331,13 +325,8 @@ const AddJournal = (props) => {
       let td = TotalDebit()
       let tc = TotalCredit()
       setData((d) => ({ ...d, total_debit: td, total_credit: tc }))
-      // setData({
-      //   ...data,
-      //   total_debit: td,
-      //   total_credit: tc,
-      // })
     }, 0)
-    //
+    // eslint-disable-next-line
   }, [data.entry])
   // Handling Row
   const handleRow = ({ e, list }) => {
@@ -411,6 +400,7 @@ const AddJournal = (props) => {
   }
   return (
     <>
+      {console.log(data.entry)}
       <div className="modal_title">
         <b>Add Jounal</b>
         <div style={{ margin: '0px', padding: '5px 0' }}>

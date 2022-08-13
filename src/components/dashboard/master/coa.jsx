@@ -12,11 +12,11 @@ const Coa = () => {
   return (
     <>
       <div
-        className="__modal-window"
+        className="modal-window"
         style={{ display: { true: 'block', false: 'none' }[data.vis] }}
       >
         <div
-          className="row col-md-12"
+          className="row col-md-6"
           style={{ maxHeight: '95vh', overflowY: 'auto' }}
         >
           <div

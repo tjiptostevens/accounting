@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import '../assets/css/login.css'
 import '../assets/css/modal.css'
@@ -7,6 +7,13 @@ import useFetch from '../useFetch'
 
 const Login = (props) => {
   const { data: company } = useFetch('getcompany.php')
+  useEffect(() => {
+    if (company) {
+      localStorage.setItem('company', company[0].id)
+      sessionStorage.setItem('company', company[0].id)
+    }
+  }, [company])
+
   const [data, setData] = useState({
     data: {
       usr: '',
@@ -21,56 +28,91 @@ const Login = (props) => {
   })
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(data)
+    // console.log(data)
     const abortCtr = new AbortController()
     const headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': window.location.origin,
     }
-    setTimeout(() => {
-      fetch(`${urlLink.url}login.php`, {
-        signal: abortCtr.signal,
-        method: 'POST',
-        body: JSON.stringify(data.data),
-        headers: headers,
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.token) {
-            console.log('Successfully Login')
-            sessionStorage.setItem('user_id', res.token)
-            data.data.isRemember === true
-              ? localStorage.setItem('user_id', res.token)
-              : console.log('is')
-            setData({
-              ...data,
-              msg: res.message,
-              token: res.token,
-              vis: !data.vis,
-              res: res.data,
-            })
-            return res
-          } else {
-            setData({
-              ...data,
-              msg: res.message,
-            })
-          }
+    setTimeout(async () => {
+      try {
+        let res = await fetch(`${urlLink.url}login.php`, {
+          signal: abortCtr.signal,
+          method: 'POST',
+          body: JSON.stringify(data.data),
+          headers: headers,
         })
-
-        // display an alert message for an error
-        .catch((err) => {
-          console.log(err)
+        res = await res.json()
+        // console.log(res)
+        if (res.token) {
+          console.log('Successfully Login')
+          data.data.isRemember === true
+            ? localStorage.setItem('user_id', res.token)
+            : sessionStorage.setItem('user_id', res.token)
           setData({
             ...data,
-            msg: 'Error Connection',
+            msg: res.message,
+            token: res.token,
+            vis: !data.vis,
+            res: res.data,
           })
+          return res
+        } else {
+          setData({
+            ...data,
+            msg: res.message,
+          })
+        }
+      } catch (err) {
+        console.log(err)
+        setData({
+          ...data,
+          msg: 'Error Connection',
         })
+      }
+      // fetch(`${urlLink.url}login.php`, {
+      //   signal: abortCtr.signal,
+      //   method: 'POST',
+      //   body: JSON.stringify(data.data),
+      //   headers: headers,
+      // })
+      //   .then((res) => res.json())
+      //   .then((res) => {
+      //     if (res.token) {
+      //       console.log('Successfully Login')
+      //       sessionStorage.setItem('user_id', res.token)
+      //       data.data.isRemember === true
+      //         ? localStorage.setItem('user_id', res.token)
+      //         : console.log('is')
+      //       setData({
+      //         ...data,
+      //         msg: res.message,
+      //         token: res.token,
+      //         vis: !data.vis,
+      //         res: res.data,
+      //       })
+      //       return res
+      //     } else {
+      //       setData({
+      //         ...data,
+      //         msg: res.message,
+      //       })
+      //     }
+      //   })
+
+      //   // display an alert message for an error
+      //   .catch((err) => {
+      //     console.log(err)
+      //     setData({
+      //       ...data,
+      //       msg: 'Error Connection',
+      //     })
+      //   })
     }, 50)
   }
   const handleChange = (e) => {
-    console.log(`${[e.target.name]}`, e.target.value)
+    // console.log(`${[e.target.name]}`, e.target.value)
     setData({
       ...data,
       data: { ...data.data, [e.target.name]: e.target.value },

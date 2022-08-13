@@ -3,7 +3,7 @@ import CoaList from './coaList'
 
 const CoaLists = ({ list }) => {
   function createTree(list) {
-    var map = {},
+    let map = {},
       node,
       roots = [],
       i
@@ -22,11 +22,9 @@ const CoaLists = ({ list }) => {
         roots.push(node)
       }
     }
-    //  setData({ ...data, roots });
     return roots
   }
   const coaTree = createTree(list)
-  // console.log(coaTree)
   return coaTree.map((d) => <CoaList key={d.number} list={d} />)
 }
 

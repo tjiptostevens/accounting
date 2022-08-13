@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import urlLink from '../../config/urlLink'
+import useFetch from '../../useFetch'
 
 const AddAssets = (props) => {
+  const { data: coa } = useFetch('getcoa.php')
+  let coaFil = useMemo(() => coa?.filter((f) => f.type === 'Assets'), [])
   const [data, setData] = useState({ required: true })
   const handleChange = (e) => {
     console.log(`${[e.target.name]}`, e.target.value)
@@ -76,7 +79,7 @@ const AddAssets = (props) => {
       </div>
       {/* {JSON.stringify(data)} <br /> */}
       {/* {console.log(props)} */}
-      {/* {JSON.stringify(coa)} */}
+      {JSON.stringify(coaFil)}
       <div className="modal_content">
         <form onSubmit={handleSubmit} method="post">
           <div

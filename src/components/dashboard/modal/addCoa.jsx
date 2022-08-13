@@ -9,6 +9,7 @@ const AddCoa = (props) => {
     required: true,
     parent: props.data ? props.data.number : '',
     type: props.data ? props.data.type : '',
+    company: localStorage.getItem('company'),
   })
   const handleChange = (e) => {
     console.log(`${[e.target.name]}`, e.target.value)
@@ -44,34 +45,58 @@ const AddCoa = (props) => {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': window.location.origin,
     }
-    setTimeout(() => {
-      fetch(`${urlLink.url}addCoa.php`, {
-        signal: abortCtr.signal,
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: headers,
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          console.log(res)
-          setData({
-            number: '',
-            name: '',
-            parent: '',
-            is_group: null,
-            required: true,
-            message: res.message,
-          })
+    setTimeout(async () => {
+      try {
+        let res = await fetch(`${urlLink.url}addcoa.php`, {
+          signal: abortCtr.signal,
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: headers,
         })
+        res = res.json
+        console.log(res)
+        // setData({
+        //   number: '',
+        //   name: '',
+        //   parent: '',
+        //   is_group: null,
+        //   required: true,
+        //   message: res.message,
+        // })
+      } catch (error) {
+        console.log(error)
+        // setData({
+        //   ...data,
+        //   msg: 'Error Connection',
+        // })
+      }
+      // fetch(`${urlLink.url}addCoa.php`, {
+      //   signal: abortCtr.signal,
+      //   method: 'POST',
+      //   body: JSON.stringify(data),
+      //   headers: headers,
+      // })
+      //   .then((res) => res.json())
+      //   .then((res) => {
+      //     console.log(res)
+      //     setData({
+      //       number: '',
+      //       name: '',
+      //       parent: '',
+      //       is_group: null,
+      //       required: true,
+      //       message: res.message,
+      //     })
+      //   })
 
-        // display an alert message for an error
-        .catch((err) => {
-          console.log(err)
-          setData({
-            ...data,
-            msg: 'Error Connection',
-          })
-        })
+      //   // display an alert message for an error
+      //   .catch((err) => {
+      //     console.log(err)
+      //     setData({
+      //       ...data,
+      //       msg: 'Error Connection',
+      //     })
+      //   })
     }, 50)
   }
   return (
@@ -80,7 +105,7 @@ const AddCoa = (props) => {
         <b>Add Chart Of Account</b>
       </div>
       {/* {JSON.stringify(data)} <br /> */}
-      {console.log('addcoa', props)}
+      {/* {console.log('addcoa', props)} */}
       {/* {JSON.stringify(coa)} */}
       <div className="modal_content">
         <form onSubmit={handleSubmit} method="post">

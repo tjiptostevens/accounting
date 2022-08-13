@@ -6,6 +6,7 @@ const Dash = () => {
 
   return (
     <>
+      {console.log(coa)}
       {/* Component Title */}
       <div
         className="w-100"
@@ -149,6 +150,96 @@ const Dash = () => {
                       d.total.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'),
                     )}
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="row"
+        style={{
+          margin: '15px 0',
+          padding: '5px',
+        }}
+      >
+        <div
+          className="row"
+          style={{
+            margin: '0',
+            padding: '25px 15px',
+            color: 'white',
+            borderRadius: '5px',
+            textAlign: 'center',
+            background: '#212529',
+          }}
+        >
+          <div className="col-md-3">
+            <div>
+              <p>Total Income This Period</p>
+              <h5>Rp. 1,000,000.00</h5>
+            </div>
+          </div>
+          <div
+            className="col-md-1"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div
+              style={{
+                margin: 'auto',
+                border: '1px solid white',
+                width: '25px',
+                height: '25px',
+                fontFamily: 'monospace',
+                borderRadius: '5px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: 'orange',
+              }}
+            >
+              <b>-</b>
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div>
+              <p>Total Expense This Period</p>
+              <h5>Rp. 700,000.00</h5>
+            </div>
+          </div>
+          <div
+            className="col-md-1"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div
+              style={{
+                margin: 'auto',
+                border: '1px solid white',
+                width: '25px',
+                height: '25px',
+                fontFamily: 'monospace',
+                borderRadius: '5px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: '#2490ef',
+              }}
+            >
+              <b>=</b>
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div>
+              <p>Profit This Period</p>
+              <h5>Rp. 300,000.00</h5>
             </div>
           </div>
         </div>

@@ -4,49 +4,34 @@ import DeleteCoa from '../modal/deleteCoa'
 import EditCoa from '../modal/editCoa'
 
 let Array = []
-const coaTotal = (group, child, parent, total) => {
-  // console.log(group, child, parent, '=>', total)
+const coaTotal = (list) => {
+  // console.log('child', child)
   let arr = {}
   let gr = {}
   let x = 0
-  console.log(child)
-  if (child.length > 0) {
-    for (let i = 0; i < child.length; i++) {
-      const element = parseInt(child[i].total)
+  // console.log(child)
+  if (list.child.length > 0) {
+    for (let i = 0; i < list.child.length; i++) {
+      const element = parseInt(list.child[i].total)
       x += element
     }
-    console.log('for', x)
-    arr = [...Array, { parent: parent, total: x }]
+    // console.log('for', x)
+    arr = { ...list, total: x }
     Array = arr
-    console.log('x', Array)
+    // console.log('x', Array)
+    return `${x}.00`
   }
-  // if (group === '0') {
-  //   arr = [...Array, parseInt(total)]
-  //   Array = arr
-  //   console.log('0', Array)
-  //   x = 0
-  // } else {
-  //   x = x
-  //   for (let i = 0; i < Array.length; i++) {
-  //     const element = Array[i]
-  //     x += element
-  //     console.log('for', element)
-  //   }
-  //   console.log('x', x)
-  //   gr = { ...gr, [parent]: { data: Array, total: x } }
-  //   Array = gr
-  //   console.log('1', Array)
-  // }
 }
 function CoaList({ list }) {
+  // const list = coaTotal(lists)
   const [data, setData] = useState({ vis: false, toggle: false })
   const nestedCoa = (list.child || []).map((d) => {
     return <CoaList key={d.number} list={d} type="child" />
   })
-  useEffect(() => {
-    coaTotal(list.is_group, list.child, list.number, list.total)
-    // eslint-disable-next-line
-  }, [])
+  // useEffect(() => {
+  //   coaTotal(list)
+  //   // eslint-disable-next-line
+  // }, [])
   const handleClose = (e) => {
     setData({ ...data, vis: false })
   }
@@ -62,13 +47,13 @@ function CoaList({ list }) {
 
   return (
     <>
-      {/* {console.log(Array)} */}
+      {/* {console.log(list)} */}
       <div
-        className="__modal-window"
+        className="modal-window"
         style={{ display: { true: 'block', false: 'none' }[data.vis] }}
       >
         <div
-          className="row col-md-12"
+          className="row col-md-6"
           style={{ maxHeight: '95vh', overflowY: 'auto' }}
         >
           <div
@@ -168,7 +153,10 @@ function CoaList({ list }) {
               width: '50%',
             }}
           >
-            {list.total.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} Rp
+            {list.child.length > 0
+              ? coaTotal(list)?.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+              : list.total.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}{' '}
+            Rp
           </div>
         </div>
         {nestedCoa}

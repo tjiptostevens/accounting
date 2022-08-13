@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import logo from '../assets/img/env.png'
 import useWindow from '../useWindow'
 import '../assets/css/sideNav.css'
 
 const SideNav = (props) => {
   const { width } = useWindow()
+  const navigate = useNavigate()
   const [data, setData] = useState({
     width: true,
     micon: 'm_icon bi bi-x-circle',
@@ -13,6 +14,7 @@ const SideNav = (props) => {
   const handleLogout = (e) => {
     sessionStorage.clear()
     localStorage.clear()
+    navigate('/', { replace: true })
   }
 
   function Nav() {
@@ -294,7 +296,7 @@ const SideNav = (props) => {
             <ul className="nav nav-pills flex-column mb-auto">
               <li>
                 <NavLink
-                  to={'/login'}
+                  to={'/'}
                   className="nav-link text-white"
                   onClick={handleLogout}
                 >
@@ -338,7 +340,7 @@ const SideNav = (props) => {
             <ul className="nav nav-pills flex-column mb-auto">
               <li>
                 <NavLink
-                  to={'/login'}
+                  to={'/'}
                   className="nav-link text-white"
                   onClick={handleLogout}
                 >
