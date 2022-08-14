@@ -51,9 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
         $type = $_POST['type'];
         $created_date = date("Y-m-d h:i:s");
         $modified_date = date("Y-m-d h:i:s");        
+        $company=$_POST['company'];
         $created_by = "admin";
         $status = "1";
-        $arr="INSERT INTO tabchartofaccount (number,name,is_group,parent,type, created_date, modified_date, created_by, status) VALUES ('$number','$name','$is_group','$parent','$type','$created_date','$modified_date','$created_by','$status')";
+        $arr="INSERT INTO tabchartofaccount (number,name,is_group,parent,type, created_date, modified_date, created_by, status, company) VALUES ('$number','$name','$is_group','$parent','$type','$created_date','$modified_date','$created_by','$status','$company')";
         
         // echo json_encode(
         //     [
@@ -92,5 +93,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     }
 
     mysqli_close($conn);
-
-?>

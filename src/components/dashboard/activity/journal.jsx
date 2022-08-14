@@ -175,7 +175,7 @@ const Journal = () => {
       <div className="w-100" style={{ height: '25px' }}></div>
       <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
         <div
-          className="row d-none col-md-12"
+          className="row d-none d-md-flex col-md-12"
           style={{
             color: 'white',
             textAlign: 'left',

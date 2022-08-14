@@ -4,8 +4,21 @@ import useFetch from '../../useFetch'
 
 const AddAssets = (props) => {
   const { data: coa } = useFetch('getcoa.php')
-  let coaFil = useMemo(() => coa?.filter((f) => f.type === 'Assets'), [])
-  const [data, setData] = useState({ required: true })
+  let coaFil = useMemo(() => coa?.filter((f) => f.type === 'Assets'), [coa])
+  const [data, setData] = useState({
+    required: true,
+    code: '',
+    name: '',
+    qty: '',
+    lifetime: '',
+    date: '',
+    init_value: '',
+    eco_value: '',
+    description: '',
+    company: localStorage.getItem('company'),
+    created_by: localStorage.getItem('loginUser'),
+    message: '',
+  })
   const handleChange = (e) => {
     console.log(`${[e.target.name]}`, e.target.value)
     let nam = e.target.name
@@ -38,16 +51,20 @@ const AddAssets = (props) => {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': window.location.origin,
     }
-    setTimeout(() => {
-      fetch(`${urlLink.url}addassets.php`, {
-        signal: abortCtr.signal,
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: headers,
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          console.log(res)
+    setTimeout(async () => {
+      try {
+        let res = await fetch(`${urlLink.url}addassets.php`, {
+          signal: abortCtr.signal,
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: headers,
+        })
+
+        res = await res.json()
+        console.log(res)
+        if (res.error) {
+          throw res
+        } else {
           setData({
             required: true,
             code: '',
@@ -58,18 +75,18 @@ const AddAssets = (props) => {
             init_value: '',
             eco_value: '',
             description: '',
+            company: localStorage.getItem('company'),
+            created_by: localStorage.getItem('loginUser'),
             message: res.message,
           })
+        }
+      } catch (error) {
+        console.log(error)
+        setData({
+          ...data,
+          msg: error.message,
         })
-
-        // display an alert message for an error
-        .catch((err) => {
-          console.log(err)
-          setData({
-            ...data,
-            msg: 'Error Connection',
-          })
-        })
+      }
     }, 50)
   }
   return (

@@ -90,7 +90,12 @@ const Coa = () => {
         <div className="w-100" style={{ height: '25px' }}></div>
         <div
           className="row col-md-12"
-          style={{ padding: '0px 25px', maxHeight: '70vh', overflowY: 'auto' }}
+          style={{
+            padding: '0px 25px',
+            height: '85vh',
+            maxHeight: '85vh',
+            overflowY: 'auto',
+          }}
         >
           {coa && <CoaLists list={coa} />}
         </div>

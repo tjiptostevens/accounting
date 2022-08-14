@@ -1,5 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
-import ReportTable from '../../report/reportTable'
+import React, { useState, useMemo } from 'react'
 import useFetch from '../../useFetch'
 import AddAssets from '../modal/addAssets'
 
@@ -23,26 +22,16 @@ const Depreciation = () => {
     return (
       assets &&
       assets
-        // .sort((a, b) => (a.name > b.name ? 1 : -1))
+        .sort((a, b) => (a.date > b.date ? 1 : -1))
         .filter(
           (d) =>
-            (!searchRegex || searchRegex.test(d.name + d.title + d.type)) &&
+            (!searchRegex || searchRegex.test(d.name + d.code)) &&
             (!data.search_type || d.type === data.search_type) &&
-            (!data.end_date || d.posting_date === data.end_date),
+            (!data.end_date || d.date === data.end_date),
         )
     )
   }, [assets, data.search, data.search_type, data.end_date])
-  //   useEffect(() => {
-  //     let array = assets && Object.keys(assets)
-  //     console.log(array)
-  //     let loop = []
-  //     array.forEach((element) => {
-  //       let obj = { title: element }
-  //       loop.push(obj)
-  //     })
-  //     console.log(loop)
-  //     setData({ ...data, header: loop, body: array })
-  //   }, [assets])
+
   return (
     <>
       {/* Modal Window */}
@@ -92,7 +81,6 @@ const Depreciation = () => {
           </div>
         </div>
       </div>
-
       {/* Component Title */}
       <div
         className="w-100"
@@ -125,12 +113,62 @@ const Depreciation = () => {
       </div>
 
       <hr style={{ margin: '0' }} />
-      {assets &&
-        assets.map((d, i) => (
-          <>
-            <div>{d.code}</div>
-          </>
-        ))}
+
+      <div className="w-100" style={{ height: '25px' }}></div>
+      <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
+        <div
+          className="row d-none d-md-flex col-md-12"
+          style={{
+            color: 'white',
+            textAlign: 'left',
+            padding: '7px 0',
+            fontWeight: '600',
+          }}
+        >
+          <div className="col-md-1">Code</div>
+          <div className="col-md-3">Name</div>
+          <div className="col-md-2">Date</div>
+          <div className="col-md-1">Qty</div>
+          <div className="col-md-1">Lifetime</div>
+          <div className="col-md-2" style={{ textAlign: 'center' }}>
+            Init Value
+          </div>
+          <div className="col-md-2" style={{ textAlign: 'center' }}>
+            Eco Value
+          </div>
+        </div>
+        <hr />
+      </div>
+      {/* {console.log(data)} */}
+      <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
+        {assetsFil &&
+          assetsFil.map((d, i) => (
+            <div key={i + '-' + d.id + '-' + d.code}>
+              <div
+                className="row col-md-12"
+                style={{
+                  color: 'white',
+                  textAlign: 'left',
+                  fontWeight: '100',
+                }}
+              >
+                {console.log(d)}
+                <div className="col-md-1 col-6">{d.code}</div>
+                <div className="col-md-3 col-6">{d.name}</div>
+                <div className="col-md-2 col-6">{d.date}</div>
+                <div className="col-md-1 col-3">{d.qty}</div>
+                <div className="col-md-1 col-3">{d.lifetime}</div>
+                <div className="col-md-2 col-6" style={{ textAlign: 'right' }}>
+                  {d.init_value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+                </div>
+                <div className="col-md-2 col-6" style={{ textAlign: 'right' }}>
+                  {d.eco_value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+                </div>
+              </div>
+              <hr />
+            </div>
+          ))}
+      </div>
     </>
   )
 }

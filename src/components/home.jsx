@@ -27,7 +27,12 @@ const Home = (props) => {
         <div className="__body">
           <div
             className="w-100"
-            style={{ display: 'flex', flexDirection: 'row', height: '85vh' }}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              height: '100%',
+              maxHeight: 'inherit',
+            }}
           >
             {/* Sidebar */}
             <div className="__side_bar">

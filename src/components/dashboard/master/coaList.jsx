@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import AddCoa from '../modal/addCoa'
 import DeleteCoa from '../modal/deleteCoa'
 import EditCoa from '../modal/editCoa'
+import Modal from '../../site/modal'
 
 let Array = []
 const coaTotal = (list) => {
@@ -25,6 +26,7 @@ const coaTotal = (list) => {
 function CoaList({ list }) {
   // const list = coaTotal(lists)
   const [data, setData] = useState({ vis: false, toggle: false })
+  const [vis, setVis] = useState({ modal: false })
   const nestedCoa = (list.child || []).map((d) => {
     return <CoaList key={d.number} list={d} type="child" />
   })
@@ -33,22 +35,44 @@ function CoaList({ list }) {
   //   // eslint-disable-next-line
   // }, [])
   const handleClose = (e) => {
-    setData({ ...data, vis: false })
+    setVis({ ...vis, modal: false })
   }
   const handleAddChild = (e) => {
-    setData({ ...data, vis: true, value: 1 })
+    setVis({ ...vis, modal: true, value: 1 })
   }
   const handleEdit = (e) => {
-    setData({ ...data, vis: true, value: 2 })
+    setVis({ ...vis, modal: true, value: 2 })
   }
   const handleDelete = (e) => {
-    setData({ ...data, vis: true, value: 3 })
+    setVis({ ...vis, modal: true, value: 3 })
   }
 
   return (
     <>
       {/* {console.log(list)} */}
-      <div
+      {vis.modal ? (
+        <Modal
+          modal={vis.modal}
+          title={
+            {
+              1: 'Add Coa',
+              2: 'Edit Coa',
+              3: 'Delete Coa',
+            }[vis.value]
+          }
+          element={
+            {
+              1: <AddCoa data={list} handleClose={handleClose} />,
+              2: <EditCoa data={list} handleClose={handleClose} />,
+              3: <DeleteCoa data={list} handleClose={handleClose} />,
+            }[vis.value]
+          }
+          handleClose={handleClose}
+        />
+      ) : (
+        ''
+      )}
+      {/* <div
         className="modal-window"
         style={{ display: { true: 'block', false: 'none' }[data.vis] }}
       >
@@ -85,7 +109,7 @@ function CoaList({ list }) {
             }
           </div>
         </div>
-      </div>
+      </div> */}
       <div
         style={{ paddingLeft: '20px', marginTop: '5px' }}
         onMouseOver={() => setData({ ...data, toggle: true })}
@@ -102,7 +126,7 @@ function CoaList({ list }) {
             style={{
               display: 'flex',
               justifyContent: 'flex-start',
-              width: '50%',
+              width: '45%',
             }}
           >
             {list.is_group === '1' ? (
@@ -150,7 +174,8 @@ function CoaList({ list }) {
             style={{
               display: 'flex',
               justifyContent: 'flex-end',
-              width: '50%',
+              width: '45%',
+              color: 'white',
             }}
           >
             {list.child.length > 0
@@ -158,9 +183,23 @@ function CoaList({ list }) {
               : list.total.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}{' '}
             Rp
           </div>
+          <div
+            className="d-none d-md-flex"
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              width: '10%',
+              color: '#646464',
+            }}
+          >
+            {list.type}
+          </div>
         </div>
         {nestedCoa}
       </div>
+      {list.parent === '0' && (
+        <div className="w-100" style={{ height: '15px' }}></div>
+      )}
     </>
   )
 }

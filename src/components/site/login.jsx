@@ -47,9 +47,15 @@ const Login = (props) => {
         // console.log(res)
         if (res.token) {
           console.log('Successfully Login')
-          data.data.isRemember === true
-            ? localStorage.setItem('user_id', res.token)
-            : sessionStorage.setItem('user_id', res.token)
+          if (data.data.isRemember === true) {
+            localStorage.setItem('user_id', res.token)
+            localStorage.setItem('loginUser', data.data.usr)
+            sessionStorage.setItem('user_id', res.token)
+            sessionStorage.setItem('loginUser', data.data.usr)
+          } else {
+            sessionStorage.setItem('user_id', res.token)
+            sessionStorage.setItem('loginUser', data.data.usr)
+          }
           setData({
             ...data,
             msg: res.message,
