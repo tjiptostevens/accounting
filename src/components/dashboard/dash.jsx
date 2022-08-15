@@ -3,10 +3,18 @@ import useFetch from '../useFetch'
 
 const Dash = () => {
   const { data: coa } = useFetch('getcoav2.php')
+  let income = 0
+  let expense = 0
+  coa?.forEach((element) => {
+    if (element.type === 'Income') {
+      income += parseFloat(element.total)
+    } else if (element.type === 'Expense') {
+      expense += parseFloat(element.total)
+    }
+  })
 
   return (
     <>
-      {console.log(coa)}
       {/* Component Title */}
       <div
         className="w-100"
@@ -175,7 +183,11 @@ const Dash = () => {
           <div className="col-md-3">
             <div>
               <p>Total Income This Period</p>
-              <h5>Rp. 1,000,000.00</h5>
+              <h5 style={income < 0 ? { color: 'red' } : { color: 'white' }}>
+                Rp.{' '}
+                {income.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
+                  '.00'}
+              </h5>
             </div>
           </div>
           <div
@@ -207,7 +219,11 @@ const Dash = () => {
           <div className="col-md-3">
             <div>
               <p>Total Expense This Period</p>
-              <h5>Rp. 700,000.00</h5>
+              <h5 style={expense < 0 ? { color: 'red' } : { color: 'white' }}>
+                Rp.{' '}
+                {expense.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
+                  '.00'}
+              </h5>
             </div>
           </div>
           <div
@@ -239,7 +255,20 @@ const Dash = () => {
           <div className="col-md-3">
             <div>
               <p>Profit This Period</p>
-              <h5>Rp. 300,000.00</h5>
+              <h5
+                style={
+                  income - expense < 0
+                    ? { color: 'red' }
+                    : income - expense === 0
+                    ? { color: 'white' }
+                    : { color: 'green' }
+                }
+              >
+                Rp.{' '}
+                {(income - expense)
+                  .toString()
+                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}
+              </h5>
             </div>
           </div>
         </div>
