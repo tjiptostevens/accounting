@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import useFetch from '../useFetch'
 
 const Dash = () => {
@@ -183,7 +183,9 @@ const Dash = () => {
           <div className="col-md-3">
             <div>
               <p>Total Income This Period</p>
-              <h5 style={income < 0 ? { color: 'red' } : { color: 'white' }}>
+              <h5
+                style={income < 0 ? { color: 'crimson' } : { color: 'white' }}
+              >
                 Rp.{' '}
                 {income.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
                   '.00'}
@@ -210,7 +212,7 @@ const Dash = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                color: 'orange',
+                color: 'gold',
               }}
             >
               <b>-</b>
@@ -219,7 +221,9 @@ const Dash = () => {
           <div className="col-md-3">
             <div>
               <p>Total Expense This Period</p>
-              <h5 style={expense < 0 ? { color: 'red' } : { color: 'white' }}>
+              <h5
+                style={expense < 0 ? { color: 'crimson' } : { color: 'white' }}
+              >
                 Rp.{' '}
                 {expense.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
                   '.00'}
@@ -258,10 +262,10 @@ const Dash = () => {
               <h5
                 style={
                   income - expense < 0
-                    ? { color: 'red' }
+                    ? { color: 'crimson' }
                     : income - expense === 0
                     ? { color: 'white' }
-                    : { color: 'green' }
+                    : { color: 'limegreen' }
                 }
               >
                 Rp.{' '}
