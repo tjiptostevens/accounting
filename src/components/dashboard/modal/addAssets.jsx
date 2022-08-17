@@ -2,11 +2,15 @@ import React, { useMemo, useState } from 'react'
 import urlLink from '../../config/urlLink'
 import useFetch from '../../useFetch'
 import useDate from '../../useDate'
+import Modal from '../../site/modal'
 
 const AddAssets = (props) => {
   const { YY, MM, DD } = useDate()
   const { data: coa } = useFetch('getcoa.php')
-  let coaFil = useMemo(() => coa?.filter((f) => f.type === 'Assets'), [coa])
+  let coaFil = useMemo(
+    () => coa?.filter((f) => f.type === 'Assets' && f.is_group === '0'),
+    [coa],
+  )
   const [data, setData] = useState({
     required: true,
     code: '',
@@ -14,6 +18,7 @@ const AddAssets = (props) => {
     qty: '',
     lifetime: '',
     date: YY + '-' + MM + '-' + DD,
+    acc: '',
     init_value: '',
     eco_value: '',
     description: '',
@@ -21,6 +26,7 @@ const AddAssets = (props) => {
     created_by: localStorage.getItem('loginUser'),
     message: '',
   })
+  const [vis, setVis] = useState({ modal: false })
   const handleChange = (e) => {
     console.log(`${[e.target.name]}`, e.target.value)
     let nam = e.target.name
@@ -40,8 +46,10 @@ const AddAssets = (props) => {
     }
   }
   const handleClose = (e) => {
+    e.preventDefault()
     console.log(data)
     setData({ ...data, required: !data.required })
+    window.location.reload()
     props.handleClose(e)
   }
   const handleSubmit = (e) => {
@@ -67,13 +75,15 @@ const AddAssets = (props) => {
         if (res.error) {
           throw res
         } else {
+          setVis({ modal: true, message: res.message })
           setData({
             required: true,
             code: '',
             name: '',
             qty: '',
             lifetime: '',
-            date: '',
+            date: YY + '-' + MM + '-' + DD,
+            acc: '',
             init_value: '',
             eco_value: '',
             description: '',
@@ -95,7 +105,17 @@ const AddAssets = (props) => {
     <>
       {/* {JSON.stringify(data)} <br /> */}
       {/* {console.log(props)} */}
-      {JSON.stringify(data)}
+      {/* {JSON.stringify(coaFil)} */}
+      <Modal
+        modal={vis.modal}
+        title=""
+        element={
+          <>
+            <p>{vis.message}</p>
+          </>
+        }
+        handleClose={() => setVis({ modal: false })}
+      />
       <form onSubmit={handleSubmit} method="post">
         <div
           className="row col-md-12"
@@ -144,7 +164,7 @@ const AddAssets = (props) => {
         >
           {/* Customer Quantity */}
           <div
-            className="row col-md-3"
+            className="row col-md-4"
             style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">
@@ -182,7 +202,7 @@ const AddAssets = (props) => {
           </div>
           {/* Customer Date */}
           <div
-            className="row col-md-5"
+            className="row col-md-4"
             style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">
@@ -203,9 +223,34 @@ const AddAssets = (props) => {
           className="row col-md-12"
           style={{ margin: '0px', padding: '0px' }}
         >
+          <div
+            className="row col-md-4"
+            style={{ margin: '0px', padding: '0px' }}
+          >
+            <label className="label_title">
+              Account <span className="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              list="coa"
+              className="form-control mb-2"
+              name="acc"
+              value={data.acc}
+              onChange={handleChange}
+            />
+
+            <datalist id="coa">
+              {coaFil &&
+                coaFil.map((d, key) => (
+                  <option key={key} value={d.number}>
+                    {d.number + ' - ' + d.name}
+                  </option>
+                ))}
+            </datalist>
+          </div>
           {/* Customer Initial Value */}
           <div
-            className="row col-md-6"
+            className="row col-md-4"
             style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">
@@ -225,7 +270,7 @@ const AddAssets = (props) => {
           </div>
           {/* Customer Date */}
           <div
-            className="row col-md-6"
+            className="row col-md-4"
             style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">Economic Value</label>

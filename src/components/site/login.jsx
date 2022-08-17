@@ -8,6 +8,9 @@ import useFetch from '../useFetch'
 const Login = (props) => {
   const { data: company } = useFetch('getcompany.php')
   useEffect(() => {
+    if (localStorage.getItem('user_id')) {
+      console.log(localStorage.getItem('user_id'))
+    }
     if (company) {
       localStorage.setItem('company', company[0].id)
       sessionStorage.setItem('company', company[0].id)
@@ -47,14 +50,28 @@ const Login = (props) => {
         // console.log(res)
         if (res.token) {
           console.log('Successfully Login')
+          let period = await fetch(`${urlLink.url}getperiod.php`, {
+            signal: abortCtr.signal,
+            method: 'POST',
+            body: JSON.stringify(data.data),
+            headers: headers,
+          })
+          period = await period.json()
+          period = await period.filter((f) => f.status === '1')
+          console.log(period)
           if (data.data.isRemember === true) {
             localStorage.setItem('user_id', res.token)
             localStorage.setItem('loginUser', data.data.usr)
+            localStorage.setItem('period', period[0].id)
             sessionStorage.setItem('user_id', res.token)
             sessionStorage.setItem('loginUser', data.data.usr)
+            sessionStorage.setItem('period', period[0].id)
           } else {
             sessionStorage.setItem('user_id', res.token)
+            localStorage.setItem('loginUser', data.data.usr)
             sessionStorage.setItem('loginUser', data.data.usr)
+            localStorage.setItem('period', period[0].id)
+            sessionStorage.setItem('period', period[0].id)
           }
           setData({
             ...data,
@@ -65,10 +82,11 @@ const Login = (props) => {
           })
           return res
         } else {
-          setData({
-            ...data,
-            msg: res.message,
-          })
+          throw res
+          // setData({
+          //   ...data,
+          //   msg: res.message,
+          // })
         }
       } catch (err) {
         console.log(err)
@@ -77,44 +95,6 @@ const Login = (props) => {
           msg: 'Error Connection',
         })
       }
-      // fetch(`${urlLink.url}login.php`, {
-      //   signal: abortCtr.signal,
-      //   method: 'POST',
-      //   body: JSON.stringify(data.data),
-      //   headers: headers,
-      // })
-      //   .then((res) => res.json())
-      //   .then((res) => {
-      //     if (res.token) {
-      //       console.log('Successfully Login')
-      //       sessionStorage.setItem('user_id', res.token)
-      //       data.data.isRemember === true
-      //         ? localStorage.setItem('user_id', res.token)
-      //         : console.log('is')
-      //       setData({
-      //         ...data,
-      //         msg: res.message,
-      //         token: res.token,
-      //         vis: !data.vis,
-      //         res: res.data,
-      //       })
-      //       return res
-      //     } else {
-      //       setData({
-      //         ...data,
-      //         msg: res.message,
-      //       })
-      //     }
-      //   })
-
-      //   // display an alert message for an error
-      //   .catch((err) => {
-      //     console.log(err)
-      //     setData({
-      //       ...data,
-      //       msg: 'Error Connection',
-      //     })
-      //   })
     }, 50)
   }
   const handleChange = (e) => {

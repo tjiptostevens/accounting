@@ -283,13 +283,23 @@ const Journal = () => {
                       <div className="col-md-4">
                         <hr style={{ margin: '0', padding: '0' }} />
                         <div>
-                          <p>
-                            <small>Pay To / Receive From :</small> <br />
-                            {e.pay_to_recd_from}
-                            <br />
-                            <small>User Remark: </small> <br />
-                            {e.user_remark}
-                          </p>
+                          {e.type === 'Depreciation' ? (
+                            <p>
+                              <small>Ref :</small> <br />
+                              {e.ref}
+                              <br />
+                              <small>Ref Id: </small> <br />
+                              {e.ref_id}
+                            </p>
+                          ) : (
+                            <p>
+                              <small>Pay To / Receive From :</small> <br />
+                              {e.pay_to_recd_from}
+                              <br />
+                              <small>User Remark: </small> <br />
+                              {e.user_remark}
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="col-md-7">

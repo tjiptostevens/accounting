@@ -49,7 +49,7 @@ const useDate = () => {
       '-' +
       today.getDate(),
     DD = ('0' + today.getDate()).slice(-2),
-    MM = ('0' + today.getMonth()).slice(-2),
+    MM = monthNum[today.getMonth()],
     MMM = monthShort[today.getMonth()],
     MMMM = monthNames[today.getMonth()],
     YY = today.getFullYear(),
@@ -57,7 +57,7 @@ const useDate = () => {
     mm = today.getMinutes(),
     ss = today.getSeconds(),
     now = YY + '-' + MM + '-' + DD + ' ' + HH + ':' + mm + ':' + ss
-  return { now, DD, MM, MMM, MMMM, YY, HH, mm, ss }
+  return { date, now, DD, MM, MMM, MMMM, YY, HH, mm, ss }
 }
 
 export default useDate

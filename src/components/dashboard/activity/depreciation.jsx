@@ -5,6 +5,7 @@ import Modal from '../../site/modal'
 
 const Depreciation = () => {
   const { data: assets } = useFetch('getassets.php')
+  const { data: journal } = useFetch('getjournal.php')
   const [vis, setVis] = useState({ modal: false })
   const [data, setData] = useState({ vis: false })
   //   const elementRef = useRef(null);
@@ -33,6 +34,16 @@ const Depreciation = () => {
         )
     )
   }, [assets, data.search, data.search_type, data.end_date])
+
+  const handleCalc = async () => {
+    // Check Journal for Depreciation
+    let depJournal = await journal?.filter((f) => f.type === 'Depreciation')
+    // jika depJournal RefID = assetsId dan
+    console.log(depJournal)
+  }
+  const handleDepreciationDet = (i, code) => {
+    console.log(i, code)
+  }
 
   return (
     <>
@@ -79,8 +90,10 @@ const Depreciation = () => {
             className="btn btn-primary m-1"
             onClick={() => setVis({ ...vis, modal: true, value: 1 })}
           >
-            <i className="bi bi-plus"></i>
-            New
+            <i className="bi bi-plus"></i> New
+          </button>
+          <button className="btn btn-primary m-1" onClick={handleCalc}>
+            <i className="bi bi-calculator"></i> Calc
           </button>
         </div>
       </div>
@@ -98,8 +111,7 @@ const Depreciation = () => {
             fontWeight: '600',
           }}
         >
-          <div className="col-md-1">Code</div>
-          <div className="col-md-3">Name</div>
+          <div className="col-md-3">Code - Name</div>
           <div className="col-md-2">Date</div>
           <div className="col-md-1">Qty</div>
           <div className="col-md-1">Lifetime</div>
@@ -109,6 +121,7 @@ const Depreciation = () => {
           <div className="col-md-2" style={{ textAlign: 'center' }}>
             Eco Value
           </div>
+          <div className="col-md-1"></div>
         </div>
         <hr />
       </div>
@@ -125,17 +138,35 @@ const Depreciation = () => {
                   fontWeight: '100',
                 }}
               >
-                {console.log(d)}
-                <div className="col-md-1 col-6">{d.code}</div>
-                <div className="col-md-3 col-6">{d.name}</div>
+                {/* {console.log(d)} */}
+                <div className="col-md-3 col-6">
+                  {d.code} - {d.name}
+                </div>
                 <div className="col-md-2 col-6">{d.date}</div>
                 <div className="col-md-1 col-3">{d.qty}</div>
-                <div className="col-md-1 col-3">{d.lifetime}</div>
+                <div className="col-md-1 col-3">{d.lifetime} yr</div>
                 <div className="col-md-2 col-6" style={{ textAlign: 'right' }}>
                   {d.init_value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
                 </div>
                 <div className="col-md-2 col-6" style={{ textAlign: 'right' }}>
-                  {d.eco_value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+                  {d.eco_value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}{' '}
+                </div>
+
+                <div
+                  className="col-md-1 col-3"
+                  style={{ textAlign: 'right' }}
+                  onClick={() => handleDepreciationDet(i, d.code)}
+                  onMouseOver={(e) =>
+                    (e.target.firstChild.className = 'bi bi-plus-square-fill')
+                  }
+                  onMouseOut={(e) =>
+                    (e.target.firstChild.className = 'bi bi-plus-square')
+                  }
+                >
+                  <i
+                    className="bi bi-plus-square"
+                    style={{ color: 'white' }}
+                  ></i>
                 </div>
               </div>
               <hr />
