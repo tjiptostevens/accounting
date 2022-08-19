@@ -67,10 +67,10 @@ const Login = (props) => {
             sessionStorage.setItem('loginUser', data.data.usr)
             sessionStorage.setItem('period', period[0].id)
           } else {
-            sessionStorage.setItem('user_id', res.token)
             localStorage.setItem('loginUser', data.data.usr)
-            sessionStorage.setItem('loginUser', data.data.usr)
             localStorage.setItem('period', period[0].id)
+            sessionStorage.setItem('user_id', res.token)
+            sessionStorage.setItem('loginUser', data.data.usr)
             sessionStorage.setItem('period', period[0].id)
           }
           setData({
