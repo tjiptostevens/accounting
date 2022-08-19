@@ -3,6 +3,12 @@ import urlLink from '../../config/urlLink'
 import useFetch from '../../useFetch'
 import useDate from '../../useDate'
 import Modal from '../../site/modal'
+import {
+  AddAssetsFn,
+  AddJournalEntryFn,
+  AddJournalFn,
+  GetJournalLastFn,
+} from '../../custom/accFn'
 
 const AddAssets = (props) => {
   const { YY, MM, DD } = useDate()
@@ -52,54 +58,38 @@ const AddAssets = (props) => {
     window.location.reload()
     props.handleClose(e)
   }
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     console.log(data)
-    const abortCtr = new AbortController()
-    const headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': window.location.origin,
+    try {
+      let res = await AddAssetsFn(data)
+      let last = await GetJournalLastFn('Depreciation')
+      let res1 = await AddJournalFn(data)
+      await AddJournalEntryFn()
+      await AddJournalEntryFn()
+      setVis({ modal: true, message: res.message })
+      setData({
+        required: true,
+        code: '',
+        name: '',
+        qty: '',
+        lifetime: '',
+        date: YY + '-' + MM + '-' + DD,
+        acc: '',
+        init_value: '',
+        eco_value: '',
+        description: '',
+        company: localStorage.getItem('company'),
+        created_by: localStorage.getItem('loginUser'),
+        message: res.message,
+      })
+    } catch (error) {
+      setVis({ modal: false, message: error.message })
+      setData({
+        ...data,
+        msg: error.message,
+      })
     }
-    setTimeout(async () => {
-      try {
-        let res = await fetch(`${urlLink.url}addassets.php`, {
-          signal: abortCtr.signal,
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: headers,
-        })
-
-        res = await res.json()
-        console.log(res)
-        if (res.error) {
-          throw res
-        } else {
-          setVis({ modal: true, message: res.message })
-          setData({
-            required: true,
-            code: '',
-            name: '',
-            qty: '',
-            lifetime: '',
-            date: YY + '-' + MM + '-' + DD,
-            acc: '',
-            init_value: '',
-            eco_value: '',
-            description: '',
-            company: localStorage.getItem('company'),
-            created_by: localStorage.getItem('loginUser'),
-            message: res.message,
-          })
-        }
-      } catch (error) {
-        console.log(error)
-        setData({
-          ...data,
-          msg: error.message,
-        })
-      }
-    }, 50)
   }
   return (
     <>

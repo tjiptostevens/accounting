@@ -6,6 +6,8 @@ import Entry from './entry'
 
 const AddJournal = (props) => {
   const { data: coa } = useFetch('getcoa.php')
+  const loginUser = localStorage.getItem('loginUser')
+  const company = localStorage.getItem('company')
   const { YY, DD, MM, ss } = useDate()
   const [data, setData] = useState({
     type: 'Journal Umum',
@@ -24,6 +26,8 @@ const AddJournal = (props) => {
     opening: false,
     pay_to_recd_from: '',
     user_remark: '',
+    created_by: localStorage.getItem('loginUser'),
+    company: localStorage.getItem('company'),
   })
 
   useEffect(() => {
