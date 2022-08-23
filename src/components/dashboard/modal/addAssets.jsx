@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import urlLink from '../../config/urlLink'
+import { useNavigate } from 'react-router-dom'
 import useFetch from '../../useFetch'
 import useDate from '../../useDate'
 import Modal from '../../site/modal'
@@ -12,6 +12,7 @@ import {
 
 const AddAssets = (props) => {
   const { YY, MM, DD } = useDate()
+  const navigate = useNavigate()
   const { data: coa } = useFetch('getcoa.php')
   let coaFil = useMemo(
     () => coa?.filter((f) => f.type === 'Assets' && f.is_group === '0'),
@@ -55,21 +56,43 @@ const AddAssets = (props) => {
     e.preventDefault()
     console.log(data)
     setData({ ...data, required: !data.required })
-    window.location.reload()
+    navigate(0)
+    // window.location.reload()
     props.handleClose(e)
   }
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(data)
+    let assets = { ...data, id: +new Date() }
+    console.log(assets)
     try {
-      let res = await AddAssetsFn(data)
+      let res = await AddAssetsFn(assets)
       let last = await GetJournalLastFn('Depreciation')
-      let res1 = await AddJournalFn(data)
-      await AddJournalEntryFn()
-      await AddJournalEntryFn()
+      let journal = {
+        name: `DP/${localStorage.getItem('period')}/${last.last}`,
+        user_remark: data.name + ' \n' + data.description,
+        title: assets.code + ' - ' + assets.name,
+        type: 'Depreciation',
+        ref: 'Assets',
+        ref_id: assets.id,
+        total_debit: data.eco_value,
+        total_credit: data.eco_value,
+      }
+      let entry = [
+        { idx: '1', parent: journal.name, acc: '502', debit: data.eco_value },
+        {
+          idx: '2',
+          parent: journal.name,
+          acc: data.acc,
+          credit: data.eco_value,
+        },
+      ]
+      let res1 = await AddJournalFn(journal)
+      await AddJournalEntryFn(entry[0])
+      await AddJournalEntryFn(entry[1])
       setVis({ modal: true, message: res.message })
       setData({
         required: true,
+        id: assets.id,
         code: '',
         name: '',
         qty: '',
@@ -87,6 +110,7 @@ const AddAssets = (props) => {
       setVis({ modal: false, message: error.message })
       setData({
         ...data,
+        id: assets.id,
         msg: error.message,
       })
     }

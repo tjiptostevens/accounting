@@ -62,16 +62,16 @@ const Login = (props) => {
           if (data.data.isRemember === true) {
             localStorage.setItem('user_id', res.token)
             localStorage.setItem('loginUser', data.data.usr)
-            localStorage.setItem('period', period[0].id)
+            localStorage.setItem('period', period[0].name)
             sessionStorage.setItem('user_id', res.token)
             sessionStorage.setItem('loginUser', data.data.usr)
-            sessionStorage.setItem('period', period[0].id)
+            sessionStorage.setItem('period', period[0].name)
           } else {
             localStorage.setItem('loginUser', data.data.usr)
-            localStorage.setItem('period', period[0].id)
+            localStorage.setItem('period', period[0].name)
             sessionStorage.setItem('user_id', res.token)
             sessionStorage.setItem('loginUser', data.data.usr)
-            sessionStorage.setItem('period', period[0].id)
+            sessionStorage.setItem('period', period[0].name)
           }
           setData({
             ...data,

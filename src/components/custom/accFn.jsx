@@ -1,6 +1,4 @@
-import { useEffect } from 'react'
 import urlLink from '../config/urlLink'
-import useDate from '../useDate'
 
 const abortCtr = new AbortController()
 const headers = {
@@ -10,9 +8,8 @@ const headers = {
 }
 const loginUser = localStorage.getItem('loginUser')
 const company = localStorage.getItem('company')
-let vis, data
 
-const GetJournalLastFn = (journalType) => {
+const GetJournalLastFn = async (journalType) => {
   try {
     let res = await fetch(
       `${urlLink.url}getjournallast.php?type=${journalType}`,
@@ -26,7 +23,7 @@ const GetJournalLastFn = (journalType) => {
     if (res.error) {
       throw res
     } else {
-      return res.last
+      return res
     }
   } catch (error) {
     console.log(error)
@@ -74,10 +71,10 @@ const AddJournalEntryFn = async (
   input = {
     idx: '1',
     acc: '',
-    party_type: '',
-    party: '',
-    debit: '',
-    credit: '',
+    party_type: null,
+    party: null,
+    debit: 0,
+    credit: 0,
   },
 ) => {
   try {

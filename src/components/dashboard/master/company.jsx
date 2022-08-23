@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import useFetch from '../../useFetch'
 import urlLink from '../../config/urlLink'
+import { useNavigate } from 'react-router-dom'
 
 const Company = () => {
   const { data: company } = useFetch('getcompany.php')
+  const navigate = useNavigate()
   const [file, setFile] = useState('comp ? comp.logo : "nofile.png"')
   const [data, setData] = useState({
     company: '',
@@ -37,7 +39,8 @@ const Company = () => {
           headers: headers,
         })
         console.log(res)
-        window.location.reload()
+        navigate(0)
+        // window.location.reload()
       }, 500)
     } catch (error) {
       console.log(error)

@@ -1,11 +1,6 @@
-/* width */
-
 ::-webkit-scrollbar {
     width: 7px;
 }
-
-
-/* Track */
 
 ::-webkit-scrollbar-track {
     background: rgba(126, 126, 126, 0.253);
@@ -13,17 +8,11 @@
     transition: all 1s;
 }
 
-
-/* Handle */
-
 ::-webkit-scrollbar-thumb {
     background: grey;
     border-radius: 5px;
     transition: all 1s;
 }
-
-
-/* Handle on hover */
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgb(226, 226, 226);

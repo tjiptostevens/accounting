@@ -3,17 +3,20 @@ import useFetch from '../../useFetch'
 import urlLink from '../../config/urlLink'
 import useDate from '../../useDate'
 import Entry from './entry'
+import {
+  AddJournalEntryFn,
+  AddJournalFn,
+  GetJournalLastFn,
+} from '../../custom/accFn'
 
 const AddJournal = (props) => {
   const { data: coa } = useFetch('getcoa.php')
-  const loginUser = localStorage.getItem('loginUser')
-  const company = localStorage.getItem('company')
   const { YY, DD, MM, ss } = useDate()
   const [data, setData] = useState({
     type: 'Journal Umum',
     type_number: 6,
     required: true,
-    name: `JV/${MM}/####`,
+    name: `JV/${localStorage.getItem('period')}/####`,
     title: '',
     last: '0000',
     now: `${YY}-${MM}-${DD}`,
@@ -31,23 +34,9 @@ const AddJournal = (props) => {
   })
 
   useEffect(() => {
-    const abortCtr = new AbortController()
-    const headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': window.location.origin,
-    }
     setTimeout(async () => {
       try {
-        let res = await fetch(
-          `${urlLink.url}getjournallast.php?type=${data.type}`,
-          {
-            signal: abortCtr.signal,
-            method: 'GET',
-            headers: headers,
-          },
-        )
-        res = await res.json()
+        let res = await GetJournalLastFn(data.type)
         setData({ ...data, last: res.last })
       } catch (error) {
         console.log(error)
@@ -62,7 +51,7 @@ const AddJournal = (props) => {
     // eslint-disable-next-line
   }, [data.name, data.title])
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     // console.log(`${[e.target.name]}`, e.target.value)
     let nam = e.target.name
     let val = e.target.value
@@ -71,7 +60,7 @@ const AddJournal = (props) => {
         case 1:
           setData({
             ...data,
-            name: `SC/Track/${data.month}/####`,
+            name: `SC/Track/${localStorage.getItem('period')}/####`,
             type: 'Penjualan Tracking Kredit',
             type_number: 1,
             entry: [
@@ -99,7 +88,7 @@ const AddJournal = (props) => {
         case 2:
           setData({
             ...data,
-            name: `SC/Conta/${data.month}/####`,
+            name: `SC/Conta/${localStorage.getItem('period')}/####`,
             type: 'Penjualan Container Kredit',
             type_number: 2,
             entry: [
@@ -127,7 +116,7 @@ const AddJournal = (props) => {
         case 3:
           setData({
             ...data,
-            name: `PC/${data.month}/####`,
+            name: `PC/${localStorage.getItem('period')}/####`,
             type: 'Pembelian Kredit',
             type_number: 3,
             entry: [
@@ -155,7 +144,7 @@ const AddJournal = (props) => {
         case 4:
           setData({
             ...data,
-            name: `CR/${data.month}/####`,
+            name: `CR/${localStorage.getItem('period')}/####`,
             type: 'Penerimaan Kas',
             type_number: 4,
             entry: [
@@ -183,7 +172,7 @@ const AddJournal = (props) => {
         case 5:
           setData({
             ...data,
-            name: `CP/${data.month}/####`,
+            name: `CP/${localStorage.getItem('period')}/####`,
             type: 'Pembayaran Kas',
             type_number: 5,
             entry: [
@@ -211,19 +200,19 @@ const AddJournal = (props) => {
         case 6:
           setData({
             ...data,
-            name: `JV/${data.month}/####`,
+            name: `JV/${localStorage.getItem('period')}/####`,
             type: 'Journal Umum',
             type_number: 6,
             entry: [],
           })
           break
 
-        default:
-          setData({
-            ...data,
-            [e.target.name]: e.target.value,
-          })
-          break
+        // default:
+        //   setData({
+        //     ...data,
+        //     [e.target.name]: e.target.value,
+        //   })
+        //   break
       }
     } else {
       setData({
@@ -251,62 +240,30 @@ const AddJournal = (props) => {
     props.handleClose(e)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     console.log(data)
-
-    const abortCtr = new AbortController()
-    const headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': window.location.origin,
-    }
-    setTimeout(async () => {
-      try {
-        let res = await fetch(`${urlLink.url}addjournal.php`, {
-          signal: abortCtr.signal,
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: headers,
-        })
-        res = await res.json()
-        console.log(res)
-
-        data.entry.map((e, i) => {
-          setTimeout(async () => {
-            try {
-              let res1 = await fetch(`${urlLink.url}addjournalentry.php`, {
-                signal: abortCtr.signal,
-                method: 'POST',
-                body: JSON.stringify(data.entry[i]),
-                headers: headers,
-              })
-              res1 = await res1.json()
-              setData({
-                ...data,
-                message: res1.message,
-              })
-            } catch (error) {
-              console.log(error)
-              setData({
-                ...data,
-                msg: 'Error Connection',
-              })
-            }
-          }, 10)
-          console.log(e)
-          return e
-        })
-      } catch (error) {
-        // display an alert message for an error
-        console.log(error)
-        setData({
-          ...data,
-          msg: 'Error Connection',
-        })
+    // setTimeout(async () => {
+    try {
+      let res = await AddJournalFn(data)
+      console.log(res)
+      for (let i = 0; i < data.entry.length; i++) {
+        let res1 = await AddJournalEntryFn(data.entry[i])
+        console.log(res1)
       }
-    }, 10)
-    return () => abortCtr.abort()
+      setData({
+        ...data,
+        message: res.message,
+      })
+    } catch (error) {
+      // display an alert message for an error
+      console.log(error)
+      setData({
+        ...data,
+        msg: 'Error Connection',
+      })
+    }
+    // }, 10)
   }
   const TotalDebit = () => {
     let debit = data.entry.map((e) => Number(e.debit))
@@ -395,7 +352,7 @@ const AddJournal = (props) => {
     console.log(obj)
     setData({
       ...data,
-      name: `OP/${data.month}/####`,
+      name: `OP/${localStorage.getItem('period')}/####`,
       type: 'Opening',
       type_number: 7,
       entry: [...obj],
@@ -418,7 +375,7 @@ const AddJournal = (props) => {
                   opening: false,
                   type: 'Journal Entry',
                   type_number: 6,
-                  name: `JV/${data.month}/####`,
+                  name: `JV/${localStorage.getItem('period')}/####`,
                   entry: [],
                 })
               }
