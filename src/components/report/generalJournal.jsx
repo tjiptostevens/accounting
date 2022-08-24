@@ -36,7 +36,7 @@ const GeneralJournal = () => {
       >
         <div className=" __content_title">General Journal</div>
         {/* add User + search */}
-        <div className="no-print __search_bar">
+        <div className=" __search_bar">
           <div
             className="col"
             style={{ display: 'flex', alignItems: 'center' }}

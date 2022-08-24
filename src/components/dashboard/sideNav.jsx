@@ -131,7 +131,7 @@ const SideNav = (props) => {
 
   return (
     <>
-      <div className="no-print">
+      <div className="">
         <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
           <symbol id="bootstrap" viewBox="0 0 118 94">
             <title>Bootstrap</title>

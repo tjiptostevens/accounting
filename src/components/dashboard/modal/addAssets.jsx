@@ -53,10 +53,10 @@ const AddAssets = (props) => {
     }
   }
   const handleClose = (e) => {
-    e.preventDefault()
+    // e.preventDefault()
     console.log(data)
-    setData({ ...data, required: !data.required })
-    navigate(0)
+    // setData({ ...data, required: !data.required })
+    // navigate(0)
     // window.location.reload()
     props.handleClose(e)
   }

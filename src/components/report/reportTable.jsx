@@ -14,7 +14,6 @@ const ReportTable = (props) => {
   return (
     <>
       <div
-        id="print"
         style={{
           overflow: 'auto',
           height: '100%',

@@ -49,7 +49,7 @@ const AddJournal = (props) => {
     }, 0)
     // return () => abortCtr.abort()
     // eslint-disable-next-line
-  }, [data.name, data.title])
+  }, [data.name])
 
   const handleChange = async (e) => {
     // console.log(`${[e.target.name]}`, e.target.value)

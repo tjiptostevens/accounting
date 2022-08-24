@@ -39,7 +39,7 @@ const Company = () => {
           headers: headers,
         })
         console.log(res)
-        navigate(0)
+        // navigate(0)
         // window.location.reload()
       }, 500)
     } catch (error) {

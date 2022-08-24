@@ -12,8 +12,8 @@ const Depreciation = () => {
   const [data, setData] = useState({ vis: false })
   //   const elementRef = useRef(null);
   const handleClose = (e) => {
-    setData({ ...data, vis: false })
-    navigate(0)
+    setVis({ ...vis, modal: false })
+    // navigate(0)
     // window.location.reload()
   }
   const handleChange = (e) => {

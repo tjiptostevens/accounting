@@ -10,14 +10,19 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-@media print {
-    .no-print {
-        display: none !important;
-    }
-    .print * {
-        display: block;
-        font-size: 12px !important;
-        color: black !important;
-        background-color: white !important;
-    }
+
+/* @media print { */
+
+.no-print {
+    display: none !important;
 }
+
+.print * {
+    display: block;
+    font-size: 12px !important;
+    color: black !important;
+    background-color: white !important;
+}
+
+
+/* } */
