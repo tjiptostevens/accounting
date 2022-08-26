@@ -1,35 +1,44 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react'
+import Modal from '../../site/modal'
 
 const AddJournalEntry = (props) => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([])
+  const [vis, setVis] = useState({ modal: false })
   useEffect(() => {
-    setData(props.entry);
+    setData(props.entry)
 
     return () => {
-      console.log(data);
-    };
-  }, [props.entry]);
+      console.log(data)
+    }
+  }, [props.entry])
   const handleAddRow = (e) => {
-    e.preventDefault();
-    console.log("props");
-    let idx = props.entry.length + 1;
+    e.preventDefault()
+    console.log('props')
+    let idx = props.entry.length + 1
     props.handleAddRow({
       idx: idx.toString(),
-      acc: "",
-      party_type: "",
-      party: "",
-      debit: "",
-      credit: "",
-    });
-  };
+      acc: '',
+      party_type: '',
+      party: '',
+      debit: '',
+      credit: '',
+      company: localStorage.getItem('company'),
+    })
+  }
   const handleChange = (e) => {
     // console.log(e);
-    props.handleRow(e);
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
+    props.handleRow(e)
+    setData({ ...data, [e.target.name]: e.target.value })
+  }
   return (
     <>
-      <div className="row col-md-12" style={{ margin: "0px", padding: "0px" }}>
+      <Modal
+        modal={vis.modal}
+        title="Confirmation"
+        element={<></>}
+        handleClose={() => setVis({ modal: false })}
+      />
+      <div className="row col-md-12" style={{ margin: '0px', padding: '0px' }}>
         <label className="label_title">Accounting Entries</label>
         <small>{JSON.stringify(data)}</small>
         <hr />
@@ -37,43 +46,43 @@ const AddJournalEntry = (props) => {
         <div
           className="row col-md-12 "
           style={{
-            margin: "0px",
-            padding: "5px 0 0 0",
+            margin: '0px',
+            padding: '5px 0 0 0',
           }}
         >
           <div
             className="col-md-1"
-            style={{ padding: "5px 10px", border: "1px solid #b3b3b3" }}
+            style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
           >
             No.
           </div>
           <div
             className="col-md-3"
-            style={{ padding: "5px 10px", border: "1px solid #b3b3b3" }}
+            style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
           >
             Account
           </div>
           <div
             className="col-md-2"
-            style={{ padding: "5px 10px", border: "1px solid #b3b3b3" }}
+            style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
           >
             Party Type
           </div>
           <div
             className="col-md-2"
-            style={{ padding: "5px 10px", border: "1px solid #b3b3b3" }}
+            style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
           >
             Party
           </div>
           <div
             className="col-md-2"
-            style={{ padding: "5px 10px", border: "1px solid #b3b3b3" }}
+            style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
           >
             Debit
           </div>
           <div
             className="col-md-2"
-            style={{ padding: "5px 10px", border: "1px solid #b3b3b3" }}
+            style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
           >
             Credit
           </div>
@@ -141,9 +150,9 @@ const AddJournalEntry = (props) => {
             </div>
           </>
         ))} */}
-        <div style={{ margin: "0px", padding: "5px 0" }}>
+        <div style={{ margin: '0px', padding: '5px 0' }}>
           <button
-            style={{ padding: "0 5px", minWidth: "unset" }}
+            style={{ padding: '0 5px', minWidth: 'unset' }}
             className="btn btn-primary btn-sm"
             onClick={handleAddRow}
           >
@@ -152,7 +161,7 @@ const AddJournalEntry = (props) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default AddJournalEntry;
+export default AddJournalEntry

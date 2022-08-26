@@ -8,8 +8,10 @@ import {
   AddJournalFn,
   GetJournalLastFn,
 } from '../../custom/accFn'
+import Modal from '../../site/modal'
 
 const AddJournal = (props) => {
+  const [vis, setVis] = useState({ modal: false })
   const { data: coa } = useFetch('getcoa.php')
   const { YY, DD, MM, ss } = useDate()
   const [data, setData] = useState({
@@ -49,7 +51,7 @@ const AddJournal = (props) => {
     }, 0)
     // return () => abortCtr.abort()
     // eslint-disable-next-line
-  }, [data.name, data.title])
+  }, [data.name])
 
   const handleChange = async (e) => {
     // console.log(`${[e.target.name]}`, e.target.value)
@@ -235,6 +237,8 @@ const AddJournal = (props) => {
       entry: [],
       month: MM,
       minute: ss,
+      created_by: localStorage.getItem('loginUser'),
+      company: localStorage.getItem('company'),
       posting_date: `${YY}-${MM}-${DD}`,
     })
     props.handleClose(e)
@@ -243,7 +247,6 @@ const AddJournal = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     console.log(data)
-    // setTimeout(async () => {
     try {
       let res = await AddJournalFn(data)
       console.log(res)
@@ -252,9 +255,25 @@ const AddJournal = (props) => {
         console.log(res1)
       }
       setData({
-        ...data,
+        type: 'Journal Umum',
+        type_number: 6,
+        required: true,
+        name: `JV/${localStorage.getItem('period')}/####`,
+        title: '',
+        last: '0000',
+        now: `${YY}-${MM}-${DD}`,
+        entry: [],
+        month: MM,
+        minute: ss,
+        posting_date: `${YY}-${MM}-${DD}`,
+        opening: false,
+        pay_to_recd_from: '',
+        user_remark: '',
+        created_by: localStorage.getItem('loginUser'),
+        company: localStorage.getItem('company'),
         message: res.message,
       })
+      setVis({ ...vis, modal: true, msg: res.message })
     } catch (error) {
       // display an alert message for an error
       console.log(error)
@@ -262,8 +281,8 @@ const AddJournal = (props) => {
         ...data,
         msg: 'Error Connection',
       })
+      setVis({ ...vis, modal: true, msg: error })
     }
-    // }, 10)
   }
   const TotalDebit = () => {
     let debit = data.entry.map((e) => Number(e.debit))
@@ -321,12 +340,14 @@ const AddJournal = (props) => {
     console.log('handleAddRow', data)
   }
   const handleDelete = (e, vis) => {
+    setVis({ modal: true, msg: 'Row Deleted' })
     let i = e
     let listDat = [...data.entry]
     let list = listDat[i]
     console.log(vis, list)
     listDat.splice(i, 1)
     console.log('list', listDat)
+
     setData({
       ...data,
       entry: listDat,
@@ -362,288 +383,288 @@ const AddJournal = (props) => {
   return (
     <>
       {console.log(data.entry)}
-      <div className="modal_title">
-        <b>Add Jounal</b>
-        <div style={{ margin: '0px', padding: '5px 0' }}>
-          {data.opening ? (
-            <button
-              style={{ padding: '0 5px', minWidth: 'unset' }}
-              className="btn btn-primary btn-sm"
-              onClick={() =>
-                setData({
-                  ...data,
-                  opening: false,
-                  type: 'Journal Entry',
-                  type_number: 6,
-                  name: `JV/${localStorage.getItem('period')}/####`,
-                  entry: [],
-                })
-              }
-            >
-              Cancel
-            </button>
-          ) : (
-            <button
-              style={{ padding: '0 5px', minWidth: 'unset' }}
-              className="btn btn-primary btn-sm"
-              onClick={handleOpening}
-            >
-              Add Opening Entries
-            </button>
-          )}
-        </div>
+      <Modal
+        modal={vis.modal}
+        element={<>{vis.msg}</>}
+        handleClose={() => setVis({ modal: false })}
+      />
+      <div className="mb-3" style={{ margin: '0px', padding: '5px 0' }}>
+        {data.opening ? (
+          <button
+            style={{ padding: '0 5px', minWidth: 'unset' }}
+            className="btn btn-primary btn-sm"
+            onClick={() =>
+              setData({
+                ...data,
+                opening: false,
+                type: 'Journal Entry',
+                type_number: 6,
+                name: `JV/${localStorage.getItem('period')}/####`,
+                entry: [],
+              })
+            }
+          >
+            Cancel
+          </button>
+        ) : (
+          <button
+            style={{ padding: '0 5px', minWidth: 'unset' }}
+            className="btn btn-primary btn-sm"
+            onClick={handleOpening}
+          >
+            Add Opening Entries
+          </button>
+        )}
       </div>
       {/* {JSON.stringify(data)} <br /> */}
       {/* {JSON.stringify(coa)} */}
-      <div className="modal_content">
-        <form onSubmit={handleSubmit} method="post">
+      <form onSubmit={handleSubmit} method="post">
+        <div
+          className="row col-md-12"
+          style={{ margin: '0px', padding: '0px' }}
+        >
+          {/* Journal Type */}
           <div
-            className="row col-md-12"
+            className="row col-md-12 mb-2"
             style={{ margin: '0px', padding: '0px' }}
           >
-            {/* Journal Type */}
-            <div
-              className="row col-md-12"
-              style={{ margin: '0px', padding: '0px' }}
+            <label className="label_title">Journal Type :</label>
+            <select
+              required={data.required}
+              disabled={data.opening}
+              className="form-select"
+              name="type"
+              value={data.type_number}
+              onChange={handleChange}
+              onClick={() => setData({ ...data, entry: [] })}
             >
-              <label className="label_title">Journal Type :</label>
-              <select
-                required={data.required}
-                disabled={data.opening}
-                className="form-select"
-                name="type"
-                value={data.type_number}
-                onChange={handleChange}
-                onClick={() => setData({ ...data, entry: [] })}
-              >
-                <option value="1">Penjualan Tracking Kredit</option>
-                <option value="2">Penjualan Container Kredit</option>
-                <option value="3">Pembelian Kredit</option>
-                <option value="4">Penerimaan Kas</option>
-                <option value="5">Pembayaran Kas</option>
-                <option value="6">Journal Umum</option>
-                <option value="7" hidden={!data.opening}>
-                  Opening
-                </option>
-              </select>
-            </div>
-            {/* Numbering */}
-            <div
-              className="row col-md-6"
-              style={{ margin: '0px', padding: '0px' }}
-            >
-              <label className="label_title">
-                Number <span className="text-danger">*</span>
-              </label>
-              <input
-                required={data.required}
-                disabled={true}
-                onChange={handleChange}
-                type="text"
-                className="form-control mb-2"
-                value={data.name}
-                name="name"
-                id="name"
-              />
-            </div>
-            {/* Posting Date */}
-            <div
-              className="row col-md-6"
-              style={{ margin: '0px', padding: '0px' }}
-            >
-              <label className="label_title">
-                Posting Date <span className="text-danger">*</span>
-              </label>
-              <input
-                required={data.required}
-                onChange={handleChange}
-                type="date"
-                className="form-control mb-2"
-                value={data.posting_date}
-                name="posting_date"
-                id="posting_date"
-              />
-            </div>
+              <option value="1">Penjualan Tracking Kredit</option>
+              <option value="2">Penjualan Container Kredit</option>
+              <option value="3">Pembelian Kredit</option>
+              <option value="4">Penerimaan Kas</option>
+              <option value="5">Pembayaran Kas</option>
+              <option value="6">Journal Umum</option>
+              <option value="7" hidden={!data.opening}>
+                Opening
+              </option>
+            </select>
           </div>
-          {/* Customer Mobile */}
+          {/* Numbering */}
           <div
-            className="row col-md-12"
+            className="row col-md-6 mb-2"
             style={{ margin: '0px', padding: '0px' }}
           >
             <label className="label_title">
-              Title <span className="text-danger">*</span>
+              Number <span className="text-danger">*</span>
+            </label>
+            <input
+              required={data.required}
+              disabled={true}
+              onChange={handleChange}
+              type="text"
+              className="form-control mb-2"
+              value={data.name}
+              name="name"
+              id="name"
+            />
+          </div>
+          {/* Posting Date */}
+          <div
+            className="row col-md-6 mb-2"
+            style={{ margin: '0px', padding: '0px' }}
+          >
+            <label className="label_title">
+              Posting Date <span className="text-danger">*</span>
             </label>
             <input
               required={data.required}
               onChange={handleChange}
-              type="text"
+              type="date"
               className="form-control mb-2"
-              value={data.title}
-              name="title"
-              id="title"
+              value={data.posting_date}
+              name="posting_date"
+              id="posting_date"
             />
           </div>
-          {/* Input data Accounting */}
+        </div>
+        {/* Customer Mobile */}
+        <div
+          className="row col-md-12 mb-2"
+          style={{ margin: '0px', padding: '0px' }}
+        >
+          <label className="label_title">
+            Title <span className="text-danger">*</span>
+          </label>
+          <input
+            required={data.required}
+            onChange={handleChange}
+            type="text"
+            className="form-control mb-2"
+            value={data.title}
+            name="title"
+            id="title"
+          />
+        </div>
+        {/* Input data Accounting */}
+        <div
+          className="row col-md-12 mb-2"
+          style={{ margin: '0px', padding: '0px' }}
+        >
+          <label className="label_title">Accounting Entries</label>
+          {/* <small>{JSON.stringify(data)}</small> */}
+          {/* <hr /> */}
+          {/* <small>{JSON.stringify(lists)}</small> */}
           <div
             className="row col-md-12"
-            style={{ margin: '0px', padding: '0px' }}
+            style={{
+              margin: '0px',
+              padding: '5px 0 0 0',
+            }}
           >
-            <label className="label_title">Accounting Entries</label>
-            {/* <small>{JSON.stringify(data)}</small> */}
-            {/* <hr /> */}
-            {/* <small>{JSON.stringify(lists)}</small> */}
             <div
-              className="row col-md-12 "
-              style={{
-                margin: '0px',
-                padding: '5px 0 0 0',
-              }}
+              className="col-md-1"
+              style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
             >
-              <div
-                className="col-md-1"
-                style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
-              >
-                No.
-              </div>
-              <div
-                className="col-md-3"
-                style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
-              >
-                Account
-              </div>
-              <div
-                className="col-md-2"
-                style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
-              >
-                Party Type
-              </div>
-              <div
-                className="col-md-2"
-                style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
-              >
-                Party
-              </div>
-              <div
-                className="col-md-2"
-                style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
-              >
-                Debit
-              </div>
-              <div
-                className="col-md-2"
-                style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
-              >
-                Credit
-              </div>
+              No.
             </div>
-            {data.entry &&
-              data.entry.map((e, i) => (
-                <Entry
-                  key={i}
-                  i={i}
-                  data={e}
-                  parent={data.name}
-                  last={data.last}
-                  handleRow={handleRow}
-                  handleDelete={handleDelete}
-                />
-              ))}
-
             <div
-              className="row col-md-12 "
-              style={{
-                margin: '0px',
-                padding: '0px',
-              }}
+              className="col-md-3"
+              style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
             >
-              <div
-                className="col-md-4"
-                style={{ margin: '0px', padding: '5px 0' }}
+              Account
+            </div>
+            <div
+              className="col-md-2"
+              style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
+            >
+              Party Type
+            </div>
+            <div
+              className="col-md-2"
+              style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
+            >
+              Party
+            </div>
+            <div
+              className="col-md-2"
+              style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
+            >
+              Debit
+            </div>
+            <div
+              className="col-md-2"
+              style={{ padding: '5px 10px', border: '1px solid #b3b3b3' }}
+            >
+              Credit
+            </div>
+          </div>
+          {data.entry &&
+            data.entry.map((e, i) => (
+              <Entry
+                key={i}
+                i={i}
+                data={e}
+                parent={data.name}
+                last={data.last}
+                handleRow={handleRow}
+                handleDelete={handleDelete}
+              />
+            ))}
+
+          <div
+            className="row col-md-12"
+            style={{
+              margin: '0px',
+              padding: '0px',
+            }}
+          >
+            <div
+              className="col-md-4"
+              style={{ margin: '0px', padding: '5px 0' }}
+            >
+              <button
+                style={{ padding: '0 5px', minWidth: 'unset' }}
+                className="btn btn-primary btn-sm"
+                onClick={handleAddRow}
               >
-                <button
-                  style={{ padding: '0 5px', minWidth: 'unset' }}
-                  className="btn btn-primary btn-sm"
-                  onClick={handleAddRow}
+                Add Row
+              </button>
+            </div>
+            {data.entry.length > 0 && (
+              <>
+                <div
+                  className="col-md-4"
+                  style={{
+                    padding: '5px 10px',
+                    textAlign: 'right',
+                  }}
                 >
-                  Add Row
-                </button>
-              </div>
-              {data.entry.length > 0 && (
-                <>
-                  <div
-                    className="col-md-4"
-                    style={{
-                      padding: '5px 10px',
-                      textAlign: 'right',
-                    }}
-                  >
-                    Total
-                  </div>
-                  <div
-                    className="col-md-2"
-                    style={{
-                      padding: '5px 10px',
-                      border: '1px solid #b3b3b3',
-                      background: 'white',
-                    }}
-                  >
-                    {TotalDebit()}
-                  </div>
-                  <div
-                    className="col-md-2"
-                    style={{
-                      padding: '5px 10px',
-                      border: '1px solid #b3b3b3',
-                      background: 'white',
-                    }}
-                  >
-                    {TotalCredit()}
-                  </div>
-                </>
-              )}
-            </div>
+                  Total
+                </div>
+                <div
+                  className="col-md-2"
+                  style={{
+                    padding: '5px 10px',
+                    border: '1px solid #b3b3b3',
+                    background: 'white',
+                  }}
+                >
+                  {TotalDebit()}
+                </div>
+                <div
+                  className="col-md-2"
+                  style={{
+                    padding: '5px 10px',
+                    border: '1px solid #b3b3b3',
+                    background: 'white',
+                  }}
+                >
+                  {TotalCredit()}
+                </div>
+              </>
+            )}
           </div>
+        </div>
 
-          {/* Pay to / Received By */}
-          <div
-            className="row col-md-12"
-            style={{ margin: '0px', padding: '0px' }}
-          >
-            <label className="label_title">Pay To / Received By :</label>
-            <input
-              onChange={handleChange}
-              type="text"
-              className="form-control mb-2"
-              value={data.pay_to_recd_from}
-              name="pay_to_recd_from"
-              id="pay_to_recd_from"
-            />
-          </div>
-          {/* User Remark */}
-          <div
-            className="row col-md-12 mb-5"
-            style={{ margin: '0px', padding: '0px' }}
-          >
-            <label className="label_title">User Remark</label>
-            <textarea
-              name="user_remark"
-              onChange={handleChange}
-              className="form-control mb-2"
-              value={data.user_remark}
-            ></textarea>
-          </div>
-          <div>
-            <p>{data.message}</p>
-          </div>
-          {/* Button */}
-          <button className="btn btn-primary" type="submit">
-            Save
-          </button>
-          <button className="btn btn-warning" onClick={handleClose}>
-            Cancel
-          </button>
-        </form>
-      </div>
+        {/* Pay to / Received By */}
+        <div
+          className="row col-md-12 mb-2"
+          style={{ margin: '0px', padding: '0px' }}
+        >
+          <label className="label_title">Pay To / Received By :</label>
+          <input
+            onChange={handleChange}
+            type="text"
+            className="form-control mb-2"
+            value={data.pay_to_recd_from}
+            name="pay_to_recd_from"
+            id="pay_to_recd_from"
+          />
+        </div>
+        {/* User Remark */}
+        <div
+          className="row col-md-12 mb-5"
+          style={{ margin: '0px', padding: '0px' }}
+        >
+          <label className="label_title">User Remark</label>
+          <textarea
+            name="user_remark"
+            onChange={handleChange}
+            className="form-control mb-2"
+            value={data.user_remark}
+          ></textarea>
+        </div>
+        {/* <div>
+          <p>{data.message}</p>
+        </div> */}
+        {/* Button */}
+        <button className="btn btn-primary" type="submit">
+          Save
+        </button>
+        <button className="btn btn-warning" onClick={handleClose}>
+          Cancel
+        </button>
+      </form>
     </>
   )
 }

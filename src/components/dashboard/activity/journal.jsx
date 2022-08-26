@@ -13,7 +13,7 @@ const Journal = () => {
 
   const handleClose = (e) => {
     setVis({ ...vis, modal: false })
-    navigate(0)
+    // navigate(0)
     // window.location.reload()
   }
   const handleChange = (e) => {
