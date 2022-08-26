@@ -16,6 +16,7 @@ const Dash = () => {
   return (
     <>
       {/* Component Title */}
+      {/* {JSON.stringify(coa)} */}
       <div
         className="w-100"
         style={{ display: 'flex', justifyContent: 'space-between' }}

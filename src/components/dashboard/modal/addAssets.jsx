@@ -74,16 +74,25 @@ const AddAssets = (props) => {
         type: 'Depreciation',
         ref: 'Assets',
         ref_id: assets.id,
+        company: localStorage.getItem('company'),
+        created_by: localStorage.getItem('loginUser'),
         total_debit: data.eco_value,
         total_credit: data.eco_value,
       }
       let entry = [
-        { idx: '1', parent: journal.name, acc: '502', debit: data.eco_value },
+        {
+          idx: '1',
+          parent: journal.name,
+          acc: '502',
+          debit: data.eco_value,
+          company: localStorage.getItem('company'),
+        },
         {
           idx: '2',
           parent: journal.name,
           acc: data.acc,
           credit: data.eco_value,
+          company: localStorage.getItem('company'),
         },
       ]
       let res1 = await AddJournalFn(journal)
@@ -117,7 +126,7 @@ const AddAssets = (props) => {
   }
   return (
     <>
-      {/* {JSON.stringify(data)} <br /> */}
+      {JSON.stringify(data)} <br />
       {/* {console.log(props)} */}
       {/* {JSON.stringify(coaFil)} */}
       <Modal
