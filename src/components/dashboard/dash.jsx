@@ -3,12 +3,16 @@ import useFetch from '../useFetch'
 
 const Dash = () => {
   const { data: coa } = useFetch('getcoav2.php')
+  const { data: pnl } = useFetch('getpnl.php')
   let income = 0
   let expense = 0
-  coa?.forEach((element) => {
+  pnl?.forEach((element) => {
     if (element.type === 'Income') {
       income += parseFloat(element.total)
-    } else if (element.type === 'Expense') {
+    }
+  })
+  coa?.forEach((element) => {
+    if (element.type === 'Expense') {
       expense += parseFloat(element.total)
     }
   })
