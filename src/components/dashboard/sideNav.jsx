@@ -20,44 +20,50 @@ const SideNav = (props) => {
   function Nav() {
     return (
       <>
-        <p className="__subtitle" style={{ paddingLeft: '15px' }}>
-          MASTER
-        </p>
-        <ul className="nav nav-pills flex-column mb-auto">
-          <li>
-            <NavLink
-              to="/d/company"
-              className="nav-link text-white"
-              aria-current="page"
-            >
-              <svg className="m_icon bi me-2" width="16" height="16">
-                <use xlinkHref="#home"></use>
-              </svg>
-              Company
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/d/chartofaccount" className="nav-link text-white">
-              <i className="m_icon bi bi-bar-chart-steps me-2"></i>
-              Chart Of Account
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/d/customer" className="nav-link text-white">
-              <svg className="m_icon bi me-2" width="16" height="16">
-                <use xlinkHref="#table" />
-              </svg>
-              Customer
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/d/user" className="nav-link text-white">
-              <i className="m_icon bi bi-person-square"></i>
-              User
-            </NavLink>
-          </li>
-        </ul>
-        <hr />
+        {localStorage.getItem('loginUser') !== 'admin' ? (
+          ''
+        ) : (
+          <>
+            <p className="__subtitle" style={{ paddingLeft: '15px' }}>
+              MASTER
+            </p>
+            <ul className="nav nav-pills flex-column mb-auto">
+              <li>
+                <NavLink
+                  to="/d/company"
+                  className="nav-link text-white"
+                  aria-current="page"
+                >
+                  <svg className="m_icon bi me-2" width="16" height="16">
+                    <use xlinkHref="#home"></use>
+                  </svg>
+                  Company
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/d/chartofaccount" className="nav-link text-white">
+                  <i className="m_icon bi bi-bar-chart-steps me-2"></i>
+                  Chart Of Account
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/d/period" className="nav-link text-white">
+                  <svg className="m_icon bi me-2" width="16" height="16">
+                    <use xlinkHref="#table" />
+                  </svg>
+                  Period
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/d/user" className="nav-link text-white">
+                  <i className="m_icon bi bi-person-square"></i>
+                  User
+                </NavLink>
+              </li>
+            </ul>
+            <hr />
+          </>
+        )}
         <p className="__subtitle" style={{ paddingLeft: '15px' }}>
           ACTIVITY
         </p>
@@ -101,6 +107,11 @@ const SideNav = (props) => {
           <li>
             <NavLink to="/d/trialbalance" className="nav-link text-white">
               <i className="m_icon bi bi-file-earmark-diff"></i>Trial Balance
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/d/balancesheet" className="nav-link text-white">
+              <i className="m_icon bi bi-file-earmark-diff"></i>Balance Sheet
             </NavLink>
           </li>
           <li>

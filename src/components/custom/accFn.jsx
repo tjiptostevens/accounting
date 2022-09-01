@@ -75,6 +75,7 @@ const AddJournalEntryFn = async (
     party: null,
     debit: 0,
     credit: 0,
+    acc_type: null,
   },
 ) => {
   try {

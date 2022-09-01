@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useFetch from '../../useFetch'
 import useDate from '../../useDate'
@@ -13,6 +13,9 @@ import {
 const AddAssets = (props) => {
   const { YY, MM, DD } = useDate()
   const navigate = useNavigate()
+  let a = JSON.parse(localStorage.getItem('period'))
+  let period = a.name
+
   const { data: coa } = useFetch('getcoa.php')
   let coaFil = useMemo(
     () => coa?.filter((f) => f.type === 'Assets' && f.is_group === '0'),
@@ -68,7 +71,7 @@ const AddAssets = (props) => {
       let res = await AddAssetsFn(assets)
       let last = await GetJournalLastFn('Depreciation')
       let journal = {
-        name: `DP/${localStorage.getItem('period')}/${last.last}`,
+        name: `DP/${period}/${last.last}`,
         user_remark: data.name + ' \n' + data.description,
         title: assets.code + ' - ' + assets.name,
         type: 'Depreciation',

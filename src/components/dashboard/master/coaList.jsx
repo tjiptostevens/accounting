@@ -156,7 +156,10 @@ function CoaList({ list }) {
                 >
                   Edit
                 </button>
-                {list.parent === '0' || list.total > 0 || list.total < 0 ? (
+                {list.parent === '0' ||
+                list.total > 0 ||
+                list.total < 0 ||
+                list.is_group === '1' ? (
                   ''
                 ) : (
                   <button

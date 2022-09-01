@@ -14,11 +14,14 @@ const AddJournal = (props) => {
   const [vis, setVis] = useState({ modal: false })
   const { data: coa } = useFetch('getcoa.php')
   const { YY, DD, MM, ss } = useDate()
+  let a = JSON.parse(localStorage.getItem('period'))
+  let period = a.name
+
   const [data, setData] = useState({
     type: 'Journal Umum',
     type_number: 6,
     required: true,
-    name: `JV/${localStorage.getItem('period')}/####`,
+    name: `JV/${period}/####`,
     title: '',
     last: '0000',
     now: `${YY}-${MM}-${DD}`,
@@ -62,7 +65,7 @@ const AddJournal = (props) => {
         case 1:
           setData({
             ...data,
-            name: `SC/Track/${localStorage.getItem('period')}/####`,
+            name: `SC/Track/${period}/####`,
             type: 'Penjualan Tracking Kredit',
             type_number: 1,
             entry: [
@@ -90,7 +93,7 @@ const AddJournal = (props) => {
         case 2:
           setData({
             ...data,
-            name: `SC/Conta/${localStorage.getItem('period')}/####`,
+            name: `SC/Conta/${period}/####`,
             type: 'Penjualan Container Kredit',
             type_number: 2,
             entry: [
@@ -118,7 +121,7 @@ const AddJournal = (props) => {
         case 3:
           setData({
             ...data,
-            name: `PC/${localStorage.getItem('period')}/####`,
+            name: `PC/${period}/####`,
             type: 'Pembelian Kredit',
             type_number: 3,
             entry: [
@@ -146,7 +149,7 @@ const AddJournal = (props) => {
         case 4:
           setData({
             ...data,
-            name: `CR/${localStorage.getItem('period')}/####`,
+            name: `CR/${period}/####`,
             type: 'Penerimaan Kas',
             type_number: 4,
             entry: [
@@ -174,7 +177,7 @@ const AddJournal = (props) => {
         case 5:
           setData({
             ...data,
-            name: `CP/${localStorage.getItem('period')}/####`,
+            name: `CP/${period}/####`,
             type: 'Pembayaran Kas',
             type_number: 5,
             entry: [
@@ -202,7 +205,7 @@ const AddJournal = (props) => {
         case 6:
           setData({
             ...data,
-            name: `JV/${localStorage.getItem('period')}/####`,
+            name: `JV/${period}/####`,
             type: 'Journal Umum',
             type_number: 6,
             entry: [],
@@ -258,7 +261,7 @@ const AddJournal = (props) => {
         type: 'Journal Umum',
         type_number: 6,
         required: true,
-        name: `JV/${localStorage.getItem('period')}/####`,
+        name: `JV/${period}/####`,
         title: '',
         last: '0000',
         now: `${YY}-${MM}-${DD}`,
@@ -367,13 +370,14 @@ const AddJournal = (props) => {
         parent: `${data.name.replace('####', '')}${data.last}`,
         party: '',
         party_type: '',
+        acc_type: 'Opening',
       })
     }
 
     console.log(obj)
     setData({
       ...data,
-      name: `OP/${localStorage.getItem('period')}/####`,
+      name: `OP/${period}/####`,
       type: 'Opening',
       type_number: 7,
       entry: [...obj],
@@ -399,7 +403,7 @@ const AddJournal = (props) => {
                 opening: false,
                 type: 'Journal Entry',
                 type_number: 6,
-                name: `JV/${localStorage.getItem('period')}/####`,
+                name: `JV/${period}/####`,
                 entry: [],
               })
             }

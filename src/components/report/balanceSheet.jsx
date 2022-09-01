@@ -101,7 +101,7 @@ const BalanceSheet = () => {
         >
           <div className="col-md-3">
             <div>
-              <p>Total Assets This Period</p>
+              <p>Total Assets</p>
               <h5
                 style={assets < 0 ? { color: 'crimson' } : { color: 'white' }}
               >
@@ -139,7 +139,7 @@ const BalanceSheet = () => {
           </div>
           <div className="col-md-3">
             <div>
-              <p>Total Liability This Period</p>
+              <p>Total Liability</p>
               <h5
                 style={
                   liability < 0 ? { color: 'crimson' } : { color: 'white' }
@@ -180,7 +180,7 @@ const BalanceSheet = () => {
           </div>
           <div className="col-md-3">
             <div>
-              <p>Total Equity This Period</p>
+              <p>Total Equity</p>
               <h5
                 style={equity < 0 ? { color: 'crimson' } : { color: 'white' }}
               >
