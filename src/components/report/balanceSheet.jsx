@@ -2,43 +2,43 @@ import React, { useState, useMemo } from 'react'
 import useFetch from '../useFetch'
 import ReportTable from './reportTable'
 
-const ProfitAndLoss = () => {
+const BalanceSheet = () => {
   const { data: coa } = useFetch('getcoav2.php')
-  const [data, setData] = useState({ vis: false })
-  //   const elementRef = useRef(null);
-  const handleClose = (e) => {
-    setData({ ...data, vis: false })
-  }
-  const handleChange = (e) => {
-    console.log(`${[e.target.name]}`, e.target.value)
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    })
-  }
-  let income = 0
-  let expense = 0
+
+  let assets = 0
+  let liability = 0
+  let equity = 0
   coa?.forEach((element) => {
-    if (element.type === 'Income') {
-      income += parseFloat(element.total)
-    } else if (element.type === 'Expense') {
-      expense += parseFloat(element.total)
+    if (element.type === 'Assets') {
+      assets += parseFloat(element.total)
+    } else if (element.type === 'Liability') {
+      liability += parseFloat(element.total)
+    } else if (element.type === 'Equity') {
+      equity += parseFloat(element.total)
     }
   })
-  let incomeFill = useMemo(() => {
+  let assetsFill = useMemo(() => {
     return (
       coa &&
       coa
         // .sort((a, b) => (a.name > b.name ? 1 : -1))
-        .filter((d) => d.type === 'Income')
+        .filter((d) => d.type === 'Assets')
     )
   }, [coa])
-  let expenseFill = useMemo(() => {
+  let liabilityFill = useMemo(() => {
     return (
       coa &&
       coa
         // .sort((a, b) => (a.name > b.name ? 1 : -1))
-        .filter((d) => d.type === 'Expense')
+        .filter((d) => d.type === 'Liability')
+    )
+  }, [coa])
+  let lequityFill = useMemo(() => {
+    return (
+      coa &&
+      coa
+        // .sort((a, b) => (a.name > b.name ? 1 : -1))
+        .filter((d) => d.type === 'Equity')
     )
   }, [coa])
   return (
@@ -48,21 +48,21 @@ const ProfitAndLoss = () => {
         className="w-100"
         style={{ display: 'flex', justifyContent: 'space-between' }}
       >
-        <div className=" __content_title">Profit and Loss</div>
+        <div className=" __content_title">Balance Sheet</div>
         {/* add User + search */}
         <div className=" __search_bar">
           {/* <div
-            className="col"
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
-            <input
-              className="form-control m-1"
-              type="search"
-              name="search"
-              placeholder="Search by text"
-              onChange={handleChange}
-            />
-          </div> */}
+          className="col"
+          style={{ display: 'flex', alignItems: 'center' }}
+        >
+          <input
+            className="form-control m-1"
+            type="search"
+            name="search"
+            placeholder="Search by text"
+            onChange={handleChange}
+          />
+        </div> */}
           <button
             className="btn btn-primary m-1"
             onClick={() => window.print()}
@@ -101,12 +101,12 @@ const ProfitAndLoss = () => {
         >
           <div className="col-md-3">
             <div>
-              <p>Total Income This Period</p>
+              <p>Total Assets This Period</p>
               <h5
-                style={income < 0 ? { color: 'crimson' } : { color: 'white' }}
+                style={assets < 0 ? { color: 'crimson' } : { color: 'white' }}
               >
                 Rp.{' '}
-                {income.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
+                {assets.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
                   '.00'}
               </h5>
             </div>
@@ -134,18 +134,21 @@ const ProfitAndLoss = () => {
                 color: 'gold',
               }}
             >
-              <b>-</b>
+              <b>*</b>
             </div>
           </div>
           <div className="col-md-3">
             <div>
-              <p>Total Expense This Period</p>
+              <p>Total Liability This Period</p>
               <h5
-                style={expense < 0 ? { color: 'crimson' } : { color: 'white' }}
+                style={
+                  liability < 0 ? { color: 'crimson' } : { color: 'white' }
+                }
               >
                 Rp.{' '}
-                {expense.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
-                  '.00'}
+                {liability
+                  .toString()
+                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}
               </h5>
             </div>
           </div>
@@ -172,25 +175,18 @@ const ProfitAndLoss = () => {
                 color: '#2490ef',
               }}
             >
-              <b>=</b>
+              <b>*</b>
             </div>
           </div>
           <div className="col-md-3">
             <div>
-              <p>Profit This Period</p>
+              <p>Total Equity This Period</p>
               <h5
-                style={
-                  income - expense < 0
-                    ? { color: 'crimson' }
-                    : income - expense === 0
-                    ? { color: 'white' }
-                    : { color: 'limegreen' }
-                }
+                style={equity < 0 ? { color: 'crimson' } : { color: 'white' }}
               >
                 Rp.{' '}
-                {(income - expense)
-                  .toString()
-                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}
+                {equity.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
+                  '.00'}
               </h5>
             </div>
           </div>
@@ -206,22 +202,11 @@ const ProfitAndLoss = () => {
             fontWeight: '600',
           }}
         >
-          {incomeFill && <ReportTable data={incomeFill} />}
-        </div>
-        <div
-          className="row col-md-12"
-          style={{
-            color: 'white',
-            textAlign: 'left',
-            padding: '7px 0',
-            fontWeight: '600',
-          }}
-        >
-          {expenseFill && <ReportTable data={expenseFill} />}
+          {assetsFill && <ReportTable data={assetsFill} />}
         </div>
       </div>
     </>
   )
 }
 
-export default ProfitAndLoss
+export default BalanceSheet

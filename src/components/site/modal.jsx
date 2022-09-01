@@ -31,6 +31,8 @@ const Modal = (props) => {
               style={{
                 textAlign: 'justify',
                 height: 'auto',
+                maxHeight: '80vh',
+                overflowY: 'auto',
               }}
             >
               <div>{props.element}</div>
