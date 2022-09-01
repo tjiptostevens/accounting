@@ -226,6 +226,7 @@ const BalanceSheet = () => {
         >
           {equityFill && <ReportTable data={equityFill} />}
         </div>
+        TOTAL HUTANG + EQUITY
       </div>
     </>
   )
