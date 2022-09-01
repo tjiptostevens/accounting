@@ -33,7 +33,7 @@ const BalanceSheet = () => {
         .filter((d) => d.type === 'Liability')
     )
   }, [coa])
-  let lequityFill = useMemo(() => {
+  let equityFill = useMemo(() => {
     return (
       coa &&
       coa
@@ -203,6 +203,28 @@ const BalanceSheet = () => {
           }}
         >
           {assetsFill && <ReportTable data={assetsFill} />}
+        </div>
+        <div
+          className="row col-md-12"
+          style={{
+            color: 'white',
+            textAlign: 'left',
+            padding: '7px 0',
+            fontWeight: '600',
+          }}
+        >
+          {liabilityFill && <ReportTable data={liabilityFill} />}
+        </div>
+        <div
+          className="row col-md-12"
+          style={{
+            color: 'white',
+            textAlign: 'left',
+            padding: '7px 0',
+            fontWeight: '600',
+          }}
+        >
+          {equityFill && <ReportTable data={equityFill} />}
         </div>
       </div>
     </>
