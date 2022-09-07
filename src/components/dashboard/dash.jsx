@@ -3,16 +3,24 @@ import useFetch from '../useFetch'
 
 const Dash = () => {
   const { data: coa } = useFetch('getcoav2.php')
-  const { data: pnl } = useFetch('getpnl.php')
+  let assets = 0
+  let liability = 0
+  let equity = 0
   let income = 0
   let expense = 0
-  pnl?.forEach((element) => {
-    if (element.type === 'Income') {
+  coa?.forEach((element) => {
+    if (element.type === 'Liability') {
+      liability += parseFloat(element.total)
+    } else if (element.type === 'Equity') {
+      equity += parseFloat(element.total)
+    } else if (element.type === 'Income') {
       income += parseFloat(element.total)
     }
   })
   coa?.forEach((element) => {
-    if (element.type === 'Expense') {
+    if (element.type === 'Assets') {
+      assets += parseFloat(element.total)
+    } else if (element.type === 'Expense') {
       expense += parseFloat(element.total)
     }
   })
@@ -167,6 +175,121 @@ const Dash = () => {
           </div>
         </div>
       </div>
+
+      {/* Balance */}
+      <div
+        className="row"
+        style={{
+          margin: '15px 0',
+          padding: '5px',
+        }}
+      >
+        <div
+          className="row"
+          style={{
+            margin: '0',
+            padding: '25px 15px',
+            color: 'white',
+            borderRadius: '5px',
+            textAlign: 'center',
+            background: '#212529',
+          }}
+        >
+          <div className="col-md-3">
+            <div>
+              <p>Total Assets</p>
+              <h5
+                style={assets < 0 ? { color: 'crimson' } : { color: 'white' }}
+              >
+                Rp.{' '}
+                {assets.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
+                  '.00'}
+              </h5>
+            </div>
+          </div>
+          <div
+            className="col-md-1"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div
+              style={{
+                margin: 'auto',
+                border: '1px solid white',
+                width: '25px',
+                height: '25px',
+                fontFamily: 'monospace',
+                borderRadius: '5px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: 'gold',
+              }}
+            >
+              <b>*</b>
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div>
+              <p>Total Liability</p>
+              <h5
+                style={
+                  liability < 0 ? { color: 'crimson' } : { color: 'white' }
+                }
+              >
+                Rp.{' '}
+                {liability
+                  .toString()
+                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}
+              </h5>
+            </div>
+          </div>
+          <div
+            className="col-md-1"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div
+              style={{
+                margin: 'auto',
+                border: '1px solid white',
+                width: '25px',
+                height: '25px',
+                fontFamily: 'monospace',
+                borderRadius: '5px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: '#2490ef',
+              }}
+            >
+              <b>*</b>
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div>
+              <p>Total Equity</p>
+              <h5
+                style={equity < 0 ? { color: 'crimson' } : { color: 'white' }}
+              >
+                Rp.{' '}
+                {equity.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
+                  '.00'}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Profit and Loss */}
       <div
         className="row"
         style={{

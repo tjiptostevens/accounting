@@ -73,13 +73,9 @@ const Home = (props) => {
                   path="/profitandloss"
                   element={<ProfitAndLoss />}
                 />
-                <Route
-                  exact
-                  path="/generalledger"
-                  element={<GeneralLedger />}
-                />
-                <Route exact path="/cashflow" element={<CashFlow />} />
+
                 <Route exact path="/balancesheet" element={<BalanceSheet />} />
+                <Route exact path="/cashflow" element={<CashFlow />} />
                 <Route exact path="/read" element={<ReadXlsx />} />
                 <Route exact path="/payment" element={<Payment />} />
               </Routes>

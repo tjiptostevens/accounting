@@ -94,12 +94,6 @@ const SideNav = (props) => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/d/adjustmentjournal" className="nav-link text-white">
-              <i className="m_icon bi bi-file-earmark-diff"></i>Adjustment
-              Journal
-            </NavLink>
-          </li>
-          <li>
             <NavLink to="/d/closingjournal" className="nav-link text-white">
               <i className="m_icon bi bi-file-earmark-diff"></i>Closing Journal
             </NavLink>
@@ -107,11 +101,6 @@ const SideNav = (props) => {
           <li>
             <NavLink to="/d/trialbalance" className="nav-link text-white">
               <i className="m_icon bi bi-file-earmark-diff"></i>Trial Balance
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/d/balancesheet" className="nav-link text-white">
-              <i className="m_icon bi bi-file-earmark-diff"></i>Balance Sheet
             </NavLink>
           </li>
           <li>
@@ -125,13 +114,12 @@ const SideNav = (props) => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/d/generalledger" className="nav-link text-white">
-              <i className="m_icon bi bi-file-earmark-spreadsheet"></i>
-              General Ledger
+            <NavLink to="/d/balancesheet" className="nav-link text-white">
+              <i className="m_icon bi bi-file-earmark-diff"></i>Balance Sheet
             </NavLink>
           </li>
           <li>
-            <NavLink to="/d/read" className="nav-link text-white">
+            <NavLink to="/d/cashflow" className="nav-link text-white">
               <i className="m_icon bi bi-file-earmark-medical"></i>Cash Flow
             </NavLink>
           </li>

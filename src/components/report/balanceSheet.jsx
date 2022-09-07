@@ -1,22 +1,32 @@
 import React, { useState, useMemo } from 'react'
 import useFetch from '../useFetch'
+import ReportList from './reportList'
 import ReportTable from './reportTable'
 
 const BalanceSheet = () => {
   const { data: coa } = useFetch('getcoav2.php')
-
   let assets = 0
   let liability = 0
   let equity = 0
+  let income = 0
+  let expense = 0
   coa?.forEach((element) => {
-    if (element.type === 'Assets') {
-      assets += parseFloat(element.total)
-    } else if (element.type === 'Liability') {
+    if (element.type === 'Liability') {
       liability += parseFloat(element.total)
     } else if (element.type === 'Equity') {
       equity += parseFloat(element.total)
+    } else if (element.type === 'Income') {
+      income += parseFloat(element.total)
     }
   })
+  coa?.forEach((element) => {
+    if (element.type === 'Assets') {
+      assets += parseFloat(element.total)
+    } else if (element.type === 'Expense') {
+      expense += parseFloat(element.total)
+    }
+  })
+
   let assetsFill = useMemo(() => {
     return (
       coa &&
@@ -202,7 +212,17 @@ const BalanceSheet = () => {
             fontWeight: '600',
           }}
         >
-          {assetsFill && <ReportTable data={assetsFill} />}
+          {assetsFill && (
+            <ReportList
+              title={[
+                [1, 1, 'number'],
+                [3, 3, 'name'],
+                [2, 3, 'total'],
+              ]}
+              body={assetsFill}
+            />
+          )}
+          Total = {assets}
         </div>
         <div
           className="row col-md-12"
@@ -213,7 +233,17 @@ const BalanceSheet = () => {
             fontWeight: '600',
           }}
         >
-          {liabilityFill && <ReportTable data={liabilityFill} />}
+          {liabilityFill && (
+            <ReportList
+              title={[
+                [1, 1, 'number'],
+                [3, 3, 'name'],
+                [2, 3, 'total'],
+              ]}
+              body={liabilityFill}
+            />
+          )}
+          Total = {liability}
         </div>
         <div
           className="row col-md-12"
@@ -224,9 +254,19 @@ const BalanceSheet = () => {
             fontWeight: '600',
           }}
         >
-          {equityFill && <ReportTable data={equityFill} />}
+          {equityFill && (
+            <ReportList
+              title={[
+                [1, 1, 'number'],
+                [3, 3, 'name'],
+                [2, 3, 'total'],
+              ]}
+              body={equityFill}
+            />
+          )}
+          Total = {equity}
         </div>
-        TOTAL HUTANG + EQUITY
+        TOTAL HUTANG + EQUITY = {liability + equity}
       </div>
     </>
   )

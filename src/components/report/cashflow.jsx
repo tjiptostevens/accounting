@@ -30,51 +30,90 @@ const CashFlow = () => {
   }, [journal, data.search])
   return (
     <>
-      {/* Modal Window */}
+      {/* Component Title */}
       <div
-        className="__modal-window"
-        style={{
-          display: { true: 'block', false: 'none' }[data.vis],
-          margin: '0px',
-          padding: '0px',
-        }}
+        className="w-100"
+        style={{ display: 'flex', justifyContent: 'space-between' }}
       >
-        <div
-          className="row col-md-6 col-11"
-          style={{
-            maxHeight: '95vh',
-            overflowY: 'auto',
-            margin: '0px',
-            padding: '0px',
-          }}
+        <div className=" __content_title">Cash Flow</div>
+        {/* add User + search */}
+        <div className=" __search_bar">
+          {/* <div
+          className="col"
+          style={{ display: 'flex', alignItems: 'center' }}
         >
-          <div
-            className="modal-close"
-            onClick={() => setData({ ...data, vis: !data.vis })}
+          <input
+            className="form-control m-1"
+            type="search"
+            name="search"
+            placeholder="Search by text"
+            onChange={handleChange}
+          />
+        </div> */}
+          <button
+            className="btn btn-primary m-1"
+            onClick={() => window.print()}
+            style={{ minWidth: 'fit-content' }}
           >
-            <i
-              className="bi bi-x-lg"
-              style={{
-                textAlign: 'center',
-                width: '60px',
-                height: 'auto',
-              }}
-            ></i>
-          </div>
-          <div
-            className="w-100 justify-content-around"
-            style={{
-              textAlign: 'justify',
-              height: 'auto',
-            }}
-          ></div>
+            <i className="bi bi-arrow-right-square"></i>
+          </button>
+          <button
+            className="btn btn-primary m-1"
+            onClick={() => window.print()}
+            style={{ minWidth: 'fit-content' }}
+          >
+            <i className="bi bi-printer"></i>
+          </button>
         </div>
       </div>
-
-      {/* User Content */}
-      <div className="w-100">
-        <p className="__content_title">Cash Flow</p>
-        <hr />
+      <hr style={{ margin: '0' }} />
+      <div className="w-100" style={{ height: '25px' }}></div>
+      <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
+        <div
+          className="row col-md-12"
+          style={{
+            color: 'white',
+            textAlign: 'left',
+            padding: '7px 0',
+            fontWeight: '600',
+          }}
+        >
+          Cash Flow from Operating Activities
+          <hr />
+        </div>
+        <div
+          className="row col-md-12"
+          style={{
+            color: 'white',
+            textAlign: 'left',
+            padding: '7px 0',
+            fontWeight: '600',
+          }}
+        >
+          Cash Flow from Investing Activities
+          <hr />
+        </div>
+        <div
+          className="row col-md-12"
+          style={{
+            color: 'white',
+            textAlign: 'left',
+            padding: '7px 0',
+            fontWeight: '600',
+          }}
+        >
+          Cash Flow from Financing Activities
+          <hr />
+        </div>
+      </div>
+      <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
+        Net Change in cash
+      </div>
+      <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
+        Cash Beginning
+      </div>
+      <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
+        Cash Ending
       </div>
     </>
   )

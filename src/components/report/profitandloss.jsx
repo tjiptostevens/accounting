@@ -1,9 +1,31 @@
 import React, { useState, useMemo } from 'react'
 import useFetch from '../useFetch'
+import ReportList from './reportList'
 import ReportTable from './reportTable'
 
 const ProfitAndLoss = () => {
   const { data: coa } = useFetch('getcoav2.php')
+  let assets = 0
+  let liability = 0
+  let equity = 0
+  let income = 0
+  let expense = 0
+  coa?.forEach((element) => {
+    if (element.type === 'Liability') {
+      liability += parseFloat(element.total)
+    } else if (element.type === 'Equity') {
+      equity += parseFloat(element.total)
+    } else if (element.type === 'Income') {
+      income += parseFloat(element.total)
+    }
+  })
+  coa?.forEach((element) => {
+    if (element.type === 'Assets') {
+      assets += parseFloat(element.total)
+    } else if (element.type === 'Expense') {
+      expense += parseFloat(element.total)
+    }
+  })
   const [data, setData] = useState({ vis: false })
   //   const elementRef = useRef(null);
   const handleClose = (e) => {
@@ -16,15 +38,7 @@ const ProfitAndLoss = () => {
       [e.target.name]: e.target.value,
     })
   }
-  let income = 0
-  let expense = 0
-  coa?.forEach((element) => {
-    if (element.type === 'Income') {
-      income += parseFloat(element.total)
-    } else if (element.type === 'Expense') {
-      expense += parseFloat(element.total)
-    }
-  })
+
   let incomeFill = useMemo(() => {
     return (
       coa &&
@@ -206,7 +220,16 @@ const ProfitAndLoss = () => {
             fontWeight: '600',
           }}
         >
-          {incomeFill && <ReportTable data={incomeFill} />}
+          {incomeFill && (
+            <ReportList
+              title={[
+                [1, 1, 'number'],
+                [3, 3, 'name'],
+                [2, 3, 'total'],
+              ]}
+              body={incomeFill}
+            />
+          )}
         </div>
         <div
           className="row col-md-12"
@@ -217,7 +240,16 @@ const ProfitAndLoss = () => {
             fontWeight: '600',
           }}
         >
-          {expenseFill && <ReportTable data={expenseFill} />}
+          {expenseFill && (
+            <ReportList
+              title={[
+                [1, 1, 'number'],
+                [3, 3, 'name'],
+                [2, 3, 'total'],
+              ]}
+              body={expenseFill}
+            />
+          )}
         </div>
       </div>
     </>
