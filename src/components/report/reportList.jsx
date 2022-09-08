@@ -34,12 +34,16 @@ const ReportList = ({ title, body }) => {
                   <div
                     className={`col-md-${d[0]} col-${d[1]}`}
                     style={
-                      d[2] === 'debit' || d[2] === 'credit' || d[2] === 'total'
+                      d[2].includes('debit') ||
+                      d[2].includes('credit') ||
+                      d[2].includes('total')
                         ? { textAlign: 'right' }
                         : { textAlign: 'left' }
                     }
                   >
-                    {d[2] === 'debit' || d[2] === 'credit' || d[2] === 'total'
+                    {d[2].includes('debit') ||
+                    d[2].includes('credit') ||
+                    d[2].includes('total')
                       ? e[`${d[2]}`]
                           .toString()
                           .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')

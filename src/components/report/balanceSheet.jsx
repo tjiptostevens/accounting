@@ -222,8 +222,11 @@ const BalanceSheet = () => {
               body={assetsFill}
             />
           )}
-          Total = {assets}
+          <hr />
+          Total Assets = {assets}
+          <hr />
         </div>
+        <div className="w-100" style={{ height: '25px' }}></div>
         <div
           className="row col-md-12"
           style={{
@@ -243,8 +246,11 @@ const BalanceSheet = () => {
               body={liabilityFill}
             />
           )}
-          Total = {liability}
+          <hr />
+          Total Liability = {liability}
+          <hr />
         </div>
+        <div className="w-100" style={{ height: '25px' }}></div>
         <div
           className="row col-md-12"
           style={{
@@ -264,9 +270,13 @@ const BalanceSheet = () => {
               body={equityFill}
             />
           )}
-          Total = {equity}
+          <hr />
+          Total Equity = {equity}
+          <hr />
         </div>
-        TOTAL HUTANG + EQUITY = {liability + equity}
+        <div className="w-100" style={{ height: '25px' }}></div>
+        <hr />
+        TOTAL LIABILITY + EQUITY = {liability + equity}
       </div>
     </>
   )

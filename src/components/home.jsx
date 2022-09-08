@@ -21,6 +21,7 @@ import Payment from './payment'
 import TrialBalance from './report/trialBalance'
 import BalanceSheet from './report/balanceSheet'
 import useDate from './useDate'
+import EquityChange from './report/equityChange'
 
 const Home = (props) => {
   const [data, setData] = useState('')
@@ -73,6 +74,7 @@ const Home = (props) => {
                   path="/profitandloss"
                   element={<ProfitAndLoss />}
                 />
+                <Route exact path="/equitychange" element={<EquityChange />} />
 
                 <Route exact path="/balancesheet" element={<BalanceSheet />} />
                 <Route exact path="/cashflow" element={<CashFlow />} />

@@ -230,7 +230,11 @@ const ProfitAndLoss = () => {
               body={incomeFill}
             />
           )}
+          <hr />
+          Total Pendapatan = {income}
+          <hr />
         </div>
+        <div className="w-100" style={{ height: '25px' }}></div>
         <div
           className="row col-md-12"
           style={{
@@ -250,7 +254,13 @@ const ProfitAndLoss = () => {
               body={expenseFill}
             />
           )}
+          <hr />
+          Total Beban = {expense}
+          <hr />
         </div>
+        <div className="w-100" style={{ height: '25px' }}></div>
+        <hr />
+        Laba Bersih = {income - expense}
       </div>
     </>
   )
