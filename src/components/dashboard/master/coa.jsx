@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import CoaLists from './coaLists'
 import useFetch from '../../useFetch'
 import AddCoa from '../modal/addCoa'
+import { useQuery } from 'react-query'
+import { reqCoa } from '../../reqFetch'
 
 const Coa = () => {
-  const { data: coa } = useFetch('getcoav2.php')
+  const { data: coa, error, isError, isLoading } = useQuery('coa', reqCoa)
+  // const { data: coa } = useFetch('getcoav2.php')
   const [data, setData] = useState({ vis: false })
   const handleClose = (e) => {
     setData({ ...data, vis: false })

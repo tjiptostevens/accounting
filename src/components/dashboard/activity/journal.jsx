@@ -1,14 +1,19 @@
 import React, { useState, useMemo, useReducer } from 'react'
-import { coaReducer, InitialCoa } from '../../reducers/coaReducer'
 import AddJournal from '../modal/addJournal'
 import useFetch from '../../useFetch'
 import { useNavigate } from 'react-router-dom'
 import Modal from '../../site/modal'
+import { useQuery } from 'react-query'
+import { reqJournal, reqJournalList } from '../../reqFetch'
 
 const Journal = () => {
-  const { data: journal } = useFetch('getjournal.php')
-  const [state, dispatch] = useReducer(coaReducer, InitialCoa)
-  const { data: journalList } = useFetch('getjournallist.php')
+  const { data: journal, error, isError, isLoading } = useQuery(
+    'journal',
+    reqJournal,
+  )
+  // const { data: journal } = useFetch('getjournal.php')
+  const { data: journalList } = useQuery('journallist', reqJournalList)
+  // const { data: journalList } = useFetch('getjournallist.php')
   const navigate = useNavigate()
   const [data, setData] = useState({ vis: false })
   const [vis, setVis] = useState({ modal: false })
@@ -47,7 +52,6 @@ const Journal = () => {
   }
   return (
     <>
-      {console.log(state)}
       {/* Modal Window */}
       <Modal
         modal={vis.modal}

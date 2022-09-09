@@ -6,9 +6,10 @@ import reportWebVitals from './reportWebVitals'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
+const queryClient = new QueryClient()
 root.render(
   <React.StrictMode>
-    <QueryClientProvider client={QueryClient}>
+    <QueryClientProvider client={queryClient}>
       <App />
     </QueryClientProvider>
   </React.StrictMode>,

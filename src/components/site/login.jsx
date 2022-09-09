@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react'
+import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import '../assets/css/login.css'
 import '../assets/css/modal.css'
 import urlLink from '../config/urlLink'
+import { reqCompany } from '../reqFetch'
 import useFetch from '../useFetch'
 
 const Login = (props) => {
-  const { data: company } = useFetch('getcompany.php')
+  const { data: company, error, isError, isLoading } = useQuery(
+    'company',
+    reqCompany,
+  )
+  // const { data: company } = useFetch('getcompany.php')
+
   useEffect(() => {
     if (localStorage.getItem('user_id')) {
       console.log(localStorage.getItem('user_id'))
@@ -104,6 +111,12 @@ const Login = (props) => {
       data: { ...data.data, [e.target.name]: e.target.value },
       msg: '',
     })
+  }
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  if (isError) {
+    return <div>Error! {error.message}</div>
   }
   return (
     <>
