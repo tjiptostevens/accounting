@@ -50,6 +50,12 @@ const Journal = () => {
     setData({ ...data, i: index, journalDetail: journalName, det: true })
     // console.log(index, journalName)
   }
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  if (isError) {
+    return <div>Error! {error.message}</div>
+  }
   return (
     <>
       {/* Modal Window */}

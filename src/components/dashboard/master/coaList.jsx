@@ -50,66 +50,26 @@ function CoaList({ list }) {
   return (
     <>
       {/* {console.log(list)} */}
-      {vis.modal ? (
-        <Modal
-          modal={vis.modal}
-          title={
-            {
-              1: 'Add Coa',
-              2: 'Edit Coa',
-              3: 'Delete Coa',
-            }[vis.value]
-          }
-          element={
-            {
-              1: <AddCoa data={list} handleClose={handleClose} />,
-              2: <EditCoa data={list} handleClose={handleClose} />,
-              3: <DeleteCoa data={list} handleClose={handleClose} />,
-            }[vis.value]
-          }
-          handleClose={handleClose}
-        />
-      ) : (
-        ''
-      )}
-      {/* <div
-        className="modal-window"
-        style={{ display: { true: 'block', false: 'none' }[data.vis] }}
-      >
-        <div
-          className="row col-md-6"
-          style={{ maxHeight: '95vh', overflowY: 'auto' }}
-        >
-          <div
-            className="modal-close"
-            onClick={() => setData({ ...data, vis: !data.vis })}
-          >
-            <i
-              className="bi bi-x-lg"
-              style={{
-                textAlign: 'center',
-                width: '60px',
-                height: 'auto',
-              }}
-            ></i>
-          </div>
-          <div
-            className="w-100 justify-content-around"
-            style={{
-              textAlign: 'justify',
-              height: 'auto',
-            }}
-          >
-            {
-              {
-                1: <AddCoa data={list} handleClose={handleClose} />,
-                2: <EditCoa data={list} handleClose={handleClose} />,
-                3: <DeleteCoa data={list} handleClose={handleClose} />,
-              }[data.value]
-            }
-          </div>
-        </div>
-      </div> */}
+      {/* Modal Window */}
+      <Modal
+        modal={vis.modal}
+        title={
+          {
+            1: 'Add Coa',
+            2: 'Edit Coa',
+            3: 'Delete Coa',
+          }[vis.value]
+        }
+        element={
+          {
+            1: <AddCoa data={list} handleClose={handleClose} />,
+            2: <EditCoa data={list} handleClose={handleClose} />,
+            3: <DeleteCoa data={list} handleClose={handleClose} />,
+          }[vis.value]
+        }
+        handleClose={handleClose}
+      />
+
       <div
         style={{ paddingLeft: '20px', marginTop: '5px' }}
         onMouseOver={() => setData({ ...data, toggle: true })}

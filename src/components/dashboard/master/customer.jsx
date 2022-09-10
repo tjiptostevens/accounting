@@ -1,9 +1,15 @@
 import React, { useState, useMemo } from 'react'
 import AddCustomer from '../modal/addCustomer'
 import useFetch from '../../useFetch'
+import { useQuery } from 'react-query'
+import { reqCustomer } from '../../reqFetch'
 
 const Customer = () => {
-  const { data: customer } = useFetch('getcustomer.php')
+  const { data: customer, error, isError, isLoading } = useQuery(
+    'customer',
+    reqCustomer,
+  )
+  // const { data: customer } = useFetch('getcustomer.php')
   const [data, setData] = useState({ vis: false })
   const handleClose = (e) => {
     setData({ ...data, vis: false })
@@ -34,6 +40,12 @@ const Customer = () => {
         )
     )
   }, [customer, data.search])
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  if (isError) {
+    return <div>Error! {error.message}</div>
+  }
   return (
     <>
       {/* Modal Window */}

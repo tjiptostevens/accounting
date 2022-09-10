@@ -1,9 +1,21 @@
 import React from 'react'
+import { useQuery } from 'react-query'
 import ReportTable from '../../report/reportTable'
+import { reqPeriod } from '../../reqFetch'
 import useFetch from '../../useFetch'
 
 const Period = () => {
-  const { data: period } = useFetch('getperiod.php')
+  const { data: period, error, isError, isLoading } = useQuery(
+    'period',
+    reqPeriod,
+  )
+  // const { data: period } = useFetch('getperiod.php')
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  if (isError) {
+    return <div>Error! {error.message}</div>
+  }
   return (
     <>
       {/* Component Title */}

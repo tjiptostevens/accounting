@@ -1,9 +1,12 @@
 import React, { useState, useMemo } from 'react'
 import useFetch from '../../useFetch'
 import urlLink from '../../config/urlLink'
+import { useQuery } from 'react-query'
+import { reqCoa } from '../../reqFetch'
 
 const AddCoa = (props) => {
-  const { data: coa } = useFetch('getcoa.php')
+  const { data: coa, error, isError, isLoading } = useQuery('coa', reqCoa)
+  // const { data: coa } = useFetch('getcoa.php')
   const [data, setData] = useState({
     is_group: null,
     required: true,
