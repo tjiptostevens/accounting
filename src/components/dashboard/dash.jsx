@@ -1,8 +1,10 @@
 import React from 'react'
-import useFetch from '../useFetch'
+import { useQuery } from 'react-query'
+import { reqCoa } from '../reqFetch'
+// import useFetch from '../useFetch'
 
 const Dash = () => {
-  const { data: coa } = useFetch('getcoav2.php')
+  const { data: coa, error, isError, isLoading } = useQuery('coa', reqCoa)
   let assets = 0
   let liability = 0
   let equity = 0
@@ -24,7 +26,12 @@ const Dash = () => {
       expense += parseFloat(element.total)
     }
   })
-
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  if (isError) {
+    return <div>Error! {error.message}</div>
+  }
   return (
     <>
       {/* Component Title */}

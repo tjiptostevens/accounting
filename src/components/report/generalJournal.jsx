@@ -1,9 +1,15 @@
 import React, { useState, useMemo, useEffect } from 'react'
-import useFetch from '../useFetch'
+import { useQuery } from 'react-query'
+import { reqJournalList } from '../reqFetch'
+// import useFetch from '../useFetch'
 import ReportTable from './reportTable'
 
 const GeneralJournal = () => {
-  const { data: generalJournal } = useFetch('getjournalentry.php')
+  const { data: generalJournal, error, isError, isLoading } = useQuery(
+    'journallist',
+    reqJournalList,
+  )
+  // const { data: generalJournal } = useFetch('getjournalentry.php')
   const [data, setData] = useState('')
 
   const handleChange = (e) => {
@@ -27,6 +33,12 @@ const GeneralJournal = () => {
         )
     )
   }, [data, data.search, data.search_type, data.end_date])
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  if (isError) {
+    return <div>Error! {error.message}</div>
+  }
   return (
     <>
       {/* Component Title */}
