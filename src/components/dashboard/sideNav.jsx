@@ -1,10 +1,18 @@
 import React, { useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import logo from '../assets/img/env.png'
 import useWindow from '../useWindow'
 import '../assets/css/sideNav.css'
+import { useQuery } from 'react-query'
+import { reqPeriod } from '../reqFetch'
 
 const SideNav = (props) => {
+  // const { data: period, error, isError, isLoading } = useQuery(
+  //   'period',
+  //   reqPeriod,
+  // )
+  let periodStorage = localStorage.getItem('period')
+  let period = JSON.parse(periodStorage)
   const { width } = useWindow()
   const navigate = useNavigate()
   const [data, setData] = useState({
@@ -16,10 +24,50 @@ const SideNav = (props) => {
     localStorage.clear()
     navigate('/', { replace: true })
   }
-
+  // if (isLoading) {
+  //   return <div>Loading...</div>
+  // }
+  // if (isError) {
+  //   return <div>Error! {error.message}</div>
+  // }
   function Nav() {
     return (
       <>
+        <div style={{ background: 'green', borderRadius: '5px' }}>
+          <p
+            className="__subtitle"
+            style={{ paddingLeft: '15px', paddingTop: '5px' }}
+          >
+            ACTIVE PERIOD
+          </p>
+          <ul className="nav nav-pills flex-column mb-auto">
+            <Link
+              to="/d/period"
+              className="nav-link text-white"
+              aria-current="page"
+            >
+              <li style={{ textAlign: 'center' }}>
+                {/* <svg
+                  className="m_icon bi me-2"
+                  width="16"
+                  height="16"
+                  fill="#fff"
+                >
+                  <use xlinkHref="#table" />
+                </svg> */}
+                <i
+                  className="bi bi-bookmark"
+                  style={{
+                    color: 'white',
+                    marginRight: '10px',
+                  }}
+                ></i>
+                {period.name + ' - ' + period.description}
+              </li>
+            </Link>
+          </ul>
+        </div>
+        <hr />
         {localStorage.getItem('loginUser') !== 'admin' ? (
           ''
         ) : (

@@ -1,16 +1,33 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import CoaLists from './coaLists'
 import useFetch from '../../useFetch'
 import AddCoa from '../modal/addCoa'
 import { useQuery } from 'react-query'
-import { reqCoa } from '../../reqFetch'
+import { reqCoa, reqPeriod } from '../../reqFetch'
 
 const Coa = () => {
+  let periodStorage = localStorage.getItem('period')
+  let periodStor = JSON.parse(periodStorage)
+  const { data: period } = useQuery('period', reqPeriod)
   const { data: coa, error, isError, isLoading } = useQuery('coa', reqCoa)
+
+  // let coa = useMemo(() => {
+  //   return coaData
+  //     ?.sort((a, b) => (a.posting_date > b.posting_date ? 1 : -1))
+  //     .filter(
+  //       (d) => d.posting_date >= period.start && d.posting_date <= period.end,
+  //     )
+  // }, [coaData, period])
   // const { data: coa } = useFetch('getcoav2.php')
   const [data, setData] = useState({ vis: false })
   const handleClose = (e) => {
     setData({ ...data, vis: false })
+  }
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  if (isError) {
+    return <div>Error! {error.message}</div>
   }
   return (
     <>

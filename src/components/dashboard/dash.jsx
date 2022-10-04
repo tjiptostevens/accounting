@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useQuery } from 'react-query'
-import { reqCoa } from '../reqFetch'
+import { reqCoa, reqJournalEntry, reqJournalList } from '../reqFetch'
 // import useFetch from '../useFetch'
 
 const Dash = () => {
+  let periodStorage = localStorage.getItem('period')
+  let period = JSON.parse(periodStorage)
+  const { data: journalEntry } = useQuery('journalEntry', reqJournalEntry)
   const { data: coa, error, isError, isLoading } = useQuery('coa', reqCoa)
+
   let assets = 0
   let liability = 0
   let equity = 0
@@ -26,6 +30,23 @@ const Dash = () => {
       expense += parseFloat(element.total)
     }
   })
+
+  let newCoa = [],
+    acc,
+    accName,
+    debit,
+    credit,
+    type
+  journalEntry?.forEach((e) => {
+    console.log(e)
+  })
+  let coa2 = useMemo(() => {
+    return journalEntry
+      ?.sort((a, b) => (a.created_date > b.created_date ? 1 : -1))
+      .filter(
+        (d) => d.created_date >= period.start && d.created_date <= period.end,
+      )
+  }, [journalEntry, period])
   if (isLoading) {
     return <div>Loading...</div>
   }
@@ -36,6 +57,7 @@ const Dash = () => {
     <>
       {/* Component Title */}
       {/* {JSON.stringify(coa)} */}
+      {/* {console.log(journalEntry)} */}
       <div
         className="w-100"
         style={{ display: 'flex', justifyContent: 'space-between' }}
@@ -412,6 +434,9 @@ const Dash = () => {
           </div>
         </div>
       </div>
+
+      {/* coa  */}
+      <div className="w-100">{newCoa}</div>
     </>
   )
 }

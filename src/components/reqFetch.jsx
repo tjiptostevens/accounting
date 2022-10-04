@@ -1,6 +1,9 @@
 import axios from 'axios'
 import urlLink from './config/urlLink'
 
+// let periodStorage = localStorage.getItem('period')
+// let period = JSON.parse(periodStorage)
+
 const reqCompany = async () => {
   const { data } = await axios.get(`${urlLink.url}getcompany.php`)
   return data
