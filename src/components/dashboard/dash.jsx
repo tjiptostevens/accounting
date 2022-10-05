@@ -1,12 +1,20 @@
 import React, { useMemo } from 'react'
 import { useQuery } from 'react-query'
-import { reqCoa, reqJournalEntry, reqJournalList } from '../reqFetch'
-// import useFetch from '../useFetch'
+import {
+  reqCoa,
+  reqCoaList,
+  reqJournalEntry,
+  reqJournalList,
+} from '../reqFetch'
+import useFetch from '../useFetch'
+import CoaLists from './master/coaLists'
 
 const Dash = () => {
   let periodStorage = localStorage.getItem('period')
   let period = JSON.parse(periodStorage)
   const { data: journalEntry } = useQuery('journalEntry', reqJournalEntry)
+  // const { data: coaList } = useFetch('getcoalist.php')
+  const { data: coaList } = useQuery('coaList', reqCoaList)
   const { data: coa, error, isError, isLoading } = useQuery('coa', reqCoa)
 
   let assets = 0
@@ -31,14 +39,38 @@ const Dash = () => {
     }
   })
 
-  let newCoa = [],
-    acc,
-    accName,
-    debit,
-    credit,
-    type
+  let newCoa = coaList
   journalEntry?.forEach((e) => {
-    console.log(e)
+    if (e.acc !== 'Total') {
+      try {
+        let i = newCoa.findIndex((d) => d.number === e.acc)
+        let d, c
+        // console.log(e.acc, e.debit, parseInt(e.debit))
+        d = parseInt(e.debit) + parseInt(newCoa[i].debit)
+        c = parseInt(e.credit) + parseInt(newCoa[i].credit)
+        let t = 0
+        if (newCoa[i].type === 'Assets' || newCoa[i].type === 'Expense') {
+          t = d - c
+        } else {
+          t = c - d
+        }
+        let y = newCoa
+        let x = {
+          number: newCoa[i].number,
+          name: newCoa[i].name,
+          type: newCoa[i].type,
+          parent: newCoa[i].parent,
+          is_group: newCoa[i].is_group,
+          debit: d.toString() + '.00',
+          credit: c.toString() + '.00',
+          total: t.toString() + '.00',
+        }
+        y[i] = x
+        newCoa = y
+      } catch (error) {
+        console.log(error)
+      }
+    }
   })
   let coa2 = useMemo(() => {
     return journalEntry
@@ -56,7 +88,7 @@ const Dash = () => {
   return (
     <>
       {/* Component Title */}
-      {/* {JSON.stringify(coa)} */}
+      {console.log(newCoa)}
       {/* {console.log(journalEntry)} */}
       <div
         className="w-100"
@@ -436,7 +468,9 @@ const Dash = () => {
       </div>
 
       {/* coa  */}
-      <div className="w-100">{newCoa}</div>
+
+      <div className="w-100">{newCoa && <CoaLists list={newCoa} />}</div>
+      <div className="w-100">{coa && <CoaLists list={coa} />}</div>
     </>
   )
 }

@@ -24,6 +24,10 @@ const reqCoa = async () => {
   const { data } = await axios.get(`${urlLink.url}getcoav2.php`)
   return data
 }
+const reqCoaList = async () => {
+  const { data } = await axios.get(`${urlLink.url}getcoalist.php`)
+  return data
+}
 const reqPeriod = async () => {
   const { data } = await axios.get(`${urlLink.url}getperiod.php`)
   return data
@@ -47,6 +51,7 @@ export {
   reqJournalList,
   reqJournalEntry,
   reqCoa,
+  reqCoaList,
   reqPeriod,
   reqAssets,
   reqCustomer,
