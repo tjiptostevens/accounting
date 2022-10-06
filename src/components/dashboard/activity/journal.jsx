@@ -4,9 +4,12 @@ import useFetch from '../../useFetch'
 import { useNavigate } from 'react-router-dom'
 import Modal from '../../site/modal'
 import { useQuery } from 'react-query'
-import { reqJournal, reqJournalList } from '../../reqFetch'
+import { reqJournal, reqJournalList, reqPeriod } from '../../reqFetch'
 
 const Journal = () => {
+  let periodStorage = localStorage.getItem('period')
+  let periodStor = JSON.parse(periodStorage)
+  const { data: period } = useQuery('period', reqPeriod)
   const { data: journal, error, isError, isLoading } = useQuery(
     'journal',
     reqJournal,
@@ -39,10 +42,15 @@ const Journal = () => {
           (d) =>
             (!searchRegex || searchRegex.test(d.name + d.title + d.type)) &&
             (!data.search_type || d.type === data.search_type) &&
-            (!data.end_date || d.posting_date === data.end_date),
+            (!data.end_date || d.posting_date === data.end_date) &&
+            (!data.period ||
+              (new Date(d.posting_date) >=
+                new Date(period[parseInt(data.period)].start) &&
+                new Date(d.posting_date) <=
+                  new Date(period[parseInt(data.period)].end))),
         )
     )
-  }, [journal, data.search, data.search_type, data.end_date])
+  }, [journal, data.search, data.search_type, data.end_date, data.period])
   let journalListFil = useMemo(() => {
     return journalList?.filter((d) => d.parent === data.journalDetail)
   }, [journalList, data.journalDetail])
@@ -58,6 +66,7 @@ const Journal = () => {
   }
   return (
     <>
+      {/* {console.log(period[parseInt(data.period)])} */}
       {/* Modal Window */}
       <Modal
         modal={vis.modal}
@@ -108,6 +117,20 @@ const Journal = () => {
               name="search_type"
               onChange={handleChange}
             /> */}
+            <select
+              className="form-control m-1"
+              name="period"
+              onChange={handleChange}
+              id="period"
+              style={{ minWidth: '200px' }}
+            >
+              <option value="0">Period</option>
+              {period.map((d, i) => (
+                <>
+                  <option value={i}>{d.name}</option>
+                </>
+              ))}
+            </select>
             <select
               className="form-control m-1"
               name="search_type"

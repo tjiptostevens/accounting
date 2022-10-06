@@ -1,15 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery } from 'react-query'
 import ReportTable from '../../report/reportTable'
 import { reqPeriod } from '../../reqFetch'
+import Modal from '../../site/modal'
 import useFetch from '../../useFetch'
+import AddPeriod from '../modal/addPeriod'
 
 const Period = () => {
+  const [vis, setVis] = useState({ modal: false })
   const { data: period, error, isError, isLoading } = useQuery(
     'period',
     reqPeriod,
   )
   // const { data: period } = useFetch('getperiod.php')
+  const handleClose = (e) => {
+    setVis({ ...vis, modal: false })
+  }
   if (isLoading) {
     return <div>Loading...</div>
   }
@@ -18,6 +24,23 @@ const Period = () => {
   }
   return (
     <>
+      {/* Modal Window */}
+      <Modal
+        modal={vis.modal}
+        title={
+          {
+            1: 'Add Period',
+            2: '',
+          }[vis.value]
+        }
+        element={
+          {
+            1: <AddPeriod handleClose={handleClose} />,
+            2: '',
+          }[vis.value]
+        }
+        handleClose={handleClose}
+      />
       {/* Component Title */}
       <div
         className="w-100"
@@ -26,25 +49,6 @@ const Period = () => {
         <div className=" __content_title">Period</div>
         {/* add User + search */}
         <div className=" __search_bar">
-          {/* <div
-            className="col"
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
-            <input
-              className="form-control m-1"
-              type="search"
-              name="search"
-              placeholder="Search by text"
-              onChange={handleChange}
-            />
-          </div> */}
-          <button
-            className="btn btn-primary m-1"
-            onClick={() => window.print()}
-            style={{ minWidth: 'fit-content' }}
-          >
-            <i className="bi bi-arrow-right-square"></i>
-          </button>
           <button
             className="btn btn-primary m-1"
             onClick={() => window.print()}
@@ -52,12 +56,73 @@ const Period = () => {
           >
             <i className="bi bi-printer"></i>
           </button>
+          <button
+            className="btn btn-primary m-1"
+            onClick={() => setVis({ ...vis, modal: true, value: 1 })}
+          >
+            <i className="bi bi-plus" style={{ marginRight: '10px' }}></i>
+            New
+          </button>
         </div>
       </div>
       <hr style={{ margin: '0' }} />
       <div className="w-100" style={{ height: '25px' }}></div>
 
+      {/* Judul */}
       <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
+        <div
+          className="row d-none d-md-flex col-md-12"
+          style={{
+            color: 'white',
+            textAlign: 'left',
+            padding: '7px 0',
+            fontWeight: '600',
+          }}
+        >
+          <div className="col-md-2">Name</div>
+          <div className="col-md-3">Description</div>
+          <div className="col-md-2" style={{ textAlign: 'center' }}>
+            Start Date
+          </div>
+          <div className="col-md-2" style={{ textAlign: 'center' }}>
+            End Date
+          </div>
+          <div className="col-md-2">Status</div>
+          <div className="col-md-1"></div>
+        </div>
+        <hr />
+      </div>
+
+      {/* Isi */}
+      <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
+        {period?.map((e, i) => (
+          <div key={i}>
+            <div
+              className="row col-md-12"
+              style={{
+                color: 'white',
+                textAlign: 'left',
+                fontWeight: '100',
+              }}
+            >
+              <div className="col-md-2 col-6">{e.name}</div>
+              <div className="col-md-3 col-12">{e.description}</div>
+              <div className="col-md-2 col-4" style={{ textAlign: 'right' }}>
+                {e.start}
+              </div>
+              <div className="col-md-2 col-4" style={{ textAlign: 'right' }}>
+                {e.end}
+              </div>
+              <div className="col-md-2 col-4">
+                {{ 0: 'Closed', 1: 'Active' }[e.status]}
+              </div>
+            </div>
+            <hr />
+          </div>
+        ))}
+      </div>
+
+      {/* <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
         <div
           className="row col-md-12"
           style={{
@@ -69,7 +134,7 @@ const Period = () => {
         >
           {period && <ReportTable data={period} />}
         </div>
-      </div>
+      </div> */}
     </>
   )
 }

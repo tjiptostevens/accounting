@@ -43,10 +43,14 @@ const Depreciation = () => {
   }, [assets, data.search, data.search_type, data.end_date])
 
   const handleCalc = async () => {
-    // Check Journal for Depreciation
-    let depJournal = await journal?.filter((f) => f.type === 'Depreciation')
-    // jika depJournal RefID = assetsId dan
-    console.log(depJournal)
+    try {
+      // Check Journal for Depreciation
+      let depJournal = await journal?.filter((f) => f.type === 'Depreciation')
+      // jika depJournal RefID = assetsId dan
+      console.log(depJournal)
+    } catch (error) {
+      console.log(error)
+    }
   }
   const handleDepreciationDet = (i, code) => {
     console.log(i, code)
