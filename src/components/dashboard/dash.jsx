@@ -1,46 +1,49 @@
 import React, { useMemo } from 'react'
 import { useQuery } from 'react-query'
-import {
-  reqCoa,
-  reqCoaList,
-  reqJournalEntry,
-  reqJournalList,
-} from '../reqFetch'
+import { reqCoa, reqCoaList, reqJournalEntry } from '../reqFetch'
 import useFetch from '../useFetch'
 import CoaLists from './master/coaLists'
 
 const Dash = () => {
   let periodStorage = localStorage.getItem('period')
   let period = JSON.parse(periodStorage)
-  const { data: journalEntry } = useQuery('journalEntry', reqJournalEntry)
   // const { data: coaList } = useFetch('getcoalist.php')
-  const { data: coaList } = useQuery('coaList', reqCoaList)
-  const { data: coa, error, isError, isLoading } = useQuery('coa', reqCoa)
+  const { data: coa } = useQuery('coa', reqCoa)
+  const { data: journalEntry } = useQuery('journalEntry', reqJournalEntry)
+  const { data: coaList, error, isError, isLoading } = useQuery(
+    'coaList',
+    reqCoaList,
+  )
 
-  let assets = 0
-  let liability = 0
-  let equity = 0
-  let income = 0
-  let expense = 0
-  coa?.forEach((element) => {
-    if (element.type === 'Liability') {
-      liability += parseFloat(element.total)
-    } else if (element.type === 'Equity') {
-      equity += parseFloat(element.total)
-    } else if (element.type === 'Income') {
-      income += parseFloat(element.total)
-    }
+  // create a new COA
+  let newCoa = []
+  coaList?.forEach((e) => {
+    try {
+      let x = {
+        number: e.number,
+        name: e.name,
+        type: e.type,
+        parent: e.parent,
+        is_group: e.is_group,
+        debit: '0.00',
+        credit: '0.00',
+        total: '0.00',
+      }
+      newCoa.push(x)
+    } catch (error) {}
   })
-  coa?.forEach((element) => {
-    if (element.type === 'Assets') {
-      assets += parseFloat(element.total)
-    } else if (element.type === 'Expense') {
-      expense += parseFloat(element.total)
-    }
-  })
-
-  let newCoa = coaList
-  journalEntry?.forEach((e) => {
+  // Filter journal Entry by period
+  let jE = useMemo(() => {
+    return journalEntry
+      ?.sort((a, b) => (a.created_date > b.created_date ? 1 : -1))
+      .filter(
+        (d) =>
+          new Date(d.created_date) >= new Date(period.start) &&
+          new Date(d.created_date) <= new Date(period.end),
+      )
+  }, [journalEntry, period])
+  // new COA by filtered Journal Entry
+  jE?.forEach((e) => {
     if (e.acc !== 'Total') {
       try {
         let i = newCoa.findIndex((d) => d.number === e.acc)
@@ -72,13 +75,27 @@ const Dash = () => {
       }
     }
   })
-  let coa2 = useMemo(() => {
-    return journalEntry
-      ?.sort((a, b) => (a.created_date > b.created_date ? 1 : -1))
-      .filter(
-        (d) => d.created_date >= period.start && d.created_date <= period.end,
-      )
-  }, [journalEntry, period])
+  let assets = 0
+  let liability = 0
+  let equity = 0
+  let income = 0
+  let expense = 0
+  newCoa?.forEach((element) => {
+    if (element.type === 'Liability') {
+      liability += parseFloat(element.total)
+    } else if (element.type === 'Equity') {
+      equity += parseFloat(element.total)
+    } else if (element.type === 'Income') {
+      income += parseFloat(element.total)
+    }
+  })
+  newCoa?.forEach((element) => {
+    if (element.type === 'Assets') {
+      assets += parseFloat(element.total)
+    } else if (element.type === 'Expense') {
+      expense += parseFloat(element.total)
+    }
+  })
   if (isLoading) {
     return <div>Loading...</div>
   }
@@ -88,8 +105,8 @@ const Dash = () => {
   return (
     <>
       {/* Component Title */}
-      {console.log(newCoa)}
-      {/* {console.log(journalEntry)} */}
+      {/* {console.log(newCoa)} */}
+
       <div
         className="w-100"
         style={{ display: 'flex', justifyContent: 'space-between' }}
@@ -138,8 +155,8 @@ const Dash = () => {
             >
               <div>Rp.</div>
               <div>
-                {coa &&
-                  coa
+                {newCoa &&
+                  newCoa
                     .filter((f) => f.number === '101-2')
                     .map((d) =>
                       d.total.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'),
@@ -167,8 +184,8 @@ const Dash = () => {
             >
               <div>Rp.</div>
               <div>
-                {coa &&
-                  coa
+                {newCoa &&
+                  newCoa
                     .filter((f) => f.number === '101-1')
                     .map((d) =>
                       d.total.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'),
@@ -196,8 +213,8 @@ const Dash = () => {
             >
               <div>Rp.</div>
               <div>
-                {coa &&
-                  coa
+                {newCoa &&
+                  newCoa
                     .filter((f) => f.number === '101-3')
                     .map((d) =>
                       d.total.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'),
@@ -225,8 +242,8 @@ const Dash = () => {
             >
               <div>Rp.</div>
               <div>
-                {coa &&
-                  coa
+                {newCoa &&
+                  newCoa
                     .filter((f) => f.number === '201-1')
                     .map((d) =>
                       d.total.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'),
@@ -468,9 +485,12 @@ const Dash = () => {
       </div>
 
       {/* coa  */}
-
-      <div className="w-100">{newCoa && <CoaLists list={newCoa} />}</div>
-      <div className="w-100">{coa && <CoaLists list={coa} />}</div>
+      {/* <div className="w-100">
+        <div className="col-md-6">{JSON.stringify(newCoa)}</div>
+        <div className="col-md-6">{JSON.stringify(coa)}</div>
+      </div> */}
+      {/* <div className="w-100">{newCoa && <CoaLists list={newCoa} />}</div> */}
+      {/* <div className="w-100">{coa && <CoaLists list={coa} />}</div> */}
     </>
   )
 }
