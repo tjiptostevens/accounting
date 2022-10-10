@@ -23,12 +23,12 @@ const coaTotal = (list) => {
     return `${x}.00`
   }
 }
-function CoaList({ list }) {
+function CoaList({ list, btn }) {
   // const list = coaTotal(lists)
   const [data, setData] = useState({ vis: false, toggle: false })
   const [vis, setVis] = useState({ modal: false })
   const nestedCoa = (list.child || []).map((d) => {
-    return <CoaList key={d.number} list={d} type="child" />
+    return <CoaList key={d.number} list={d} type="child" btn={btn} />
   })
   // useEffect(() => {
   //   coaTotal(list)
@@ -97,7 +97,7 @@ function CoaList({ list }) {
             <div style={{ color: 'white' }}>
               {list.number} - {list.name}
             </div>
-            {data.toggle && (
+            {btn && data.toggle && (
               <div
                 className="btn-group btn-group-toggle"
                 style={{ padding: '0 10px' }}
