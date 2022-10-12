@@ -1,18 +1,16 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { useQuery } from "react-query";
-import { reqJournalEntry, reqJournalList, reqPeriod } from "../reqFetch";
+import React, { useState, useMemo, useEffect } from 'react'
+import { useQuery } from 'react-query'
+import { reqJournalEntry, reqJournalList, reqPeriod } from '../reqFetch'
 // import useFetch from '../useFetch'
-import ReportTable from "./reportTable";
+import ReportTable from './reportTable'
 
 const GeneralJournal = () => {
-  const [data, setData] = useState("");
-  const { data: period } = useQuery("period", reqPeriod);
-  const {
-    data: generalJournal,
-    error,
-    isError,
-    isLoading,
-  } = useQuery("journallist", reqJournalList);
+  const [data, setData] = useState({ period: '' })
+  const { data: period } = useQuery('period', reqPeriod)
+  const { data: generalJournal, error, isError, isLoading } = useQuery(
+    'journallist',
+    reqJournalList,
+  )
 
   // const {
   //   data: generalJournal,
@@ -23,45 +21,64 @@ const GeneralJournal = () => {
   // const { data: generalJournal } = useFetch('getjournalentry.php')
 
   const handleChange = (e) => {
-    console.log(`${[e.target.name]}`, e.target.value);
+    console.log(`${[e.target.name]}`, e.target.value)
     setData({
       ...data,
       [e.target.name]: e.target.value,
-    });
-  };
-  // let generalJournalFil = useMemo(() => {
-  //   const searchRegex = data.search && new RegExp(`${data.search}`, "gi");
-  //   return (
-  //     data &&
-  //     data
-  //       // .sort((a, b) => (a.name > b.name ? 1 : -1))
-  //       .filter(
-  //         (d) =>
-  //           (!searchRegex || searchRegex.test(d.name + d.title + d.type)) &&
-  //           (!data.search_type || d.type === data.search_type) &&
-  //           (!data.end_date || d.posting_date === data.end_date)
-  //       )
-  //   );
-  // }, [data, data.search, data.search_type, data.end_date]);
+    })
+  }
+  // Filter journal by period
+  let gJ = useMemo(() => {
+    return data.period === ''
+      ? generalJournal?.sort((a, b) =>
+          a.created_date > b.created_date ? 1 : -1,
+        )
+      : generalJournal
+          ?.sort((a, b) => (a.created_date > b.created_date ? 1 : -1))
+          .filter(
+            (d) =>
+              new Date(d.created_date) >=
+                new Date(period[parseInt(data.period)].start) &&
+              new Date(d.created_date) <=
+                new Date(period[parseInt(data.period)].end),
+          )
+  }, [generalJournal, period, data.period])
+  let newJournal = []
+  gJ?.forEach((e) => {
+    try {
+      let i = newJournal.findIndex((d) => d.parent === e.parent)
+      if (i < 0) {
+        let x = { parent: e.parent, child: [e] }
+        newJournal.push(x)
+      } else {
+        let x = { parent: e.parent, child: [...newJournal[i].child, e] }
+        newJournal[i] = x
+        // console.log(newJournal[i])
+      }
+    } catch (error) {
+      console.log(error)
+    }
+    // console.log(newJournal)
+  })
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   }
   if (isError) {
-    return <div>Error! {error.message}</div>;
+    return <div>Error! {error.message}</div>
   }
   return (
     <>
       {/* Component Title */}
       <div
         className="w-100"
-        style={{ display: "flex", justifyContent: "space-between" }}
+        style={{ display: 'flex', justifyContent: 'space-between' }}
       >
         <div className=" __content_title">General Journal</div>
         {/* add User + search */}
         <div className=" __search_bar">
           <div
             className="col"
-            style={{ display: "flex", alignItems: "center" }}
+            style={{ display: 'flex', alignItems: 'center' }}
           >
             <input
               className="form-control m-1"
@@ -73,14 +90,14 @@ const GeneralJournal = () => {
           </div>
           <div
             className="col"
-            style={{ display: "flex", alignItems: "center" }}
+            style={{ display: 'flex', alignItems: 'center' }}
           >
             <select
               className="form-control m-1"
               name="period"
               onChange={handleChange}
               id="period"
-              style={{ minWidth: "100px" }}
+              style={{ minWidth: '100px' }}
             >
               <option value="">Period</option>
               {period?.map((d, i) => (
@@ -108,7 +125,7 @@ const GeneralJournal = () => {
           </div>
           <div
             className="col"
-            style={{ display: "flex", alignItems: "center" }}
+            style={{ display: 'flex', alignItems: 'center' }}
           >
             <input
               className="form-control m-1"
@@ -128,37 +145,118 @@ const GeneralJournal = () => {
           <button
             className="btn btn-primary m-1"
             onClick={() => window.print()}
-            style={{ minWidth: "fit-content" }}
+            style={{ minWidth: 'fit-content' }}
           >
             <i className="bi bi-arrow-right-square"></i>
           </button>
           <button
             className="btn btn-primary m-1"
             onClick={() => window.print()}
-            style={{ minWidth: "fit-content" }}
+            style={{ minWidth: 'fit-content' }}
           >
             <i className="bi bi-printer"></i>
           </button>
         </div>
       </div>
 
-      <hr style={{ margin: "0" }} />
-      <div className="w-100" style={{ height: "25px" }}></div>
-      <div className="row col-md-12" style={{ paddingLeft: "25px" }}>
-        <div
-          className="row col-md-12"
-          style={{
-            color: "white",
-            textAlign: "left",
-            padding: "7px 0",
-            fontWeight: "600",
-          }}
-        >
-          {generalJournal && <ReportTable data={generalJournal} />}
-        </div>
-      </div>
-    </>
-  );
-};
+      <hr style={{ margin: '0' }} />
+      <div className="w-100" style={{ height: '25px' }}></div>
+      {newJournal.length}
+      {console.log(newJournal)}
+      {newJournal
+        .filter((f) => f.parent !== '')
+        .map((d) => (
+          <>
+            <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
+              <div
+                className="col-md-3"
+                style={{
+                  color: 'white',
+                  textAlign: 'right',
+                  padding: '7px 25px',
+                  fontWeight: '600',
+                }}
+              >
+                {d.parent}
+                {/* {JSON.stringify(d.child)} */}
+              </div>
 
-export default GeneralJournal;
+              <div
+                className="col-md-6"
+                style={{
+                  color: 'white',
+                  textAlign: 'left',
+                  padding: '7px 0',
+                  fontWeight: '300',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                {d.child
+                  .sort((a, b) => (a.idx > b.idx ? 1 : -1))
+                  .map((c) => (
+                    <div
+                      className="w-100"
+                      style={{ display: 'flex', flexDirection: 'row' }}
+                    >
+                      <div className="col-md-6">
+                        {c.acc + ' - ' + c.acc_name}
+                      </div>
+                      <div className="col-md-3" style={{ textAlign: 'right' }}>
+                        {c.debit
+                          .toString()
+                          .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+                      </div>
+                      <div className="col-md-3" style={{ textAlign: 'right' }}>
+                        {c.credit
+                          .toString()
+                          .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+                      </div>
+                      <div className="w-100" style={{ height: '7px' }}></div>
+                    </div>
+                  ))}
+                <div
+                  className="w-100"
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    fontWeight: '600',
+                    padding: '15px 0 0 0 ',
+                  }}
+                >
+                  <div className="col-md-4"></div>
+                  <div
+                    className="col-md-2"
+                    style={{ textAlign: 'right', borderTop: 'solid 1px white' }}
+                  >
+                    TOTAL
+                  </div>
+                  <div
+                    className="col-md-3"
+                    style={{ textAlign: 'right', borderTop: 'solid 1px white' }}
+                  >
+                    {d.child
+                      .reduce((a, b) => parseInt(a.debit) + parseInt(b.debit))
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}
+                  </div>
+                  <div
+                    className="col-md-3"
+                    style={{ textAlign: 'right', borderTop: 'solid 1px white' }}
+                  >
+                    {d.child
+                      .reduce((a, b) => parseInt(a.credit) + parseInt(b.credit))
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}
+                  </div>
+                  <div className="w-100" style={{ height: '7px' }}></div>
+                </div>
+              </div>
+            </div>
+          </>
+        ))}
+    </>
+  )
+}
+
+export default GeneralJournal

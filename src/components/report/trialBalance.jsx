@@ -1,4 +1,5 @@
 import React from 'react'
+import CoaLists from '../dashboard/master/coaLists'
 import useFetch from '../useFetch'
 import ReportList from './reportList'
 import ReportTable from './reportTable'
@@ -45,6 +46,7 @@ const TrialBalance = () => {
       </div>
       <hr style={{ margin: '0' }} />
       <div className="w-100" style={{ height: '25px' }}></div>
+      {/* {trial && <CoaLists list={trial} />} */}
       {trial && (
         <ReportList
           title={[
