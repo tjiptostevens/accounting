@@ -304,18 +304,19 @@ const BalanceSheet = () => {
           </div>
         </div>
       </div>
-      <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
-        <div
-          className="row col-md-12"
-          style={{
-            color: 'white',
-            textAlign: 'left',
-            padding: '7px 0',
-            fontWeight: '600',
-          }}
-        >
-          {assetsFill && <CoaLists list={assetsFill} />}
-          {/* {assetsFill && (
+      <div className="w-100" style={{ overflowY: 'auto' }}>
+        <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
+          <div
+            className="row col-md-12"
+            style={{
+              color: 'white',
+              textAlign: 'left',
+              padding: '7px 0',
+              fontWeight: '600',
+            }}
+          >
+            {assetsFill && <CoaLists list={assetsFill} />}
+            {/* {assetsFill && (
             <ReportList
               title={[
                 [1, 1, "number"],
@@ -325,22 +326,22 @@ const BalanceSheet = () => {
               body={assetsFill}
             />
           )} */}
-          <hr />
-          Total Assets = {assets}
-          <hr />
-        </div>
-        <div className="w-100" style={{ height: '25px' }}></div>
-        <div
-          className="row col-md-12"
-          style={{
-            color: 'white',
-            textAlign: 'left',
-            padding: '7px 0',
-            fontWeight: '600',
-          }}
-        >
-          {liabilityFill && <CoaLists list={liabilityFill} />}
-          {/* {liabilityFill && (
+            <hr />
+            Total Assets = {assets}
+            <hr />
+          </div>
+          <div className="w-100" style={{ height: '25px' }}></div>
+          <div
+            className="row col-md-12"
+            style={{
+              color: 'white',
+              textAlign: 'left',
+              padding: '7px 0',
+              fontWeight: '600',
+            }}
+          >
+            {liabilityFill && <CoaLists list={liabilityFill} />}
+            {/* {liabilityFill && (
             <ReportList
               title={[
                 [1, 1, "number"],
@@ -350,22 +351,22 @@ const BalanceSheet = () => {
               body={liabilityFill}
             />
           )} */}
-          <hr />
-          Total Liability = {liability}
-          <hr />
-        </div>
-        <div className="w-100" style={{ height: '25px' }}></div>
-        <div
-          className="row col-md-12"
-          style={{
-            color: 'white',
-            textAlign: 'left',
-            padding: '7px 0',
-            fontWeight: '600',
-          }}
-        >
-          {equityFill && <CoaLists list={equityFill} />}
-          {/* {equityFill && (
+            <hr />
+            Total Liability = {liability}
+            <hr />
+          </div>
+          <div className="w-100" style={{ height: '25px' }}></div>
+          <div
+            className="row col-md-12"
+            style={{
+              color: 'white',
+              textAlign: 'left',
+              padding: '7px 0',
+              fontWeight: '600',
+            }}
+          >
+            {equityFill && <CoaLists list={equityFill} />}
+            {/* {equityFill && (
             <ReportList
               title={[
                 [1, 1, "number"],
@@ -375,14 +376,15 @@ const BalanceSheet = () => {
               body={equityFill}
             />
           )} */}
+            <hr />
+            Total Equity = {equity}
+            <hr />
+          </div>
+          <div className="w-100" style={{ height: '25px' }}></div>
           <hr />
-          Total Equity = {equity}
-          <hr />
+          TOTAL LIABILITY + EQUITY = {liability + equity}{' '}
+          <div className="w-100" style={{ height: '100px' }}></div>
         </div>
-        <div className="w-100" style={{ height: '25px' }}></div>
-        <hr />
-        TOTAL LIABILITY + EQUITY = {liability + equity}{' '}
-        <div className="w-100" style={{ height: '100px' }}></div>
       </div>
     </>
   )

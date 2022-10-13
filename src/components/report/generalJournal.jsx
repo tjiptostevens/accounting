@@ -161,100 +161,164 @@ const GeneralJournal = () => {
 
       <hr style={{ margin: '0' }} />
       <div className="w-100" style={{ height: '25px' }}></div>
-      {newJournal.length}
+      {/* {newJournal.length} */}
       {console.log(newJournal)}
-      {newJournal
-        .filter((f) => f.parent !== '')
-        .map((d) => (
-          <>
-            <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
-              <div
-                className="col-md-3"
-                style={{
-                  color: 'white',
-                  textAlign: 'right',
-                  padding: '7px 25px',
-                  fontWeight: '600',
-                }}
-              >
-                {d.parent}
-                {/* {JSON.stringify(d.child)} */}
-              </div>
+      {/* title */}
+      <div
+        className="row col-md-12"
+        style={{ paddingLeft: '25px', fontSize: '18px', fontWeight: '600' }}
+      >
+        <div
+          className="col-md-3"
+          style={{
+            color: 'white',
+            textAlign: 'right',
+            padding: '7px 25px',
+            fontWeight: '600',
+          }}
+        >
+          Transaction
+        </div>
+        <div
+          className="col-md-6"
+          style={{
+            color: 'white',
+            textAlign: 'left',
+            padding: '7px 0',
+            fontWeight: '300',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          {' '}
+          <div
+            className="w-100"
+            style={{ display: 'flex', flexDirection: 'row' }}
+          >
+            <div className="col-md-6">Account</div>
+            <div className="col-md-3" style={{ textAlign: 'right' }}>
+              Debit
+            </div>
+            <div className="col-md-3" style={{ textAlign: 'right' }}>
+              Credit
+            </div>
+            <div className="w-100" style={{ height: '7px' }}></div>
+          </div>
+        </div>
+      </div>
 
-              <div
-                className="col-md-6"
-                style={{
-                  color: 'white',
-                  textAlign: 'left',
-                  padding: '7px 0',
-                  fontWeight: '300',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
-                {d.child
-                  .sort((a, b) => (a.idx > b.idx ? 1 : -1))
-                  .map((c) => (
-                    <div
-                      className="w-100"
-                      style={{ display: 'flex', flexDirection: 'row' }}
-                    >
-                      <div className="col-md-6">
-                        {c.acc + ' - ' + c.acc_name}
-                      </div>
-                      <div className="col-md-3" style={{ textAlign: 'right' }}>
-                        {c.debit
-                          .toString()
-                          .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
-                      </div>
-                      <div className="col-md-3" style={{ textAlign: 'right' }}>
-                        {c.credit
-                          .toString()
-                          .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
-                      </div>
-                      <div className="w-100" style={{ height: '7px' }}></div>
-                    </div>
-                  ))}
+      <hr style={{ margin: '0' }} />
+      <div className="w-100" style={{ overflowY: 'auto' }}>
+        {newJournal
+          .filter((f) => f.parent !== '')
+          .map((d) => (
+            <>
+              <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
                 <div
-                  className="w-100"
+                  className="col-md-3"
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
+                    color: 'white',
+                    textAlign: 'right',
+                    padding: '7px 25px',
                     fontWeight: '600',
-                    padding: '15px 0 0 0 ',
                   }}
                 >
-                  <div className="col-md-4"></div>
+                  {d.parent}
+                  {/* {JSON.stringify(d.child)} */}
+                </div>
+
+                <div
+                  className="col-md-6"
+                  style={{
+                    color: 'white',
+                    textAlign: 'left',
+                    padding: '7px 0',
+                    fontWeight: '300',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  {d.child
+                    .sort((a, b) => (a.idx > b.idx ? 1 : -1))
+                    .map((c) => (
+                      <div
+                        className="w-100"
+                        style={{ display: 'flex', flexDirection: 'row' }}
+                      >
+                        <div className="col-md-6">
+                          {c.acc + ' - ' + c.acc_name}
+                        </div>
+                        <div
+                          className="col-md-3"
+                          style={{ textAlign: 'right' }}
+                        >
+                          {c.debit
+                            .toString()
+                            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+                        </div>
+                        <div
+                          className="col-md-3"
+                          style={{ textAlign: 'right' }}
+                        >
+                          {c.credit
+                            .toString()
+                            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+                        </div>
+                        <div className="w-100" style={{ height: '7px' }}></div>
+                      </div>
+                    ))}
                   <div
-                    className="col-md-2"
-                    style={{ textAlign: 'right', borderTop: 'solid 1px white' }}
+                    className="w-100"
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      fontWeight: '600',
+                      padding: '15px 0 0 0 ',
+                    }}
                   >
-                    TOTAL
+                    <div className="col-md-4"></div>
+                    <div
+                      className="col-md-2"
+                      style={{
+                        textAlign: 'right',
+                        borderTop: 'solid 1px grey',
+                      }}
+                    >
+                      TOTAL
+                    </div>
+                    <div
+                      className="col-md-3"
+                      style={{
+                        textAlign: 'right',
+                        borderTop: 'solid 1px grey',
+                      }}
+                    >
+                      {d.child
+                        .reduce((a, b) => parseInt(a.debit) + parseInt(b.debit))
+                        .toString()
+                        .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}
+                    </div>
+                    <div
+                      className="col-md-3"
+                      style={{
+                        textAlign: 'right',
+                        borderTop: 'solid 1px grey',
+                      }}
+                    >
+                      {d.child
+                        .reduce(
+                          (a, b) => parseInt(a.credit) + parseInt(b.credit),
+                        )
+                        .toString()
+                        .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}
+                    </div>
+                    <div className="w-100" style={{ height: '7px' }}></div>
                   </div>
-                  <div
-                    className="col-md-3"
-                    style={{ textAlign: 'right', borderTop: 'solid 1px white' }}
-                  >
-                    {d.child
-                      .reduce((a, b) => parseInt(a.debit) + parseInt(b.debit))
-                      .toString()
-                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}
-                  </div>
-                  <div
-                    className="col-md-3"
-                    style={{ textAlign: 'right', borderTop: 'solid 1px white' }}
-                  >
-                    {d.child
-                      .reduce((a, b) => parseInt(a.credit) + parseInt(b.credit))
-                      .toString()
-                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}
-                  </div>
-                  <div className="w-100" style={{ height: '7px' }}></div>
                 </div>
               </div>
-            </div>
-          </>
-        ))}
+            </>
+          ))}
+      </div>
     </>
   )
 }

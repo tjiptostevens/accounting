@@ -299,18 +299,20 @@ const ProfitAndLoss = () => {
           </div>
         </div>
       </div>
-      <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
-        <div
-          className="row col-md-12"
-          style={{
-            color: 'white',
-            textAlign: 'left',
-            padding: '7px 0',
-            fontWeight: '600',
-          }}
-        >
-          {incomeFill && <CoaLists list={incomeFill} />}
-          {/* {incomeFill && (
+
+      <div className="w-100" style={{ overflowY: 'auto' }}>
+        <div className="row col-md-12" style={{ paddingLeft: '25px' }}>
+          <div
+            className="row col-md-12"
+            style={{
+              color: 'white',
+              textAlign: 'left',
+              padding: '7px 0',
+              fontWeight: '600',
+            }}
+          >
+            {incomeFill && <CoaLists list={incomeFill} />}
+            {/* {incomeFill && (
             <ReportList
               title={[
                 [1, 1, "number"],
@@ -320,22 +322,40 @@ const ProfitAndLoss = () => {
               body={incomeFill}
             />
           )} */}
-          <hr />
-          Total Pendapatan = {income}
-          <hr />
-        </div>
-        <div className="w-100" style={{ height: '25px' }}></div>
-        <div
-          className="row col-md-12"
-          style={{
-            color: 'white',
-            textAlign: 'left',
-            padding: '7px 0',
-            fontWeight: '600',
-          }}
-        >
-          {expenseFill && <CoaLists list={expenseFill} />}
-          {/* {expenseFill && (
+            <hr />
+            <div
+              className="w-100"
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'right',
+              }}
+            >
+              <div style={{ width: '45%' }}></div>
+              <div style={{ width: '25%' }}>Total Income</div>
+              <div style={{ width: '20%' }}>
+                {income.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
+                  '.00'}{' '}
+                Rp
+              </div>
+              <div style={{ width: '10%' }}></div>
+            </div>
+            <hr />
+          </div>
+          <div className="w-100" style={{ height: '25px' }}></div>
+          <div
+            className="row col-md-12"
+            style={{
+              color: 'white',
+              textAlign: 'left',
+              padding: '7px 0',
+              fontWeight: '600',
+            }}
+          >
+            {expenseFill && <CoaLists list={expenseFill} />}
+            {/* {expenseFill && (
             <ReportList
               title={[
                 [1, 1, 'number'],
@@ -345,13 +365,52 @@ const ProfitAndLoss = () => {
               body={expenseFill}
             />
           )} */}
-          <hr />
-          Total Beban = {expense}
-          <hr />
+            <hr />
+            <div
+              className="w-100"
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'right',
+              }}
+            >
+              <div style={{ width: '45%' }}></div>
+              <div style={{ width: '25%' }}>Total Expense</div>
+              <div style={{ width: '20%' }}>
+                {expense.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
+                  '.00'}{' '}
+                Rp
+              </div>
+              <div style={{ width: '10%' }}></div>
+            </div>
+            <hr />
+
+            <div
+              className="w-100"
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'right',
+              }}
+            >
+              <div style={{ width: '45%' }}></div>
+              <div style={{ width: '25%' }}>Total Profit</div>
+              <div style={{ width: '20%' }}>
+                {(income - expense)
+                  .toString()
+                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}{' '}
+                Rp
+              </div>
+              <div style={{ width: '10%' }}></div>
+            </div>
+            <hr />
+          </div>
+          <div className="w-100" style={{ height: '25px' }}></div>
         </div>
-        <div className="w-100" style={{ height: '25px' }}></div>
-        <hr />
-        Laba Bersih = {income - expense}
       </div>
     </>
   )
