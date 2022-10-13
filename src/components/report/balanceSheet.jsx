@@ -327,7 +327,25 @@ const BalanceSheet = () => {
             />
           )} */}
             <hr />
-            Total Assets = {assets}
+            <div
+              className="w-100"
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'right',
+              }}
+            >
+              <div style={{ width: '45%' }}></div>
+              <div style={{ width: '25%' }}>Total Assets</div>
+              <div style={{ width: '20%' }}>
+                {assets.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
+                  '.00'}{' '}
+                Rp
+              </div>
+              <div style={{ width: '10%' }}></div>
+            </div>
             <hr />
           </div>
           <div className="w-100" style={{ height: '25px' }}></div>
@@ -352,7 +370,26 @@ const BalanceSheet = () => {
             />
           )} */}
             <hr />
-            Total Liability = {liability}
+            <div
+              className="w-100"
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'right',
+              }}
+            >
+              <div style={{ width: '45%' }}></div>
+              <div style={{ width: '25%' }}>Total Liability</div>
+              <div style={{ width: '20%' }}>
+                {liability
+                  .toString()
+                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}{' '}
+                Rp
+              </div>
+              <div style={{ width: '10%' }}></div>
+            </div>
             <hr />
           </div>
           <div className="w-100" style={{ height: '25px' }}></div>
@@ -377,12 +414,50 @@ const BalanceSheet = () => {
             />
           )} */}
             <hr />
-            Total Equity = {equity}
+            <div
+              className="w-100"
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'right',
+              }}
+            >
+              <div style={{ width: '45%' }}></div>
+              <div style={{ width: '25%' }}>Total Equity</div>
+              <div style={{ width: '20%' }}>
+                {equity.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
+                  '.00'}{' '}
+                Rp
+              </div>
+              <div style={{ width: '10%' }}></div>
+            </div>
+            <hr />
+            <div
+              className="w-100"
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'right',
+              }}
+            >
+              <div style={{ width: '45%' }}></div>
+              <div style={{ width: '25%' }}>Total Liability + Equity</div>
+              <div style={{ width: '20%' }}>
+                {(liability + equity)
+                  .toString()
+                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}{' '}
+                Rp
+              </div>
+              <div style={{ width: '10%' }}></div>
+            </div>
             <hr />
           </div>
           <div className="w-100" style={{ height: '25px' }}></div>
-          <hr />
-          TOTAL LIABILITY + EQUITY = {liability + equity}{' '}
+
           <div className="w-100" style={{ height: '100px' }}></div>
         </div>
       </div>
