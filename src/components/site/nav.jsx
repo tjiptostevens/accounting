@@ -1,11 +1,17 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import logo from '../assets/img/env.png'
 import '../assets/css/nav.css'
 import useWindow from '../useWindow'
 
 const Nav = () => {
   const { width } = useWindow()
+  const navigate = useNavigate()
+  const handleLogout = (e) => {
+    sessionStorage.clear()
+    localStorage.clear()
+    navigate('/', { replace: true })
+  }
   return (
     <>
       <div className=" w-100" style={{ backgroundColor: '#1c2126' }}>
@@ -24,7 +30,7 @@ const Nav = () => {
             <div className="form-inline">
               {/* Search Bar */}
 
-              <div className="input-group search-bar">
+              {/* <div className="input-group search-bar">
                 <span className="input-group-text" id="basic-addon1">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -44,10 +50,17 @@ const Nav = () => {
                   aria-label="Input group example"
                   aria-describedby="basic-addon1"
                 />
-              </div>
+              </div> */}
               {/* Login Information */}
-              <div style={{ display: 'flex' }}>
-                {width > 450 ? (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {/* {width > 450 ? (
                   <>
                     <div className="">
                       <i className="m_icon bi bi-bell"></i>
@@ -56,17 +69,41 @@ const Nav = () => {
                   </>
                 ) : (
                   ''
-                )}
-                <div className="">
+                )} */}
+                <div
+                  className=""
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
                   <div
                     className="__avatar"
                     style={{
                       fontSize: '100%',
                       color: 'white',
                       textAlign: 'center',
+                      cursor: 'pointer',
                     }}
                   >
-                    <span>T</span>
+                    <span>
+                      {sessionStorage
+                        .getItem('loginUser')
+                        .split('')[0]
+                        .toUpperCase()}
+                    </span>
+                  </div>
+                  <div>
+                    <Link
+                      to={'/'}
+                      className="nav-link text-white"
+                      onClick={handleLogout}
+                    >
+                      <i className="m_icon bi bi-box-arrow-right"></i>
+                      Log Out
+                    </Link>
                   </div>
                 </div>
               </div>

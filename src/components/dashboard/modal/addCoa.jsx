@@ -58,20 +58,20 @@ const AddCoa = (props) => {
         })
         res = res.json
         console.log(res)
-        // setData({
-        //   number: '',
-        //   name: '',
-        //   parent: '',
-        //   is_group: null,
-        //   required: true,
-        //   message: res.message,
-        // })
+        setData({
+          ...data,
+          number: '',
+          name: '',
+          is_group: null,
+          required: true,
+          message: res.message,
+        })
       } catch (error) {
         console.log(error)
-        // setData({
-        //   ...data,
-        //   msg: 'Error Connection',
-        // })
+        setData({
+          ...data,
+          msg: 'Error Connection',
+        })
       }
       // fetch(`${urlLink.url}addCoa.php`, {
       //   signal: abortCtr.signal,
@@ -101,6 +101,12 @@ const AddCoa = (props) => {
       //     })
       //   })
     }, 50)
+  }
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  if (isError) {
+    return <div>Error! {error.message}</div>
   }
   return (
     <>
@@ -211,6 +217,7 @@ const AddCoa = (props) => {
             onBlur={handleChange}
           />
           <datalist id="coa">
+            <option value="0">Root Account</option>
             {coa &&
               coa
                 .filter((e) => e.is_group === '1' && e.type === data.type)

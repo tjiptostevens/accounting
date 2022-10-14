@@ -86,7 +86,7 @@ const AddAssets = (props) => {
         {
           idx: '1',
           parent: journal.name,
-          acc: '502',
+          acc: '511',
           debit: data.eco_value,
           company: localStorage.getItem('company'),
         },

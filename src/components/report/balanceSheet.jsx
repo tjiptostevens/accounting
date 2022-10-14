@@ -59,8 +59,8 @@ const BalanceSheet = () => {
         let i = newCoa.findIndex((d) => d.number === e.acc)
         let d, c
         // console.log(e.acc, e.debit, parseInt(e.debit))
-        d = parseInt(e.debit) + parseInt(newCoa[i].debit)
-        c = parseInt(e.credit) + parseInt(newCoa[i].credit)
+        d = parseFloat(e.debit) + parseFloat(newCoa[i].debit)
+        c = parseFloat(e.credit) + parseFloat(newCoa[i].credit)
         let t = 0
         if (newCoa[i].type === 'Assets' || newCoa[i].type === 'Expense') {
           t = d - c
@@ -140,6 +140,12 @@ const BalanceSheet = () => {
       ...data,
       [e.target.name]: e.target.value,
     })
+  }
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  if (isError) {
+    return <div>Error! {error.message}</div>
   }
   return (
     <>
@@ -316,6 +322,7 @@ const BalanceSheet = () => {
             }}
           >
             {assetsFill && <CoaLists list={assetsFill} />}
+            {console.log(assetsFill)}
             {/* {assetsFill && (
             <ReportList
               title={[

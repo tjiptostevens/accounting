@@ -17,8 +17,12 @@ const reqJournalList = async () => {
   return data
 }
 const reqJournalEntry = async () => {
-  const { data } = await axios.get(`${urlLink.url}getjournalentry.php`)
-  return data
+  try {
+    const { data } = await axios.get(`${urlLink.url}getjournalentry.php`)
+    return data
+  } catch (error) {
+    console.log(error)
+  }
 }
 const reqCoa = async () => {
   const { data } = await axios.get(`${urlLink.url}getcoav2.php`)

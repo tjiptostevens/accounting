@@ -71,7 +71,7 @@ const AddJournal = (props) => {
             entry: [
               {
                 idx: '1',
-                acc: '101-3',
+                acc: '113',
                 party_type: '',
                 party: '',
                 debit: 0,
@@ -80,7 +80,7 @@ const AddJournal = (props) => {
               },
               {
                 idx: '2',
-                acc: '401',
+                acc: '410',
                 party_type: '',
                 party: '',
                 debit: '',
@@ -99,7 +99,7 @@ const AddJournal = (props) => {
             entry: [
               {
                 idx: '1',
-                acc: '101-3',
+                acc: '113',
                 party_type: '',
                 party: '',
                 debit: 0,
@@ -108,7 +108,7 @@ const AddJournal = (props) => {
               },
               {
                 idx: '2',
-                acc: '402',
+                acc: '420',
                 party_type: '',
                 party: '',
                 debit: '',
@@ -136,7 +136,7 @@ const AddJournal = (props) => {
               },
               {
                 idx: '2',
-                acc: '201-1',
+                acc: '211',
                 party_type: '',
                 party: '',
                 debit: '',
@@ -155,16 +155,16 @@ const AddJournal = (props) => {
             entry: [
               {
                 idx: '1',
-                acc: '101-2',
+                acc: '111',
                 party_type: '',
                 party: '',
                 debit: 0,
                 credit: '',
-                disable: true,
+                disable: false,
               },
               {
                 idx: '2',
-                acc: '101-3',
+                acc: '',
                 party_type: '',
                 party: '',
                 debit: '',
@@ -192,12 +192,12 @@ const AddJournal = (props) => {
               },
               {
                 idx: '2',
-                acc: '101-2',
+                acc: '111',
                 party_type: '',
                 party: '',
                 debit: '',
                 credit: 0,
-                disable: true,
+                disable: false,
               },
             ],
           })

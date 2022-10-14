@@ -157,7 +157,7 @@ const Dash = () => {
               <div>
                 {newCoa &&
                   newCoa
-                    .filter((f) => f.number === '101-2')
+                    .filter((f) => f.number === '111')
                     .map((d) =>
                       d.total.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'),
                     )}
@@ -186,7 +186,7 @@ const Dash = () => {
               <div>
                 {newCoa &&
                   newCoa
-                    .filter((f) => f.number === '101-1')
+                    .filter((f) => f.number === '112')
                     .map((d) =>
                       d.total.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'),
                     )}
@@ -215,7 +215,7 @@ const Dash = () => {
               <div>
                 {newCoa &&
                   newCoa
-                    .filter((f) => f.number === '101-3')
+                    .filter((f) => f.number === '113')
                     .map((d) =>
                       d.total.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'),
                     )}
@@ -244,7 +244,7 @@ const Dash = () => {
               <div>
                 {newCoa &&
                   newCoa
-                    .filter((f) => f.number === '201-1')
+                    .filter((f) => f.number === '211')
                     .map((d) =>
                       d.total.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'),
                     )}

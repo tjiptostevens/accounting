@@ -37,16 +37,16 @@ const Journal = () => {
     const searchRegex = data.search && new RegExp(`${data.search}`, 'gi')
     return data.period === ''
       ? journal
-          // .sort((a, b) => (a.name > b.name ? 1 : -1))
-          ?.filter(
+          ?.sort((a, b) => (a.posting_date > b.posting_date ? 1 : -1))
+          .filter(
             (d) =>
               (!searchRegex || searchRegex.test(d.name + d.title + d.type)) &&
               (!data.search_type || d.type === data.search_type) &&
               (!data.end_date || d.posting_date === data.end_date),
           )
       : journal
-          // .sort((a, b) => (a.name > b.name ? 1 : -1))
-          ?.filter(
+          ?.sort((a, b) => (a.posting_date > b.posting_date ? 1 : -1))
+          .filter(
             (d) =>
               (!searchRegex || searchRegex.test(d.name + d.title + d.type)) &&
               (!data.search_type || d.type === data.search_type) &&
@@ -59,7 +59,9 @@ const Journal = () => {
           )
   }, [journal, data.search, data.search_type, data.end_date, data.period])
   let journalListFil = useMemo(() => {
-    return journalList?.filter((d) => d.parent === data.journalDetail)
+    return journalList
+      ?.sort((a, b) => (a.posting_date > b.posting_date ? 1 : -1))
+      .filter((d) => d.parent === data.journalDetail)
   }, [journalList, data.journalDetail])
   const handleJournalDet = (index, journalName) => {
     setData({ ...data, i: index, journalDetail: journalName, det: true })
@@ -224,7 +226,12 @@ const Journal = () => {
                   fontWeight: '100',
                 }}
               >
-                <div className="col-md-2 col-6">{e.name}</div>
+                <div className="col-md-2 col-6">
+                  {e.name} <br />{' '}
+                  <small>
+                    <i>{e.posting_date}</i>
+                  </small>
+                </div>
                 <div className="col-md-3 col-12">{e.title}</div>
                 <div className="col-md-2 col-4">{e.type}</div>
                 <div className="col-md-2 col-4" style={{ textAlign: 'right' }}>

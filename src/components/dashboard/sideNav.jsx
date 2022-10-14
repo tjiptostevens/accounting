@@ -108,6 +108,12 @@ const SideNav = (props) => {
                   User
                 </NavLink>
               </li>
+              <li>
+                <NavLink to="/d/customer" className="nav-link text-white">
+                  <i className="m_icon bi bi-person-square"></i>
+                  Customer
+                </NavLink>
+              </li>
             </ul>
             <hr />
           </>
@@ -148,9 +154,16 @@ const SideNav = (props) => {
           </li>
           <li>
             <NavLink to="/d/trialbalance" className="nav-link text-white">
-              <i className="m_icon bi bi-file-earmark-diff"></i>Trial Balance
+              <i className="m_icon bi bi-file-earmark-diff"></i>Adj. Trial
+              Balance
             </NavLink>
           </li>
+        </ul>
+        <hr />
+        <p className="__subtitle" style={{ paddingLeft: '15px' }}>
+          FINANCIAL STATEMENT
+        </p>
+        <ul className="nav nav-pills flex-column mb-auto">
           <li>
             <NavLink to="/d/profitandloss" className="nav-link text-white">
               <i className="m_icon bi bi-file-earmark-diff"></i>Profit & Loss
@@ -178,7 +191,7 @@ const SideNav = (props) => {
 
   return (
     <>
-      <div className="">
+      <div className="w-100" style={{ overflowY: 'auto' }}>
         <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
           <symbol id="bootstrap" viewBox="0 0 118 94">
             <title>Bootstrap</title>
