@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
+import createTree from '../custom/createTree'
 import BalanceLists from '../dashboard/master/balanceLists'
 import { reqCoa, reqCoaList, reqJournalEntry, reqPeriod } from '../reqFetch'
 import useFetch from '../useFetch'
@@ -142,6 +143,7 @@ const TrialBalance = () => {
       [e.target.name]: e.target.value,
     })
   }
+  const coba = createTree(newCoa)
   if (isLoading) {
     return <div>Loading...</div>
   }
@@ -150,6 +152,7 @@ const TrialBalance = () => {
   }
   return (
     <>
+      {console.log(newCoa)}
       {/* Component Title */}
       <div
         className="w-100"

@@ -2,23 +2,42 @@ import React, { useState, useEffect } from 'react'
 import Modal from '../../site/modal'
 
 let Array = []
-const balanceTotal = (list) => {
-  // console.log('child', child)
+const grandTotal = (list) => {
+  try {
+  } catch (error) {
+    console.log(error)
+  }
   let arr = {}
   let gr = {}
-  let x = 0
   // console.log(child)
+  const checkChild = () => {}
+  let y = ''
+  let x = 0
   if (list.child.length > 0) {
-    for (let i = 0; i < list.child.length; i++) {
-      const element = parseInt(list.child[i].total)
-      x += element
-    }
-    // console.log('for', x)
-    arr = { ...list, total: x }
-    Array = arr
-    // console.log('x', Array)
-    return `${x}.00`
+    y = list.name
+    let z = 0
+    let deb,
+      cred = 0
+    deb = parseFloat(list.debit)
+    cred = parseFloat(list.credit)
+    list.child.forEach((e) => {
+      if (e.type === 'Assets' || e.type === 'Expense') {
+        x = x + (parseFloat(e.debit) + deb - (cred + parseFloat(e.credit)))
+        if (x === 0) {
+          console.log(list.child)
+        }
+      } else {
+        x = x + (cred + parseFloat(e.credit) - (parseFloat(e.debit) + deb))
+        if (x === 0) {
+          console.log(list.child)
+        }
+      }
+    })
+    checkChild()
   }
+  console.log(y, x)
+
+  return `${x}.00`
 }
 function BalanceList({ list, btn }) {
   // const list = coaTotal(lists)
@@ -90,7 +109,9 @@ function BalanceList({ list, btn }) {
                 color: 'white',
               }}
             >
-              {list.debit.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+              {list.debit === '0.00'
+                ? '-'
+                : list.debit.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
             </div>
             <div
               style={{
@@ -100,7 +121,20 @@ function BalanceList({ list, btn }) {
                 color: 'white',
               }}
             >
-              {list.credit.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+              {list.credit === '0.00'
+                ? '-'
+                : list.credit.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                width: '45%',
+                color: 'white',
+              }}
+            >
+              {grandTotal(list).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+              {/* {list.total === '0.00' ? '-' : list.total} */}
             </div>
           </div>
         </div>
