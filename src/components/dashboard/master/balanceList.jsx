@@ -1,43 +1,52 @@
 import React, { useState, useEffect } from 'react'
 import Modal from '../../site/modal'
 
-let Array = []
-const grandTotal = (list) => {
-  try {
-  } catch (error) {
-    console.log(error)
-  }
-  let arr = {}
-  let gr = {}
-  // console.log(child)
-  const checkChild = () => {}
-  let y = ''
-  let x = 0
-  if (list.child.length > 0) {
-    y = list.name
-    let z = 0
-    let deb,
-      cred = 0
-    deb = parseFloat(list.debit)
-    cred = parseFloat(list.credit)
-    list.child.forEach((e) => {
-      if (e.type === 'Assets' || e.type === 'Expense') {
-        x = x + (parseFloat(e.debit) + deb - (cred + parseFloat(e.credit)))
-        if (x === 0) {
-          console.log(list.child)
-        }
-      } else {
-        x = x + (cred + parseFloat(e.credit) - (parseFloat(e.debit) + deb))
-        if (x === 0) {
-          console.log(list.child)
+const checkChild = (list) => {
+  let newArray = []
+
+  function getAllId(arr, key) {
+    arr.forEach(function (item) {
+      for (let keys in item) {
+        if (keys === key) {
+          newArray.push(item[key])
+        } else if (Array.isArray(item[keys])) {
+          getAllId(item[keys], key)
         }
       }
     })
-    checkChild()
   }
-  console.log(y, x)
+  try {
+    getAllId(list.child, 'credit')
+  } catch (error) {
+    console.log(error)
+  }
+}
 
-  return `${x}.00`
+const grandTotal = (list) => {
+  try {
+    let y = ''
+    let x = 0
+    if (list.child.length > 0) {
+      y = list.name
+      let z = 0
+      let deb,
+        cred = 0
+      deb = parseFloat(list.debit)
+      cred = parseFloat(list.credit)
+      list.child.forEach((e) => {
+        if (e.type === 'Assets' || e.type === 'Expense') {
+          x = x + (parseFloat(e.debit) + deb - (cred + parseFloat(e.credit)))
+        } else {
+          x = x + (cred + parseFloat(e.credit) - (parseFloat(e.debit) + deb))
+        }
+      })
+    }
+    // console.log(y, x)
+
+    return `${x}.00`
+  } catch (error) {
+    console.log(error)
+  }
 }
 function BalanceList({ list, btn }) {
   // const list = coaTotal(lists)
@@ -133,6 +142,7 @@ function BalanceList({ list, btn }) {
                 color: 'white',
               }}
             >
+              {checkChild(list)} |
               {grandTotal(list).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
               {/* {list.total === '0.00' ? '-' : list.total} */}
             </div>
