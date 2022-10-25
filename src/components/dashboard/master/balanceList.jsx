@@ -2,21 +2,25 @@ import React, { useState, useEffect } from 'react'
 import Modal from '../../site/modal'
 
 const checkChild = (list) => {
-  let newArray = []
-
-  function getAllId(arr, key) {
-    arr.forEach(function (item) {
-      for (let keys in item) {
-        if (keys === key) {
-          newArray.push(item[key])
-        } else if (Array.isArray(item[keys])) {
-          getAllId(item[keys], key)
-        }
-      }
-    })
-  }
+  let arr = list
+  let c = list.credit
+  let d = list.debit
+  let x = 0
   try {
-    getAllId(list.child, 'credit')
+    if (arr.child > 0) {
+      function childEach(arr) {
+        arr.child.forEach((e) => {
+          c += e.credit
+          d += e.debit
+          if (e.child > 0) {
+            childEach(e.child)
+          }
+        })
+      }
+      childEach(arr)
+    }
+    x = d - c
+    return x
   } catch (error) {
     console.log(error)
   }
