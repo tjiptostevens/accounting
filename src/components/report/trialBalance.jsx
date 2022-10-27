@@ -229,7 +229,7 @@ const TrialBalance = () => {
         <hr />
       </div>
       <div className="w-100" style={{ overflowY: 'auto' }}>
-        {newCoa && <BalanceLists list={newCoa} />}
+        {newCoa && <BalanceLists list={assetsFill} />}
         {/* {trial && (
         <ReportList
           title={[

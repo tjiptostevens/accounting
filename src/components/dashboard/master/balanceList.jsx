@@ -71,7 +71,7 @@ function BalanceList({ list, btn }) {
 
   return (
     <>
-      {/* {console.log(list)} */}
+      {console.log(list)}
 
       <div
         style={{ paddingLeft: '20px', marginTop: '5px' }}
