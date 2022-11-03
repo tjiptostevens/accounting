@@ -10,7 +10,7 @@ const AddCoa = (props) => {
   const [data, setData] = useState({
     is_group: null,
     required: true,
-    parent: props.data ? props.data.number : '',
+    parent: props.data ? props.data.number : '0',
     type: props.data ? props.data.type : '',
     company: localStorage.getItem('company'),
   })

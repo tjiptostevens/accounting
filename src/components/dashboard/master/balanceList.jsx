@@ -1,6 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import Modal from '../../site/modal'
 
+const mapChild = (list) => {
+  let arr = list
+  let c = list.credit
+  let d = list.debit
+  let x = 0
+  try {
+    if (arr.child > 0) {
+      function mapEach(arr) {
+        arr.child.map((e) => (
+          <>
+            {e.debit - e.credit}
+            <br />
+            {e.child > 0 ? mapEach(e.child) : ''}
+          </>
+        ))
+      }
+      mapEach(arr)
+    }
+    // x = d - c
+    // return x
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const checkChild = (list) => {
   let arr = list
   let c = list.credit
@@ -146,7 +171,7 @@ function BalanceList({ list, btn }) {
                 color: 'white',
               }}
             >
-              {checkChild(list)} |
+              {mapChild(list)} |
               {grandTotal(list).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
               {/* {list.total === '0.00' ? '-' : list.total} */}
             </div>
