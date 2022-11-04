@@ -9,10 +9,14 @@ import {
   GetJournalLastFn,
 } from '../../custom/accFn'
 import Modal from '../../site/modal'
+import { useQuery } from 'react-query'
+import { reqCoa, reqCustomer } from '../../reqFetch'
 
 const AddJournal = (props) => {
   const [vis, setVis] = useState({ modal: false })
-  const { data: coa } = useFetch('getcoa.php')
+  const { data: customer } = useQuery('customer', reqCustomer)
+  // const { data: coa } = useFetch('getcoa.php')
+  const { data: coa, error, isError, isLoading } = useQuery('coa', reqCoa)
   const { YY, DD, MM, ss } = useDate()
   let a = JSON.parse(localStorage.getItem('period'))
   let period = a.name
@@ -23,6 +27,8 @@ const AddJournal = (props) => {
     required: true,
     name: `JV/${period}/####`,
     title: '',
+    customer_id: '',
+    customer: '',
     last: '0000',
     now: `${YY}-${MM}-${DD}`,
     entry: [
@@ -384,9 +390,15 @@ const AddJournal = (props) => {
       opening: true,
     })
   }
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  if (isError) {
+    return <div>Error! {error.message}</div>
+  }
   return (
     <>
-      {console.log(data.entry)}
+      {console.log(data.customer)}
       <Modal
         modal={vis.modal}
         element={<>{vis.msg}</>}
@@ -508,6 +520,34 @@ const AddJournal = (props) => {
             name="title"
             id="title"
           />
+        </div>
+        <div
+          className="row col-md-12 mb-2"
+          style={{ margin: '0px', padding: '0px' }}
+        >
+          <label className="label_title">Customer</label>
+          <input
+            list="customer"
+            className="form-control mb-2"
+            style={{ padding: '5px 10px', border: 'none' }}
+            type="text"
+            name="customer"
+            value={
+              data.customer &&
+              customer?.filter((f) => f.id === data.customer).map((e) => e.name)
+            }
+            onChange={handleChange}
+          />
+          <datalist id="customer">
+            {customer &&
+              customer
+                .filter((e) => e.status === '1')
+                .map((e, i) => (
+                  <option key={i} value={e.id}>
+                    {e.id} - {e.name}
+                  </option>
+                ))}
+          </datalist>
         </div>
         {/* Input data Accounting */}
         <div

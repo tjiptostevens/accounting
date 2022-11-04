@@ -5,7 +5,6 @@ import { AddCustomerFn } from '../../custom/customerFn'
 import Modal from '../../site/modal'
 
 const AddCustomer = (props) => {
-  const { data: coa } = useFetch('getcoa.php')
   const [data, setData] = useState({ required: true })
 
   const [vis, setVis] = useState({ modal: false })
@@ -105,10 +104,10 @@ const AddCustomer = (props) => {
           <input
             required={data.required}
             onChange={handleChange}
-            type="tel"
+            type="number"
             className="form-control mb-2"
             value={data.mobile}
-            placeholder="+628123456789"
+            placeholder="628123456789"
             name="mobile"
             id="mobile"
           />

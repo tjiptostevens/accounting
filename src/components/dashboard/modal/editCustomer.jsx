@@ -70,7 +70,7 @@ const EditCustomer = (props) => {
       <Modal
         modal={vis.modal}
         element={<>{vis.msg}</>}
-        handleClose={handleClose}
+        handleClose={(e) => setVis({ modal: false })}
       />
       <form onSubmit={handleSubmit} method="post">
         {/* Customer Name */}

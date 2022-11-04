@@ -10,7 +10,13 @@ const loginUser = localStorage.getItem('loginUser')
 const company = localStorage.getItem('company')
 
 const AddCustomerFn = async (
-  input = { name: '', mobile: '', email: '', address: '' },
+  input = {
+    name: '',
+    mobile: '',
+    email: '',
+    address: '',
+    created_by: loginUser,
+  },
 ) => {
   console.log(input)
   try {
@@ -33,7 +39,16 @@ const AddCustomerFn = async (
   }
 }
 
-const EditCustomerFn = async (input) => {
+const EditCustomerFn = async (
+  input = {
+    id: '',
+    name: '',
+    mobile: '',
+    email: '',
+    address: '',
+    modified_by: loginUser,
+  },
+) => {
   try {
     let res = await fetch(`${urlLink.url}editcustomer.php`, {
       signal: abortCtr.signal,

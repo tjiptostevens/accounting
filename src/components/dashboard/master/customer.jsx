@@ -5,6 +5,7 @@ import { useQuery } from 'react-query'
 import { reqCustomer } from '../../reqFetch'
 import Modal from '../../site/modal'
 import EditCustomer from '../modal/editCustomer'
+import { EditCustomerFn } from '../../custom/customerFn'
 
 const Customer = () => {
   const { data: customer, error, isError, isLoading } = useQuery(
@@ -30,9 +31,26 @@ const Customer = () => {
     e.preventDefault()
     setVis({ ...vis, modal: true, value: 2, data: input })
   }
-  const handleDelete = (e) => {
+  const handleDelete = async (e, input, status) => {
     e.preventDefault()
-    setVis({ ...vis, modal: true, value: 3 })
+    let x = {
+      ...input,
+      status: status,
+    }
+    try {
+      let res = await EditCustomerFn(x)
+      console.log(res)
+      if (res.error) {
+        throw res
+      } else {
+        setVis({ ...vis, modal: true, value: 3, msg: res.message })
+      }
+    } catch (error) {
+      console.log(error)
+      setVis({ ...vis, modal: true, value: 3, msg: error.message })
+    }
+
+    // setVis({ ...vis, modal: true, value: 2, data: x })
   }
   let customerFil = useMemo(() => {
     const searchRegex = data.search && new RegExp(`${data.search}`, 'gi')
@@ -58,11 +76,16 @@ const Customer = () => {
       {/* Modal Window */}
       <Modal
         modal={vis.modal}
-        title={{ 1: 'Add Customer', 2: 'Edit Customer' }[vis.value]}
+        title={
+          { 1: 'Add Customer', 2: 'Edit Customer', 3: 'Delete Customer' }[
+            vis.value
+          ]
+        }
         element={
           {
             1: <AddCustomer handleClose={handleClose} />,
             2: <EditCustomer handleClose={handleClose} data={vis.data} />,
+            3: <>{vis.msg}</>,
           }[vis.value]
         }
         handleClose={handleClose}
@@ -163,14 +186,23 @@ const Customer = () => {
                 >
                   Edit
                 </button>
-
-                <button
-                  className="btn btn-sm btn-danger"
-                  style={{ padding: '2px 7px', fontSize: '10px' }}
-                  onClick={handleDelete}
-                >
-                  Delete
-                </button>
+                {d.status === '1' ? (
+                  <button
+                    className="btn btn-sm btn-danger"
+                    style={{ padding: '2px 7px', fontSize: '10px' }}
+                    onClick={(e) => handleDelete(e, d, 0)}
+                  >
+                    Delete
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-sm btn-light"
+                    style={{ padding: '2px 7px', fontSize: '10px' }}
+                    onClick={(e) => handleDelete(e, d, 1)}
+                  >
+                    Activate
+                  </button>
+                )}
               </div>
               <hr />
             </div>

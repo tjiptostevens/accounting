@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from '../../useFetch'
 import '../../assets/css/form.css'
+import { reqCoa } from '../../reqFetch'
+import { useQuery } from 'react-query'
 const Entry = (props) => {
-  const { data: coa } = useFetch('getcoa.php')
+  const { data: coa, error, isError, isLoading } = useQuery('coa', reqCoa)
   const [data, setData] = useState({ delete: false })
   const dataList = {
     idx: (props.i + 1).toString(),
