@@ -3,16 +3,20 @@ import AddCustomer from '../modal/addCustomer'
 import useFetch from '../../useFetch'
 import { useQuery } from 'react-query'
 import { reqCustomer } from '../../reqFetch'
+import Modal from '../../site/modal'
+import EditCustomer from '../modal/editCustomer'
 
 const Customer = () => {
   const { data: customer, error, isError, isLoading } = useQuery(
     'customer',
     reqCustomer,
   )
+
+  const [vis, setVis] = useState({ modal: false })
   // const { data: customer } = useFetch('getcustomer.php')
   const [data, setData] = useState({ vis: false })
   const handleClose = (e) => {
-    setData({ ...data, vis: false })
+    setVis({ ...vis, modal: false })
   }
   const handleChange = (e) => {
     console.log(`${[e.target.name]}`, e.target.value)
@@ -21,11 +25,14 @@ const Customer = () => {
       [e.target.name]: e.target.value,
     })
   }
-  const handleEdit = (e) => {
-    setData({ ...data, vis: true, value: 2 })
+  const handleEdit = (e, input) => {
+    console.log(e, input)
+    e.preventDefault()
+    setVis({ ...vis, modal: true, value: 2, data: input })
   }
   const handleDelete = (e) => {
-    setData({ ...data, vis: true, value: 3 })
+    e.preventDefault()
+    setVis({ ...vis, modal: true, value: 3 })
   }
   let customerFil = useMemo(() => {
     const searchRegex = data.search && new RegExp(`${data.search}`, 'gi')
@@ -49,53 +56,17 @@ const Customer = () => {
   return (
     <>
       {/* Modal Window */}
-      <div
-        className="__modal-window"
-        style={{
-          display: { true: 'block', false: 'none' }[data.vis],
-          margin: '0px',
-          padding: '0px',
-        }}
-      >
-        <div
-          className="row col-md-6 col-11"
-          style={{
-            maxHeight: '95vh',
-            overflowY: 'auto',
-            margin: '0px',
-            padding: '0px',
-          }}
-        >
-          <div
-            className="modal-close"
-            onClick={() => setData({ ...data, vis: !data.vis })}
-          >
-            <i
-              className="bi bi-x-lg"
-              style={{
-                textAlign: 'center',
-                width: '60px',
-                height: 'auto',
-              }}
-            ></i>
-          </div>
-          <div
-            className="w-100 justify-content-around"
-            style={{
-              textAlign: 'justify',
-              height: 'auto',
-            }}
-          >
-            {
-              {
-                1: <AddCustomer handleClose={handleClose} />,
-                2: '',
-              }[data.value]
-            }
-          </div>
-        </div>
-      </div>
-
+      <Modal
+        modal={vis.modal}
+        title={{ 1: 'Add Customer', 2: 'Edit Customer' }[vis.value]}
+        element={
+          {
+            1: <AddCustomer handleClose={handleClose} />,
+            2: <EditCustomer handleClose={handleClose} data={vis.data} />,
+          }[vis.value]
+        }
+        handleClose={handleClose}
+      />
       {/* Component Title */}
       <div
         className="w-100"
@@ -115,7 +86,7 @@ const Customer = () => {
           </span>
           <button
             className="btn btn-primary m-1"
-            onClick={() => setData({ ...data, vis: !data.vis, value: 1 })}
+            onClick={() => setVis({ ...vis, modal: !vis.modal, value: 1 })}
           >
             <i className="bi bi-plus"></i>
             New
@@ -188,7 +159,7 @@ const Customer = () => {
                 <button
                   className="btn btn-sm btn-warning"
                   style={{ padding: '2px 7px', fontSize: '10px' }}
-                  onClick={handleEdit}
+                  onClick={(e) => handleEdit(e, d)}
                 >
                   Edit
                 </button>
