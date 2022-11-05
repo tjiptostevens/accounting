@@ -85,21 +85,32 @@ function BalanceList({ list, btn }) {
     return <BalanceList key={d.number} list={d} type="child" btn={btn} />;
   });
   const nestTotal = (list) => {
-    let c = parseFloat(list.credit);
-    let d = parseFloat(list.debit);
+    let c = 0;
+    let d = 0;
     let t = 0;
-    const childTotal = (li) => {
-      (li.child || []).map((e) =>
-        e.type === "Assets" || e.type === "Expense"
-          ? (t = d + parseFloat(e.debit) - (c + parseFloat(e.credit)))
-          : (t = c + parseFloat(e.credit) - (d + parseFloat(e.debit)))
-      );
-    };
-    if (list.child) {
-      childTotal(list);
-    }
+    const childTotal = (data) => {
+      for (const key in data) {
+        if (key === "debit") {
+          d += parseFloat(data[key]);
+          // console.log(key, data[key]);
+        } else if (key === "credit") {
+          c += parseFloat(data[key]);
+          // console.log(key, data[key]);
+        }
 
-    return t;
+        if (key === "child" && data[key]) {
+          for (const idx in data[key]) {
+            childTotal(data[key][idx]);
+          }
+        }
+      }
+    };
+    childTotal(list);
+    if (list.type === "Assets" || list.type === "Expense") {
+      return d - c;
+    } else {
+      return c - d;
+    }
   };
   const nestedTotal = (list.child || []).map((e) => {
     let c = [];
@@ -261,8 +272,10 @@ function BalanceList({ list, btn }) {
                 color: "white",
               }}
             >
-              {JSON.stringify(list)}
-              {nestedTotal}
+              {/* {JSON.stringify(list)} */}
+              {nestTotal(list)
+                .toString()
+                .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + ".00"}
               <br />
               <br />
               {/* {mapChild(list)} | */}
