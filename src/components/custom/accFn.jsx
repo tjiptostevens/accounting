@@ -76,6 +76,7 @@ const AddJournalEntryFn = async (
     debit: 0,
     credit: 0,
     acc_type: null,
+    posting_date: `{YY}-{MM}-{DD}`,
   },
 ) => {
   try {
@@ -119,5 +120,17 @@ const AddAssetsFn = async (input) => {
     return error
   }
 }
+const CalcAssetFn = async (input) => {
+  try {
+  } catch (error) {
+    console.log(error)
+  }
+}
 
-export { AddAssetsFn, AddJournalFn, AddJournalEntryFn, GetJournalLastFn }
+export {
+  AddAssetsFn,
+  CalcAssetFn,
+  AddJournalFn,
+  AddJournalEntryFn,
+  GetJournalLastFn,
+}
