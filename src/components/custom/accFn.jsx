@@ -76,6 +76,7 @@ const AddJournalEntryFn = async (
     debit: 0,
     credit: 0,
     acc_type: null,
+    posting_date: `{YY}-{MM}-{DD}`,
   },
 ) => {
   try {

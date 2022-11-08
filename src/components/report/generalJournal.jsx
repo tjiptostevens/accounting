@@ -1,5 +1,6 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useQuery } from 'react-query'
+import { showFormattedDate } from '../custom/dateFn'
 import { reqJournalEntry, reqJournalList, reqPeriod } from '../reqFetch'
 // import useFetch from '../useFetch'
 import ReportTable from './reportTable'
@@ -37,9 +38,9 @@ const GeneralJournal = () => {
           ?.sort((a, b) => (a.created_date > b.created_date ? 1 : -1))
           .filter(
             (d) =>
-              new Date(d.created_date) >=
+              new Date(d.posting_date) >=
                 new Date(period[parseInt(data.period)].start) &&
-              new Date(d.created_date) <=
+              new Date(d.posting_date) <=
                 new Date(period[parseInt(data.period)].end),
           )
   }, [generalJournal, period, data.period])
@@ -48,10 +49,14 @@ const GeneralJournal = () => {
     try {
       let i = newJournal.findIndex((d) => d.parent === e.parent)
       if (i < 0) {
-        let x = { parent: e.parent, child: [e] }
+        let x = { parent: e.parent, posting_date: e.posting_date, child: [e] }
         newJournal.push(x)
       } else {
-        let x = { parent: e.parent, child: [...newJournal[i].child, e] }
+        let x = {
+          parent: e.parent,
+          posting_date: e.posting_date,
+          child: [...newJournal[i].child, e],
+        }
         newJournal[i] = x
         // console.log(newJournal[i])
       }
@@ -69,6 +74,7 @@ const GeneralJournal = () => {
   return (
     <>
       {/* Component Title */}
+
       <div
         className="w-100"
         style={{ display: 'flex', justifyContent: 'space-between' }}
@@ -223,8 +229,12 @@ const GeneralJournal = () => {
                     fontWeight: '600',
                   }}
                 >
-                  {d.parent}
-                  {/* {JSON.stringify(d.child)} */}
+                  {d.parent} <br />
+                  <small>
+                    <i style={{ fontWeight: '200' }}>
+                      {showFormattedDate(d.posting_date)}
+                    </i>
+                  </small>
                 </div>
 
                 <div
