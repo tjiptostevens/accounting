@@ -16,8 +16,12 @@ const Customer = () => {
   const [vis, setVis] = useState({ modal: false })
   // const { data: customer } = useFetch('getcustomer.php')
   const [data, setData] = useState({ vis: false })
+  const refreshPage = () => {
+    window.location.reload(false)
+  }
   const handleClose = (e) => {
     setVis({ ...vis, modal: false })
+    refreshPage()
   }
   const handleChange = (e) => {
     console.log(`${[e.target.name]}`, e.target.value)

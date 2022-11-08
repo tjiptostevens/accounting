@@ -120,5 +120,17 @@ const AddAssetsFn = async (input) => {
     return error
   }
 }
+const CalcAssetFn = async (input) => {
+  try {
+  } catch (error) {
+    console.log(error)
+  }
+}
 
-export { AddAssetsFn, AddJournalFn, AddJournalEntryFn, GetJournalLastFn }
+export {
+  AddAssetsFn,
+  CalcAssetFn,
+  AddJournalFn,
+  AddJournalEntryFn,
+  GetJournalLastFn,
+}
