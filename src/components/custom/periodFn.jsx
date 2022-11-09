@@ -9,51 +9,20 @@ const headers = {
 const loginUser = localStorage.getItem("loginUser");
 const company = localStorage.getItem("company");
 
-const AddCustomerFn = async (
+const AddPeriodFn = async (
   input = {
     name: "",
-    mobile: "",
-    email: "",
-    address: "",
+    description: "",
+    start: "",
+    end: "",
+    status: 1,
     created_by: loginUser,
     company: company,
   }
 ) => {
   console.log(input);
-  let x = { ...input, created_by: loginUser, company: company };
-  console.log(x);
   try {
-    let res = await fetch(`${urlLink.url}addcustomer.php`, {
-      signal: abortCtr.signal,
-      method: "POST",
-      body: JSON.stringify(x),
-      headers: headers,
-    });
-    console.log(res);
-    res = await res.json();
-    if (res.error) {
-      throw res;
-    } else {
-      return res;
-    }
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-};
-
-const EditCustomerFn = async (
-  input = {
-    id: "",
-    name: "",
-    mobile: "",
-    email: "",
-    address: "",
-    modified_by: loginUser,
-  }
-) => {
-  try {
-    let res = await fetch(`${urlLink.url}editcustomer.php`, {
+    let res = await fetch(`${urlLink.url}addperiod.php`, {
       signal: abortCtr.signal,
       method: "POST",
       body: JSON.stringify(input),
@@ -71,7 +40,37 @@ const EditCustomerFn = async (
     return error;
   }
 };
-const DeleteCustomerFn = async (input) => {
+
+const EditPeriodFn = async (
+  input = {
+    id: "",
+    name: "",
+    mobile: "",
+    email: "",
+    address: "",
+    modified_by: loginUser,
+  }
+) => {
+  try {
+    let res = await fetch(`${urlLink.url}editperiod.php`, {
+      signal: abortCtr.signal,
+      method: "POST",
+      body: JSON.stringify(input),
+      headers: headers,
+    });
+    res = await res.json();
+    console.log(res);
+    if (res.error) {
+      throw res;
+    } else {
+      return res;
+    }
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+const DeletePeriodFn = async (input) => {
   try {
     let res = await fetch(`${urlLink.url}deletecustomer.php`, {
       signal: abortCtr.signal,
@@ -92,4 +91,4 @@ const DeleteCustomerFn = async (input) => {
   }
 };
 
-export { AddCustomerFn, EditCustomerFn, DeleteCustomerFn };
+export { AddPeriodFn, EditPeriodFn, DeletePeriodFn };
