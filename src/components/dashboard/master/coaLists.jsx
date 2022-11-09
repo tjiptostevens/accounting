@@ -1,7 +1,7 @@
 import React from 'react'
 import CoaList from './coaList'
 
-const CoaLists = ({ list, btn = false }) => {
+const CoaLists = ({ list, btn = false, equiChange = 0 }) => {
   function createTree(list) {
     let map = {},
       node,
@@ -25,7 +25,9 @@ const CoaLists = ({ list, btn = false }) => {
     return roots
   }
   const coaTree = createTree(list)
-  return coaTree.map((d) => <CoaList key={d.number} list={d} btn={btn} />)
+  return coaTree.map((d) => (
+    <CoaList key={d.number} list={d} btn={btn} equiChange={equiChange} />
+  ))
 }
 
 export default CoaLists

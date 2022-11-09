@@ -128,7 +128,10 @@ const BalanceSheet = () => {
       newCoa &&
       newCoa
         // .sort((a, b) => (a.name > b.name ? 1 : -1))
-        .filter((d) => d.type === 'Equity')
+        .filter(
+          (d) =>
+            d.type === 'Equity' && d.number !== '320' && d.number !== '330',
+        )
     )
   }, [newCoa])
   const handleClose = (e) => {
@@ -409,7 +412,19 @@ const BalanceSheet = () => {
               fontWeight: '600',
             }}
           >
-            {equityFill && <CoaLists list={equityFill} />}
+            {equityFill && (
+              <CoaLists
+                list={equityFill}
+                equiChange={
+                  equity +
+                  (income - expense) -
+                  (newCoa &&
+                    newCoa
+                      .filter((f) => f.number === '320')
+                      .map((g) => parseFloat(g.total)))
+                }
+              />
+            )}
             {/* {equityFill && (
             <ReportList
               title={[
