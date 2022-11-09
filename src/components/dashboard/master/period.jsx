@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useQuery } from 'react-query'
+import { showFormattedDate } from '../../custom/dateFn'
 import ReportTable from '../../report/reportTable'
 import { reqPeriod } from '../../reqFetch'
 import Modal from '../../site/modal'
@@ -108,13 +109,33 @@ const Period = () => {
               <div className="col-md-2 col-6">{e.name}</div>
               <div className="col-md-3 col-12">{e.description}</div>
               <div className="col-md-2 col-4" style={{ textAlign: 'right' }}>
-                {e.start}
+                {showFormattedDate(e.start)}
               </div>
               <div className="col-md-2 col-4" style={{ textAlign: 'right' }}>
-                {e.end}
+                {showFormattedDate(e.end)}
               </div>
               <div className="col-md-2 col-4">
-                {{ 0: 'Closed', 1: 'Active' }[e.status]}
+                {/* {{ 0: 'Closed', 1: 'Active' }[e.status]} */}
+                {
+                  {
+                    0: (
+                      <div
+                        className="text-warning"
+                        // style={{ width: '11%' }}
+                      >
+                        <i className="bi bi-check-all text-warning"></i>Closed
+                      </div>
+                    ),
+                    1: (
+                      <div
+                        className="text-success"
+                        // style={{ width: '11%' }}
+                      >
+                        <i className="bi bi-check-all text-success"></i>Active
+                      </div>
+                    ),
+                  }[e.status]
+                }
               </div>
             </div>
             <hr />
