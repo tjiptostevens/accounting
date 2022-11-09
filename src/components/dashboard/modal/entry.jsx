@@ -76,9 +76,13 @@ const Entry = (props) => {
             type="text"
             name="acc"
             id={props.i}
-            value={list.acc}
+            value={
+              list.acc &&
+              coa
+                .filter((f) => f.number === list.acc)
+                .map((d) => d.number + '-' + d.name)
+            }
             onChange={handleChange}
-            onBlur={handleChange}
             disabled={list.disable && list.disable ? list.disable : false}
           />
           <datalist id="coa">

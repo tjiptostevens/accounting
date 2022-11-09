@@ -35,11 +35,11 @@ const Dash = () => {
   // Filter journal Entry by period
   let jE = useMemo(() => {
     return journalEntry
-      ?.sort((a, b) => (a.created_date > b.created_date ? 1 : -1))
+      ?.sort((a, b) => (a.posting_date > b.posting_date ? 1 : -1))
       .filter(
         (d) =>
-          new Date(d.created_date) >= new Date(period.start) &&
-          new Date(d.created_date) <= new Date(period.end),
+          new Date(d.posting_date) >= new Date(period.start) &&
+          new Date(d.posting_date) <= new Date(period.end),
       )
   }, [journalEntry, period])
   // new COA by filtered Journal Entry

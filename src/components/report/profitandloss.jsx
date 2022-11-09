@@ -39,14 +39,14 @@ const ProfitAndLoss = () => {
   // Filter journal Entry by period
   let jE = useMemo(() => {
     return data.period === ''
-      ? journalEntry?.sort((a, b) => (a.created_date > b.created_date ? 1 : -1))
+      ? journalEntry?.sort((a, b) => (a.posting_date > b.posting_date ? 1 : -1))
       : journalEntry
-          ?.sort((a, b) => (a.created_date > b.created_date ? 1 : -1))
+          ?.sort((a, b) => (a.posting_date > b.posting_date ? 1 : -1))
           .filter(
             (d) =>
-              new Date(d.created_date) >=
+              new Date(d.posting_date) >=
                 new Date(period[parseInt(data.period)].start) &&
-              new Date(d.created_date) <=
+              new Date(d.posting_date) <=
                 new Date(period[parseInt(data.period)].end),
           )
   }, [journalEntry, period, data.period])
@@ -57,8 +57,8 @@ const ProfitAndLoss = () => {
         let i = newCoa.findIndex((d) => d.number === e.acc)
         let d, c
         // console.log(e.acc, e.debit, parseInt(e.debit))
-        d = parseInt(e.debit) + parseInt(newCoa[i].debit)
-        c = parseInt(e.credit) + parseInt(newCoa[i].credit)
+        d = parseFloat(e.debit) + parseFloat(newCoa[i].debit)
+        c = parseFloat(e.credit) + parseFloat(newCoa[i].credit)
         let t = 0
         if (newCoa[i].type === 'Assets' || newCoa[i].type === 'Expense') {
           t = d - c
@@ -104,7 +104,34 @@ const ProfitAndLoss = () => {
       expense += parseFloat(element.total)
     }
   })
-  //   const elementRef = useRef(null);
+
+  let assetsFill = useMemo(() => {
+    return (
+      newCoa &&
+      newCoa
+        // .sort((a, b) => (a.name > b.name ? 1 : -1))
+        .filter((d) => d.type === 'Assets')
+    )
+  }, [newCoa])
+  let liabilityFill = useMemo(() => {
+    return (
+      newCoa &&
+      newCoa
+        // .sort((a, b) => (a.name > b.name ? 1 : -1))
+        .filter((d) => d.type === 'Liability')
+    )
+  }, [newCoa])
+  let equityFill = useMemo(() => {
+    return (
+      newCoa &&
+      newCoa
+        // .sort((a, b) => (a.name > b.name ? 1 : -1))
+        .filter(
+          (d) =>
+            d.type === 'Equity' && d.number !== '320' && d.number !== '330',
+        )
+    )
+  }, [newCoa])
   const handleClose = (e) => {
     setData({ ...data, vis: false })
   }
@@ -132,6 +159,12 @@ const ProfitAndLoss = () => {
         .filter((d) => d.type === 'Expense')
     )
   }, [newCoa])
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  if (isError) {
+    return <div>Error! {error.message}</div>
+  }
   return (
     <>
       {/* Component Title */}
