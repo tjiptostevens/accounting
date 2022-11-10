@@ -47,11 +47,12 @@ const AddJournalFn = async (
   },
 ) => {
   console.log(input)
+  let x = { ...input, company: company, created_by: loginUser }
   try {
     let res = await fetch(`${urlLink.url}addjournal.php`, {
       signal: abortCtr.signal,
       method: 'POST',
-      body: JSON.stringify(input),
+      body: JSON.stringify(x),
       headers: headers,
     })
     res = await res.json()

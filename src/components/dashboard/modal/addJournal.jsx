@@ -398,7 +398,7 @@ const AddJournal = (props) => {
   }
   return (
     <>
-      {console.log(data.customer)}
+      {console.log(data)}
       <Modal
         modal={vis.modal}
         element={<>{vis.msg}</>}
@@ -702,9 +702,21 @@ const AddJournal = (props) => {
           <p>{data.message}</p>
         </div> */}
         {/* Button */}
-        <button className="btn btn-primary" type="submit">
-          Save
-        </button>
+        {data.total_credit === data.total_debit ? (
+          <button className="btn btn-primary" type="submit">
+            Save
+          </button>
+        ) : (
+          <button
+            className="btn btn-primary"
+            onClick={(e) => {
+              e.preventDefault()
+              alert('Journal not balanced.')
+            }}
+          >
+            Save
+          </button>
+        )}
         <button className="btn btn-warning" onClick={handleClose}>
           Cancel
         </button>
