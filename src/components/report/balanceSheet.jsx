@@ -90,6 +90,7 @@ const BalanceSheet = () => {
   let equity = 0
   let income = 0
   let expense = 0
+
   newCoa?.forEach((element) => {
     if (element.type === 'Liability') {
       liability += parseFloat(element.total)
@@ -106,7 +107,11 @@ const BalanceSheet = () => {
       expense += parseFloat(element.total)
     }
   })
-
+  let pl =
+    income -
+    expense -
+    (newCoa &&
+      newCoa.filter((f) => f.number === '320').map((g) => parseFloat(g.total)))
   let assetsFill = useMemo(() => {
     return (
       newCoa &&
@@ -124,7 +129,7 @@ const BalanceSheet = () => {
     )
   }, [newCoa])
   let equityFill = useMemo(() => {
-    return (
+    let a =
       newCoa &&
       newCoa
         // .sort((a, b) => (a.name > b.name ? 1 : -1))
@@ -132,7 +137,13 @@ const BalanceSheet = () => {
           (d) =>
             d.type === 'Equity' && d.number !== '320' && d.number !== '330',
         )
-    )
+    let i = a.findIndex((obj) => obj.number === '300')
+    console.log(a, i, pl)
+    a[i] = {
+      ...a[i],
+      credit: pl.toString() + '.00',
+    }
+    return a
   }, [newCoa])
   const handleClose = (e) => {
     setData({ ...data, vis: false })
@@ -306,8 +317,9 @@ const BalanceSheet = () => {
                 style={equity < 0 ? { color: 'crimson' } : { color: 'white' }}
               >
                 Rp.{' '}
-                {equity.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
-                  '.00'}
+                {(equity + pl)
+                  .toString()
+                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}
               </h5>
             </div>
           </div>
@@ -449,8 +461,9 @@ const BalanceSheet = () => {
               <div style={{ width: '45%' }}></div>
               <div style={{ width: '25%' }}>Total Equity</div>
               <div style={{ width: '20%' }}>
-                {equity.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
-                  '.00'}{' '}
+                {(equity + pl)
+                  .toString()
+                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}{' '}
                 Rp
               </div>
               <div style={{ width: '10%' }}></div>
@@ -469,7 +482,7 @@ const BalanceSheet = () => {
               <div style={{ width: '45%' }}></div>
               <div style={{ width: '25%' }}>Total Liability + Equity</div>
               <div style={{ width: '20%' }}>
-                {(liability + equity)
+                {(liability + (equity + pl))
                   .toString()
                   .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}{' '}
                 Rp
