@@ -137,11 +137,11 @@ const BalanceSheet = () => {
           (d) =>
             d.type === 'Equity' && d.number !== '320' && d.number !== '330',
         )
-    let i = a.findIndex((obj) => obj.number === '300')
+    let i = a.findIndex((obj) => obj.number === '310')
     // console.log(a, i, pl)
     a[i] = {
       ...a[i],
-      credit: pl.toString() + '.00',
+      credit: (parseFloat(a[i].credit) + pl).toString() + '.00',
     }
     return a
   }, [newCoa, pl])
