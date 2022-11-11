@@ -1,58 +1,54 @@
-import React, { useState } from "react";
-import urlLink from "../../config/urlLink";
+import React, { useState } from 'react'
+import urlLink from '../../config/urlLink'
+import { AddPeriodFn } from '../../custom/periodFn'
+import Modal from '../../site/modal'
 
 const AddPeriod = (props) => {
-  const [data, setData] = useState({ required: true });
+  const [data, setData] = useState({ required: true })
 
-  const [vis, setVis] = useState({ modal: false });
+  const [vis, setVis] = useState({ modal: false })
   const handleChange = (e) => {
-    console.log(`${[e.target.name]}`, e.target.value);
+    console.log(`${[e.target.name]}`, e.target.value)
     setData({
       ...data,
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
   const handleClose = (e) => {
-    e.preventDefault();
-    console.log(data);
-    setData({ ...data, required: !data.required });
-    props.handleClose(e);
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(data);
-    const abortCtr = new AbortController();
-    const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": window.location.origin,
-    };
-    setTimeout(async () => {
-      try {
-        let res = await fetch(`${urlLink.url}addperiod.php`, {
-          signal: abortCtr.signal,
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: headers,
-        });
-        res = res.json;
-        console.log(res);
-      } catch (error) {
-        console.log(error);
-        // setData({
-        //   ...data,
-        //   msg: 'Error Connection',
-        // })
+    e.preventDefault()
+    console.log(data)
+    setData({ ...data, required: !data.required })
+    props.handleClose(e)
+  }
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    console.log(data)
+    try {
+      let res = await AddPeriodFn(data)
+      console.log(res)
+      if (res.error) {
+        throw res
+      } else {
+        setVis({ ...vis, modal: true, msg: res.message })
       }
-    }, 50);
-  };
+    } catch (error) {
+      console.log(error)
+      setVis({ ...vis, modal: true, msg: error.message })
+    }
+  }
   return (
     <>
+      <Modal
+        modal={vis.modal}
+        title={''}
+        element={vis.msg}
+        handleClose={(e) => setVis({ modal: false })}
+      />
       <form onSubmit={handleSubmit} method="post">
         {/* Name */}
         <div
           className="row col-md-12"
-          style={{ margin: "0px", padding: "0px" }}
+          style={{ margin: '0px', padding: '0px' }}
         >
           <label className="label_title">
             Name <span className="text-danger">*</span>
@@ -70,7 +66,7 @@ const AddPeriod = (props) => {
         {/* Description */}
         <div
           className="row col-md-12"
-          style={{ margin: "0px", padding: "0px" }}
+          style={{ margin: '0px', padding: '0px' }}
         >
           <label className="label_title">
             Description <span className="text-danger">*</span>
@@ -88,7 +84,7 @@ const AddPeriod = (props) => {
         {/* start */}
         <div
           className="row col-md-12"
-          style={{ margin: "0px", padding: "0px" }}
+          style={{ margin: '0px', padding: '0px' }}
         >
           <label className="label_title">
             Start Date <span className="text-danger">*</span>
@@ -106,7 +102,7 @@ const AddPeriod = (props) => {
         {/* end */}
         <div
           className="row col-md-12"
-          style={{ margin: "0px", padding: "0px" }}
+          style={{ margin: '0px', padding: '0px' }}
         >
           <label className="label_title">
             End Date <span className="text-danger">*</span>
@@ -136,7 +132,7 @@ const AddPeriod = (props) => {
         </button>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default AddPeriod;
+export default AddPeriod

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useQuery } from 'react-query'
 import { showFormattedDate } from '../../custom/dateFn'
-import { EditPeriodFn } from '../../custom/periodFn'
+import { ClosePeriodFn } from '../../custom/periodFn'
 import { reqPeriod } from '../../reqFetch'
 import Modal from '../../site/modal'
 import AddPeriod from '../modal/addPeriod'
@@ -21,14 +21,15 @@ const Period = () => {
     e.preventDefault()
     setVis({ ...vis, modal: true, value: 2, data: input })
   }
-  const handleDelete = async (e, input, status) => {
+  const handleClosePeriod = async (e, input, status) => {
     e.preventDefault()
     let x = {
       ...input,
       status: status,
     }
+    console.log(x)
     try {
-      let res = await EditPeriodFn(x)
+      let res = await ClosePeriodFn(x)
       console.log(res)
       if (res.error) {
         throw res
@@ -47,6 +48,16 @@ const Period = () => {
   }
   if (isError) {
     return <div>Error! {error.message}</div>
+  }
+  if (period.filter((f) => f.status === '1').length === 0) {
+    return (
+      <Modal
+        modal={true}
+        title={'Add Period'}
+        element={<AddPeriod handleClose={handleClose} />}
+        handleClose={handleClose}
+      />
+    )
   }
   return (
     <>
@@ -225,18 +236,12 @@ const Period = () => {
                   {d.status === '1' ? (
                     <button
                       className="btn btn-danger"
-                      onClick={(e) => handleDelete(e, d, 0)}
+                      onClick={(e) => handleClosePeriod(e, d, 0)}
                     >
                       Close Period
                     </button>
                   ) : (
-                    <button
-                      className="btn btn-light"
-                      onClick={(e) => handleDelete(e, d, 1)}
-                      disabled={true}
-                    >
-                      Activate
-                    </button>
+                    ''
                   )}
                 </div>
               </div>

@@ -146,51 +146,50 @@ const EquityChange = () => {
           <div className="col-md-2">Modal Akhir</div>
         </div>
         <hr />
-        <div
-          className="row col-md-12"
-          style={{
-            color: 'white',
-            textAlign: 'left',
-            padding: '7px 0',
-          }}
-        >
-          {period &&
-            period.map((d) => (
-              <>
-                <div className="col-md-2">{d.name}</div>
-                <div className="col-md-2">
-                  {equity.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
-                    '.00'}
-                </div>
-                <div className="col-md-2">
-                  {(income - expense)
-                    .toString()
-                    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}
-                </div>
-                <div className="col-md-2">
-                  {newCoa &&
+
+        {period &&
+          period.map((d) => (
+            <div
+              className="row col-md-12"
+              style={{
+                color: 'white',
+                textAlign: 'left',
+                padding: '7px 0',
+              }}
+            >
+              <div className="col-md-2">{d.name}</div>
+              <div className="col-md-2">
+                {equity.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
+                  '.00'}
+              </div>
+              <div className="col-md-2">
+                {(income - expense)
+                  .toString()
+                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}
+              </div>
+              <div className="col-md-2">
+                {newCoa &&
+                  newCoa
+                    .filter((f) => f.number === '320')
+                    .map((g) =>
+                      g.total.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'),
+                    )}
+              </div>
+              <div className="col-md-2">
+                {equity +
+                  (income - expense) -
+                  (
+                    newCoa &&
                     newCoa
                       .filter((f) => f.number === '320')
-                      .map((g) =>
-                        g.total.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'),
-                      )}
-                </div>
-                <div className="col-md-2">
-                  {equity +
-                    (income - expense) -
-                    (
-                      newCoa &&
-                      newCoa
-                        .filter((f) => f.number === '320')
-                        .map((g) => parseFloat(g.total))
-                    )
-                      .toString()
-                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
-                    '.00'}
-                </div>
-              </>
-            ))}
-        </div>
+                      .map((g) => parseFloat(g.total))
+                  )
+                    .toString()
+                    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
+                  '.00'}
+              </div>
+            </div>
+          ))}
       </div>
     </>
   )
