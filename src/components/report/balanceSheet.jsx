@@ -144,7 +144,7 @@ const BalanceSheet = () => {
       credit: pl.toString() + '.00',
     }
     return a
-  }, [newCoa])
+  }, [newCoa,pl])
   const handleClose = (e) => {
     setData({ ...data, vis: false })
   }

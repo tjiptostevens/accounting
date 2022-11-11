@@ -96,6 +96,11 @@ const Dash = () => {
       expense += parseFloat(element.total)
     }
   })
+  let pl =
+    income -
+    expense -
+    (newCoa &&
+      newCoa.filter((f) => f.number === '320').map((g) => parseFloat(g.total)))
   if (isLoading) {
     return <div>Loading...</div>
   }
@@ -359,8 +364,9 @@ const Dash = () => {
                 style={equity < 0 ? { color: 'crimson' } : { color: 'white' }}
               >
                 Rp.{' '}
-                {equity.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
-                  '.00'}
+                {(equity + pl)
+                  .toString()
+                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.00'}
               </h5>
             </div>
           </div>
