@@ -1,18 +1,151 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
+import { AddJournalFn } from '../../custom/accFn'
 import { showFormattedDate } from '../../custom/dateFn'
 import { ClosePeriodFn } from '../../custom/periodFn'
-import { reqPeriod } from '../../reqFetch'
+import { reqCoaList, reqJournalEntry, reqPeriod } from '../../reqFetch'
 import Modal from '../../site/modal'
 import AddPeriod from '../modal/addPeriod'
 
 const Period = () => {
   const [vis, setVis] = useState({ modal: false })
+  let periodStorage = localStorage.getItem('period')
+  let periodStore = JSON.parse(periodStorage)
   const { data: period, error, isError, isLoading } = useQuery(
     'period',
     reqPeriod,
   )
-  // const { data: period } = useFetch('getperiod.php')
+  const { data: journalEntry } = useQuery('journalEntry', reqJournalEntry)
+  const { data: coaList } = useQuery('coaList', reqCoaList)
+
+  const loginUser = localStorage.getItem('loginUser')
+  const company = localStorage.getItem('company')
+  // create a new COA
+  let newCoa = []
+  coaList?.forEach((e) => {
+    try {
+      let x = {
+        number: e.number,
+        name: e.name,
+        type: e.type,
+        parent: e.parent,
+        is_group: e.is_group,
+        debit: '0.00',
+        credit: '0.00',
+        total: '0.00',
+      }
+      newCoa.push(x)
+    } catch (error) {}
+  })
+  // Filter journal Entry by period
+  let jE = useMemo(() => {
+    return periodStore === ''
+      ? journalEntry?.sort((a, b) => (a.posting_date > b.posting_date ? 1 : -1))
+      : journalEntry
+          ?.sort((a, b) => (a.posting_date > b.posting_date ? 1 : -1))
+          .filter(
+            (d) =>
+              new Date(d.posting_date) >= new Date(periodStore.start) &&
+              new Date(d.posting_date) <= new Date(periodStore.end),
+          )
+  }, [journalEntry, period, periodStore])
+  // new COA by filtered Journal Entry
+
+  jE?.forEach((e) => {
+    if (e.acc !== 'Total') {
+      try {
+        let i = newCoa.findIndex((d) => d.number === e.acc)
+        let d, c
+        // console.log(e.acc, e.debit, parseInt(e.debit))
+        d = parseInt(e.debit) + parseInt(newCoa[i].debit)
+        c = parseInt(e.credit) + parseInt(newCoa[i].credit)
+        let t = 0
+        if (newCoa[i].type === 'Assets' || newCoa[i].type === 'Expense') {
+          t = d - c
+        } else {
+          t = c - d
+        }
+        let y = newCoa
+        let x = {
+          number: newCoa[i].number,
+          name: newCoa[i].name,
+          type: newCoa[i].type,
+          parent: newCoa[i].parent,
+          is_group: newCoa[i].is_group,
+          debit: d.toString() + '.00',
+          credit: c.toString() + '.00',
+          total: t.toString() + '.00',
+        }
+        y[i] = x
+        newCoa = y
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  })
+
+  let assets = 0
+  let liability = 0
+  let equity = 0
+  let income = 0
+  let expense = 0
+  newCoa?.forEach((element) => {
+    if (element.type === 'Liability') {
+      liability += parseFloat(element.total)
+    } else if (element.type === 'Equity') {
+      equity += parseFloat(element.total)
+    } else if (element.type === 'Income') {
+      income += parseFloat(element.total)
+    }
+  })
+  newCoa?.forEach((element) => {
+    if (element.type === 'Assets') {
+      assets += parseFloat(element.total)
+    } else if (element.type === 'Expense') {
+      expense += parseFloat(element.total)
+    }
+  })
+
+  let assetsFill = useMemo(() => {
+    return (
+      newCoa &&
+      newCoa
+        // .sort((a, b) => (a.name > b.name ? 1 : -1))
+        .filter((d) => d.type === 'Assets')
+    )
+  }, [newCoa])
+  let liabilityFill = useMemo(() => {
+    return (
+      newCoa &&
+      newCoa
+        // .sort((a, b) => (a.name > b.name ? 1 : -1))
+        .filter((d) => d.type === 'Liability')
+    )
+  }, [newCoa])
+  let equityFill = useMemo(() => {
+    return (
+      newCoa &&
+      newCoa
+        // .sort((a, b) => (a.name > b.name ? 1 : -1))
+        .filter((d) => d.type === 'Equity')
+    )
+  }, [newCoa])
+  let incomeFill = useMemo(() => {
+    return (
+      newCoa &&
+      newCoa
+        // .sort((a, b) => (a.name > b.name ? 1 : -1))
+        .filter((d) => d.type === 'Income' && d.is_group === '0')
+    )
+  }, [newCoa])
+  let expenseFill = useMemo(() => {
+    return (
+      newCoa &&
+      newCoa
+        // .sort((a, b) => (a.name > b.name ? 1 : -1))
+        .filter((d) => d.type === 'Expense' && d.is_group === '0')
+    )
+  }, [newCoa])
   const handleClose = (e) => {
     setVis({ ...vis, modal: false })
   }
@@ -23,13 +156,103 @@ const Period = () => {
   }
   const handleClosePeriod = async (e, input, status) => {
     e.preventDefault()
+    // Income
+    let dIncome = 0
+    let cIncome = 0
+    incomeFill.forEach((e) => {
+      cIncome += parseFloat(e.credit)
+      dIncome += parseFloat(e.debit)
+    })
+    // Expense
+    let dExpense = 0
+    let cExpense = 0
+    expenseFill.forEach((e) => {
+      cExpense += parseFloat(e.credit)
+      dExpense += parseFloat(e.debit)
+    })
+    // Pl
+    let dPl = 0
+    let cPl = 0
+
+    // Prive
+    let dPrive = 0
+    let cPrive = 0
+    // priveFill.forEach((e) => {
+    //   cPrive += parseFloat(e.credit)
+    //   dPrive += parseFloat(e.debit)
+    // })
     let x = {
       ...input,
       status: status,
     }
-    console.log(x)
+
     try {
-      let res = await ClosePeriodFn(x)
+      // let res = await ClosePeriodFn(x)
+      let xIncome = {
+        type: 'Closing',
+        name: `CLS/${input.name}/0001`,
+        title: 'Closing pendapatan ' + input.name,
+        posting_date: input.end,
+        created_by: loginUser,
+        company: company,
+        total_debit: cIncome,
+        total_credit: dIncome,
+      }
+      let xExpense = {
+        type: 'Closing',
+        name: `CLS/${input.name}/0002`,
+        title: 'Closing beban ' + input.name,
+        posting_date: input.end,
+        created_by: loginUser,
+        company: company,
+        total_debit: cExpense,
+        total_credit: dExpense,
+      }
+      let xPl = {
+        type: 'Closing',
+        name: `CLS/${input.name}/0002`,
+        title: 'Closing beban ' + input.name,
+        posting_date: input.end,
+        created_by: loginUser,
+        company: company,
+        total_debit: cPl,
+        total_credit: dPl,
+      }
+      let xPrive = {
+        type: 'Closing',
+        name: `CLS/${input.name}/0002`,
+        title: 'Closing beban ' + input.name,
+        posting_date: input.end,
+        created_by: loginUser,
+        company: company,
+        total_debit: cPrive,
+        total_credit: dPrive,
+      }
+      console.log(incomeFill)
+      console.log(x, xIncome, xExpense)
+      let entry = [
+        {
+          idx: '1',
+          parent: `CLS/${input.name}/0001`,
+          acc: '330',
+          party_type: '',
+          party: '',
+          debit: '',
+          credit: '5000',
+        },
+        {
+          idx: '2',
+          parent: `CLS/${input.name}/0001`,
+          acc: '420',
+          party_type: '',
+          party: '',
+          debit: '5000',
+          credit: '',
+        },
+      ]
+      // let addJournal = await AddJournalFn(xIncome)
+      let res = 0
+      // console.log(assets, liability, equity, income, expense, pl)
       console.log(res)
       if (res.error) {
         throw res

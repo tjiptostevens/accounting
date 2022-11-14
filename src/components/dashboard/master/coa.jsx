@@ -38,14 +38,14 @@ const Coa = () => {
   // Filter journal Entry by period
   let jE = useMemo(() => {
     return data.period === ''
-      ? journalEntry?.sort((a, b) => (a.created_date > b.created_date ? 1 : -1))
+      ? journalEntry?.sort((a, b) => (a.posting_date > b.posting_date ? 1 : -1))
       : journalEntry
-          ?.sort((a, b) => (a.created_date > b.created_date ? 1 : -1))
+          ?.sort((a, b) => (a.posting_date > b.posting_date ? 1 : -1))
           .filter(
             (d) =>
-              new Date(d.created_date) >=
+              new Date(d.posting_date) >=
                 new Date(period[parseInt(data.period)].start) &&
-              new Date(d.created_date) <=
+              new Date(d.posting_date) <=
                 new Date(period[parseInt(data.period)].end),
           )
   }, [journalEntry, period, data.period])

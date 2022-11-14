@@ -110,7 +110,7 @@ const GeneralJournal = () => {
                 <option value={i}>{d.name}</option>
               ))}
             </select>
-            <select
+            {/* <select
               className="form-control m-1"
               name="search_type"
               onChange={handleChange}
@@ -127,7 +127,7 @@ const GeneralJournal = () => {
               <option value="Penerimaan Kas">Penerimaan Kas</option>
               <option value="Pembayaran Kas">Pembayaran Kas</option>
               <option value="Journal Umum">Journal Umum</option>
-            </select>
+            </select> */}
           </div>
           <div
             className="col"
