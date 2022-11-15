@@ -22,6 +22,7 @@ import TrialBalance from './report/trialBalance'
 import BalanceSheet from './report/balanceSheet'
 import useDate from './useDate'
 import EquityChange from './report/equityChange'
+import ClosingJournal from './report/closingJournal'
 
 const Home = (props) => {
   const [data, setData] = useState('')
@@ -67,6 +68,11 @@ const Home = (props) => {
                   exact
                   path="/generaljournal"
                   element={<GeneralJournal />}
+                />
+                <Route
+                  exact
+                  path="/closingjournal"
+                  element={<ClosingJournal />}
                 />
                 <Route exact path="/trialbalance" element={<TrialBalance />} />
                 <Route

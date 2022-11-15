@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
-import { AddJournalFn } from '../../custom/accFn'
+import { AddJournalEntryFn, AddJournalFn } from '../../custom/accFn'
 import { showFormattedDate } from '../../custom/dateFn'
 import { ClosePeriodFn } from '../../custom/periodFn'
 import { reqCoaList, reqJournalEntry, reqPeriod } from '../../reqFetch'
@@ -146,7 +146,8 @@ const Period = () => {
         .filter((d) => d.type === 'Expense' && d.is_group === '0')
     )
   }, [newCoa])
-  const handleClose = (e) => {
+  const handleClose = (e) => {    
+    // e.preventDefault()
     setVis({ ...vis, modal: false })
   }
   const handleEdit = (e, input) => {
@@ -156,104 +157,201 @@ const Period = () => {
   }
   const handleClosePeriod = async (e, input, status) => {
     e.preventDefault()
-    // Income
-    let dIncome = 0
-    let cIncome = 0
-    incomeFill.forEach((e) => {
-      cIncome += parseFloat(e.credit)
-      dIncome += parseFloat(e.debit)
-    })
-    // Expense
-    let dExpense = 0
-    let cExpense = 0
-    expenseFill.forEach((e) => {
-      cExpense += parseFloat(e.credit)
-      dExpense += parseFloat(e.debit)
-    })
-    // Pl
-    let dPl = 0
-    let cPl = 0
-
-    // Prive
-    let dPrive = 0
-    let cPrive = 0
-    // priveFill.forEach((e) => {
-    //   cPrive += parseFloat(e.credit)
-    //   dPrive += parseFloat(e.debit)
-    // })
+    // detail Periode
     let x = {
       ...input,
       status: status,
     }
-
+    // Income
+    let dIncome = 0
+    let cIncome = 0
+    let aIncome =[]
+    incomeFill.forEach((e,i) => {
+      cIncome += parseFloat(e.credit)
+      dIncome += parseFloat(e.debit)
+      aIncome.push({
+        idx: i+1,
+        parent: `CLS/${input.name}/0001`,
+        acc_type:'Closing',
+        acc: e.number,
+        party_type: '',
+        party: '',
+        debit: e.credit,
+        credit: e.debit,
+        posting_date: input.end,
+        created_by: loginUser,
+        company: company,
+      })
+    })
+    aIncome = [...aIncome, {
+      idx: aIncome.length+1,
+      parent: `CLS/${input.name}/0001`,
+      acc_type:'Closing',
+      acc: '330',
+      party_type: '',
+      party: '',
+      debit: dIncome.toString() + '.00',
+      credit: cIncome.toString() + '.00',
+      posting_date: input.end,
+      created_by: loginUser,
+      company: company,
+    }]
+    let xIncome = {
+      type: 'Closing',
+      name: `CLS/${input.name}/0001`,
+      title: 'Closing Pendapatan ' + input.name,
+      posting_date: input.end,
+      created_by: loginUser,
+      company: company,
+      total_debit: cIncome.toString() + '.00',
+      total_credit: cIncome.toString() + '.00',
+    }
+    console.log('aIn',aIncome )
+    // Expense
+    let dExpense = 0
+    let cExpense = 0
+    let aExpense = []
+    expenseFill.forEach((e,i) => {
+      cExpense += parseFloat(e.credit)
+      dExpense += parseFloat(e.debit)
+      aExpense.push({
+        idx: i+1,
+        parent: `CLS/${input.name}/0002`,
+        acc_type:'Closing',
+        acc: e.number,
+        party_type: '',
+        party: '',
+        debit: e.credit,
+        credit: e.debit,
+        posting_date: input.end,
+      created_by: loginUser,
+      company: company,
+      })
+    })
+    aExpense = [...aExpense, {
+      idx: aExpense.length+1,
+      parent: `CLS/${input.name}/0002`,
+      acc_type:'Closing',
+      acc: '330',
+      party_type: '',
+      party: '',
+      debit: dExpense.toString() + '.00',
+      credit: cExpense.toString() + '.00',
+      posting_date: input.end,
+      created_by: loginUser,
+      company: company,
+    }]
+    let xExpense = {
+      type: 'Closing',
+      name: `CLS/${input.name}/0002`,
+      title: 'Closing Beban ' + input.name,
+      posting_date: input.end,
+      created_by: loginUser,
+      company: company,
+      total_debit: dExpense.toString() + '.00',
+      total_credit: dExpense.toString() + '.00',
+    }
+    console.log('aEx', aExpense )
+    // Pl
+    let dPl = (cIncome - dExpense).toString() + '.00'
+    let cPl = (cIncome - dExpense).toString() + '.00'
+    let aPl = [{
+      idx: 1,
+      parent: `CLS/${input.name}/0003`,
+      acc_type:'Closing',
+      acc: '330',
+      party_type: '',
+      party: '',
+      debit: (cIncome - dExpense).toString() + '.00',
+      credit: '0.00',
+      posting_date: input.end,
+      created_by: loginUser,
+      company: company,
+    },{
+      idx: 2,
+      parent: `CLS/${input.name}/0003`,
+      acc_type:'Closing',
+      acc: '310',
+      party_type: '',
+      party: '',
+      debit: '0.00',
+      credit: (cIncome - dExpense).toString() + '.00',
+      posting_date: input.end,
+      created_by: loginUser,
+      company: company,
+    }]
+    let xPl = {
+      type: 'Closing',
+      name: `CLS/${input.name}/0003`,
+      title: 'Closing Laba ' + input.name,
+      posting_date: input.end,
+      created_by: loginUser,
+      company: company,
+      total_debit: cPl,
+      total_credit: dPl,
+    }
+    console.log('aPl', aPl )
+    // Prive
+    let dPrive = '0.00'
+    let cPrive = '0.00'
+    let aPrive = [{
+      idx: 1,
+      parent: `CLS/${input.name}/0004`,
+      acc_type:'Closing',
+      acc: '320',
+      party_type: '',
+      party: '',
+      debit:  '0.00',
+      credit: '0.00',
+      posting_date: input.end,
+      created_by: loginUser,
+      company: company,
+    },{
+      idx: 2,
+      parent: `CLS/${input.name}/0004`,
+      acc_type:'Closing',
+      acc: '310',
+      party_type: '',
+      party: '',
+      debit: '0.00',
+      credit: '0.00',
+      posting_date: input.end,
+      created_by: loginUser,
+      company: company,
+    }]
+    let xPrive = {
+      type: 'Closing',
+      name: `CLS/${input.name}/0004`,
+      title: 'Closing Prive ' + input.name,
+      posting_date: input.end,
+      created_by: loginUser,
+      company: company,
+      total_debit: cPrive,
+      total_credit: dPrive,
+    }
+    console.log('aPrive', aPrive )
+    console.log(x, xIncome, xExpense,xPl,xPrive)
     try {
-      // let res = await ClosePeriodFn(x)
-      let xIncome = {
-        type: 'Closing',
-        name: `CLS/${input.name}/0001`,
-        title: 'Closing pendapatan ' + input.name,
-        posting_date: input.end,
-        created_by: loginUser,
-        company: company,
-        total_debit: cIncome,
-        total_credit: dIncome,
-      }
-      let xExpense = {
-        type: 'Closing',
-        name: `CLS/${input.name}/0002`,
-        title: 'Closing beban ' + input.name,
-        posting_date: input.end,
-        created_by: loginUser,
-        company: company,
-        total_debit: cExpense,
-        total_credit: dExpense,
-      }
-      let xPl = {
-        type: 'Closing',
-        name: `CLS/${input.name}/0002`,
-        title: 'Closing beban ' + input.name,
-        posting_date: input.end,
-        created_by: loginUser,
-        company: company,
-        total_debit: cPl,
-        total_credit: dPl,
-      }
-      let xPrive = {
-        type: 'Closing',
-        name: `CLS/${input.name}/0002`,
-        title: 'Closing beban ' + input.name,
-        posting_date: input.end,
-        created_by: loginUser,
-        company: company,
-        total_debit: cPrive,
-        total_credit: dPrive,
-      }
-      console.log(incomeFill)
-      console.log(x, xIncome, xExpense)
-      let entry = [
-        {
-          idx: '1',
-          parent: `CLS/${input.name}/0001`,
-          acc: '330',
-          party_type: '',
-          party: '',
-          debit: '',
-          credit: '5000',
-        },
-        {
-          idx: '2',
-          parent: `CLS/${input.name}/0001`,
-          acc: '420',
-          party_type: '',
-          party: '',
-          debit: '5000',
-          credit: '',
-        },
-      ]
-      // let addJournal = await AddJournalFn(xIncome)
-      let res = 0
-      // console.log(assets, liability, equity, income, expense, pl)
+      let res = await ClosePeriodFn(x)      
+      let addIncome = await AddJournalFn(xIncome)      
+      let addExpense = await AddJournalFn(xExpense)
+      let addPl = await AddJournalFn(xPl)
+      let addPrive = await AddJournalFn(xPrive)
+      let arIncome = aIncome.forEach(e => {
+         AddJournalEntryFn(e)        
+      })
+      let arExpense = aExpense.forEach(e => {
+        AddJournalEntryFn(e)      
+      })
+      let arPl = aPl.forEach(e => {
+        AddJournalEntryFn(e)    
+      })
+      let arPrive = aPrive.forEach(e => {
+        AddJournalEntryFn(e)  
+      })
+      // let res = 0
       console.log(res)
+      console.log(addIncome, addExpense, addPl, addPrive,arIncome, arExpense, arPl, arPrive)
       if (res.error) {
         throw res
       } else {
@@ -262,6 +360,9 @@ const Period = () => {
     } catch (error) {
       console.log(error)
       setVis({ ...vis, modal: true, value: 3, msg: error.message })
+    } finally {
+      setVis({ ...vis, modal: true, value: 1 })
+
     }
 
     // setVis({ ...vis, modal: true, value: 2, data: x })
@@ -272,16 +373,7 @@ const Period = () => {
   if (isError) {
     return <div>Error! {error.message}</div>
   }
-  if (period.filter((f) => f.status === '1').length === 0) {
-    return (
-      <Modal
-        modal={true}
-        title={'Add Period'}
-        element={<AddPeriod handleClose={handleClose} />}
-        handleClose={handleClose}
-      />
-    )
-  }
+
   return (
     <>
       {/* Modal Window */}

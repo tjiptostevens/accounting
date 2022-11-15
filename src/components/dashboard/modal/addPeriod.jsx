@@ -21,7 +21,6 @@ const AddPeriod = (props) => {
     props.handleClose(e)
   }
   const handleSubmit = async (e) => {
-    e.preventDefault()
     console.log(data)
     try {
       let res = await AddPeriodFn(data)

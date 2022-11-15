@@ -59,7 +59,7 @@ const Journal = () => {
   }, [journal, data.search, data.search_type, data.end_date, data.period])
   let journalListFil = useMemo(() => {
     return journalList
-      ?.sort((a, b) => (a.posting_date > b.posting_date ? 1 : -1))
+      ?.sort((a, b) => (a.idx > b.idx ? 1 : -1))
       .filter((d) => d.parent === data.journalDetail)
   }, [journalList, data.journalDetail])
   const handleJournalDet = (index, journalName) => {

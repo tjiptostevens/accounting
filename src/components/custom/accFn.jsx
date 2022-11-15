@@ -78,13 +78,15 @@ const AddJournalEntryFn = async (
     credit: 0,
     acc_type: null,
     posting_date: `{YY}-{MM}-{DD}`,
+    company:company
   },
 ) => {
+  let x = { ...input, company: company, created_by: loginUser }
   try {
     let res = await fetch(`${urlLink.url}addjournalentry.php`, {
       signal: abortCtr.signal,
       method: 'POST',
-      body: JSON.stringify(input),
+      body: JSON.stringify(x),
       headers: headers,
     })
     res = await res.json()
@@ -101,11 +103,12 @@ const AddJournalEntryFn = async (
 }
 
 const AddAssetsFn = async (input) => {
+  let x = { ...input, company: company, created_by: loginUser }
   try {
     let res = await fetch(`${urlLink.url}addassets.php`, {
       signal: abortCtr.signal,
       method: 'POST',
-      body: JSON.stringify(input),
+      body: JSON.stringify(x),
       headers: headers,
     })
 
