@@ -1,42 +1,44 @@
-import React, { useState } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
-import logo from '../assets/img/env.png'
-import useWindow from '../useWindow'
-import '../assets/css/sideNav.css'
-import { useQuery } from 'react-query'
-import { reqPeriod } from '../reqFetch'
+import React, { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import logo from "../assets/img/env.png";
+import useWindow from "../useWindow";
+import "../assets/css/sideNav.css";
+import { useQuery } from "react-query";
+import { reqPeriod } from "../reqFetch";
 
 const SideNav = (props) => {
-  // const { data: period, error, isError, isLoading } = useQuery(
-  //   'period',
-  //   reqPeriod,
-  // )
-  let periodStorage = localStorage.getItem('period')
-  let period = JSON.parse(periodStorage)
-  const { width } = useWindow()
-  const navigate = useNavigate()
+  const {
+    data: period,
+    error,
+    isError,
+    isLoading,
+  } = useQuery("period", reqPeriod);
+  // let periodStorage = localStorage.getItem('period')
+  // let period = JSON.parse(periodStorage)
+  const { width } = useWindow();
+  const navigate = useNavigate();
   const [data, setData] = useState({
     width: true,
-    micon: 'm_icon bi bi-x-circle',
-  })
+    micon: "m_icon bi bi-x-circle",
+  });
   const handleLogout = (e) => {
-    sessionStorage.clear()
-    localStorage.clear()
-    navigate('/', { replace: true })
+    sessionStorage.clear();
+    localStorage.clear();
+    navigate("/", { replace: true });
+  };
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
-  // if (isLoading) {
-  //   return <div>Loading...</div>
-  // }
-  // if (isError) {
-  //   return <div>Error! {error.message}</div>
-  // }
+  if (isError) {
+    return <div>Error! {error.message}</div>;
+  }
   function Nav() {
     return (
       <>
-        <div style={{ background: 'green', borderRadius: '5px' }}>
+        <div style={{ background: "green", borderRadius: "5px" }}>
           <p
             className="__subtitle"
-            style={{ paddingLeft: '15px', paddingTop: '5px' }}
+            style={{ paddingLeft: "15px", paddingTop: "5px" }}
           >
             ACTIVE PERIOD
           </p>
@@ -46,7 +48,7 @@ const SideNav = (props) => {
               className="nav-link text-white"
               aria-current="page"
             >
-              <li style={{ textAlign: 'center' }}>
+              <li style={{ textAlign: "center" }}>
                 {/* <svg
                   className="m_icon bi me-2"
                   width="16"
@@ -58,21 +60,21 @@ const SideNav = (props) => {
                 <i
                   className="bi bi-bookmark"
                   style={{
-                    color: 'white',
-                    marginRight: '10px',
+                    color: "white",
+                    marginRight: "10px",
                   }}
                 ></i>
-                {period.name + ' - ' + period.description}
+                {period[0]?.name + " - " + period[0]?.description}
               </li>
             </Link>
           </ul>
         </div>
         <hr />
-        {localStorage.getItem('loginUser') !== 'admin' ? (
-          ''
+        {localStorage.getItem("loginUser") !== "admin" ? (
+          ""
         ) : (
           <>
-            <p className="__subtitle" style={{ paddingLeft: '15px' }}>
+            <p className="__subtitle" style={{ paddingLeft: "15px" }}>
               MASTER
             </p>
             <ul className="nav nav-pills flex-column mb-auto">
@@ -118,7 +120,7 @@ const SideNav = (props) => {
             <hr />
           </>
         )}
-        <p className="__subtitle" style={{ paddingLeft: '15px' }}>
+        <p className="__subtitle" style={{ paddingLeft: "15px" }}>
           ACTIVITY
         </p>
         <ul className="nav nav-pills flex-column mb-auto">
@@ -137,7 +139,7 @@ const SideNav = (props) => {
           </li>
         </ul>
         <hr />
-        <p className="__subtitle" style={{ paddingLeft: '15px' }}>
+        <p className="__subtitle" style={{ paddingLeft: "15px" }}>
           REPORT
         </p>
 
@@ -160,7 +162,7 @@ const SideNav = (props) => {
           </li>
         </ul>
         <hr />
-        <p className="__subtitle" style={{ paddingLeft: '15px' }}>
+        <p className="__subtitle" style={{ paddingLeft: "15px" }}>
           FINANCIAL STATEMENT
         </p>
         <ul className="nav nav-pills flex-column mb-auto">
@@ -186,13 +188,13 @@ const SideNav = (props) => {
           </li>
         </ul>
       </>
-    )
+    );
   }
 
   return (
     <>
-      <div className="w-100" style={{ overflowY: 'auto' }}>
-        <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
+      <div className="w-100" style={{ overflowY: "auto" }}>
+        <svg xmlns="http://www.w3.org/2000/svg" style={{ display: "none" }}>
           <symbol id="bootstrap" viewBox="0 0 118 94">
             <title>Bootstrap</title>
             <path
@@ -348,7 +350,7 @@ const SideNav = (props) => {
         </svg>
         {width > 450 ? (
           <div
-            style={{ minWidth: '250px', maxWidth: '270px', overflowY: 'auto' }}
+            style={{ minWidth: "250px", maxWidth: "270px", overflowY: "auto" }}
             className="d-flex flex-column flex-shrink-0 p-3 text-white"
           >
             <Nav />
@@ -356,7 +358,7 @@ const SideNav = (props) => {
             <ul className="nav nav-pills flex-column mb-auto">
               <li>
                 <NavLink
-                  to={'/'}
+                  to={"/"}
                   className="nav-link text-white"
                   onClick={handleLogout}
                 >
@@ -369,7 +371,7 @@ const SideNav = (props) => {
         ) : (
           <div
             className="m__menu"
-            style={{ left: { true: '-240px', false: '-15px' }[data.width] }}
+            style={{ left: { true: "-240px", false: "-15px" }[data.width] }}
           >
             <div
               className="m__menu_toggle"
@@ -377,11 +379,11 @@ const SideNav = (props) => {
             >
               <i
                 className={
-                  { true: 'm_icon bi bi-list', false: 'm_icon bi bi-x-lg' }[
+                  { true: "m_icon bi bi-list", false: "m_icon bi bi-x-lg" }[
                     data.width
                   ]
                 }
-                style={{ color: 'white' }}
+                style={{ color: "white" }}
               ></i>
             </div>
             <div className="navbar-brand" to="/d">
@@ -400,7 +402,7 @@ const SideNav = (props) => {
             <ul className="nav nav-pills flex-column mb-auto">
               <li>
                 <NavLink
-                  to={'/'}
+                  to={"/"}
                   className="nav-link text-white"
                   onClick={handleLogout}
                 >
@@ -413,7 +415,7 @@ const SideNav = (props) => {
         )}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default SideNav
+export default SideNav;
