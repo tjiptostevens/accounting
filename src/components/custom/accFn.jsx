@@ -78,6 +78,7 @@ const AddJournalEntryFn = async (
     credit: 0,
     acc_type: null,
     posting_date: `{YY}-{MM}-{DD}`,
+    company: company,
   }
 ) => {
   let x = { ...input, company: company, created_by: loginUser };
@@ -100,7 +101,40 @@ const AddJournalEntryFn = async (
     return error;
   }
 };
-
+const AddEquityChangeFn = async (
+  input = {
+    name: `period name`,
+    opening: "",
+    profit: "",
+    prive: "",
+    closing: "",
+    company: company,
+    posting_date: `{YY}-{MM}-{DD}`,
+    created_by: loginUser,
+  }
+) => {
+  console.log(input);
+  let x = { ...input, company: company, created_by: loginUser };
+  try {
+    let res = await fetch(`${urlLink.url}addequitychange.php`, {
+      signal: abortCtr.signal,
+      method: "POST",
+      body: JSON.stringify(x),
+      headers: headers,
+    });
+    res = await res.json();
+    console.log(res);
+    if (res.error) {
+      throw res;
+    } else {
+      return res;
+    }
+  } catch (error) {
+    // display an alert message for an error
+    console.log(error);
+    return error;
+  }
+};
 const AddAssetsFn = async (input) => {
   let x = { ...input, company: company, created_by: loginUser };
   try {
@@ -135,5 +169,6 @@ export {
   CalcAssetFn,
   AddJournalFn,
   AddJournalEntryFn,
+  AddEquityChangeFn,
   GetJournalLastFn,
 };

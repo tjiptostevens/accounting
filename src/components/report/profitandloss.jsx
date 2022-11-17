@@ -132,17 +132,6 @@ const ProfitAndLoss = () => {
         )
     )
   }, [newCoa])
-  const handleClose = (e) => {
-    setData({ ...data, vis: false })
-  }
-  const handleChange = (e) => {
-    console.log(`${[e.target.name]}`, e.target.value)
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    })
-  }
-
   let incomeFill = useMemo(() => {
     return (
       newCoa &&
@@ -159,6 +148,17 @@ const ProfitAndLoss = () => {
         .filter((d) => d.type === 'Expense')
     )
   }, [newCoa])
+  const handleClose = (e) => {
+    setData({ ...data, vis: false })
+  }
+  const handleChange = (e) => {
+    console.log(`${[e.target.name]}`, e.target.value)
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    })
+  }
+
   if (isLoading) {
     return <div>Loading...</div>
   }
