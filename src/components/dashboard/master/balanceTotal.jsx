@@ -22,7 +22,7 @@ const BalanceTotal = ({ list }) => {
               textAlign: "right",
             }}
           >
-            Total
+            Total (on progress...)
           </div>
           <div
             className="col-md-6"
@@ -40,7 +40,9 @@ const BalanceTotal = ({ list }) => {
                 width: "45%",
                 color: "white",
               }}
-            ></div>
+            >
+              -
+            </div>
             <div
               style={{
                 display: "flex",
@@ -48,7 +50,9 @@ const BalanceTotal = ({ list }) => {
                 width: "45%",
                 color: "white",
               }}
-            ></div>
+            >
+              -
+            </div>
           </div>
         </div>
       </div>
