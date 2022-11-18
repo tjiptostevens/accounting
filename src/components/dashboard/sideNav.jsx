@@ -48,7 +48,7 @@ const SideNav = (props) => {
           >
             ACTIVE PERIOD
           </p>
-          {console.log(period)}
+          {/* {console.log(period)} */}
           <ul className="nav nav-pills flex-column mb-auto">
             <Link
               to="/d/period"

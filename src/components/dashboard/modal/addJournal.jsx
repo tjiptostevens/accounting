@@ -266,6 +266,8 @@ const AddJournal = (props) => {
         let x = {
           ...data.entry[i],
           posting_date: data.posting_date,
+          party_type: data.customer !== "" && "Customer",
+          party: data.customer,
           company: company,
           created_by: loginUser,
         };
@@ -287,6 +289,7 @@ const AddJournal = (props) => {
         opening: false,
         pay_to_recd_from: "",
         user_remark: "",
+        customer: "",
         created_by: localStorage.getItem("loginUser"),
         company: localStorage.getItem("company"),
         message: res.message,
@@ -542,8 +545,9 @@ const AddJournal = (props) => {
             type="text"
             name="customer"
             value={
-              data.customer &&
-              customer?.filter((f) => f.id === data.customer).map((e) => e.name)
+              data.customer.split(" - ")[1]
+              // &&
+              // customer?.filter((f) => f.id === data.customer).map((e) => e.name)
             }
             onChange={handleChange}
           />
@@ -552,7 +556,7 @@ const AddJournal = (props) => {
               customer
                 .filter((e) => e.status === "1")
                 .map((e, i) => (
-                  <option key={i} value={e.id}>
+                  <option key={i} value={e.id + " - " + e.name}>
                     {e.id} - {e.name}
                   </option>
                 ))}
