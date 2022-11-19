@@ -95,7 +95,10 @@ function CoaList({ list, btn }) {
       />
 
       <div
-        style={{ paddingLeft: "20px", marginTop: "5px" }}
+        style={{
+          paddingLeft: list.name.split(" ")[0] === "Akum." ? "40px" : "20px",
+          marginTop: "5px",
+        }}
         onMouseOver={() => setData({ ...data, toggle: true })}
         onMouseLeave={() => setData({ ...data, toggle: false })}
       >

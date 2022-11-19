@@ -54,7 +54,10 @@ const BalanceList = ({ list, btn }) => {
     <>
       {/* {console.log(list)} */}
       <div
-        style={{ paddingLeft: "20px", marginTop: "5px" }}
+        style={{
+          paddingLeft: list.name.split(" ")[0] === "Akum." ? "40px" : "20px",
+          marginTop: "5px",
+        }}
         onMouseOver={() => setData({ ...data, toggle: true })}
         onMouseLeave={() => setData({ ...data, toggle: false })}
       >
@@ -98,6 +101,7 @@ const BalanceList = ({ list, btn }) => {
                 color: "white",
               }}
             >
+              {/* {list.debit.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")} */}
               {list.debit > list.credit
                 ? nestTotal(list)
                     .toString()
@@ -112,10 +116,15 @@ const BalanceList = ({ list, btn }) => {
                 color: "white",
               }}
             >
+              {/* {list.credit.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")} */}
               {list.credit > list.debit
-                ? nestTotal(list)
-                    .toString()
-                    .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + ".00"
+                ? list.name.split(" ")[0] === "Akum."
+                  ? (nestTotal(list) * -1)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + ".00"
+                  : nestTotal(list)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + ".00"
                 : "-"}
             </div>
             {/* <div
