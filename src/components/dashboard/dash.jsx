@@ -1,14 +1,10 @@
 import React, { useMemo } from "react";
 import { useQuery } from "react-query";
-import { reqCoa, reqCoaList, reqJournalEntry } from "../reqFetch";
-import useFetch from "../useFetch";
-import CoaLists from "./master/coaLists";
+import { reqCoaList, reqJournalEntry } from "../reqFetch";
 
 const Dash = () => {
   let periodStorage = localStorage.getItem("period");
   let period = JSON.parse(periodStorage);
-  // const { data: coaList } = useFetch('getcoalist.php')
-  const { data: coa } = useQuery("coa", reqCoa);
   const { data: journalEntry } = useQuery("journalEntry", reqJournalEntry);
   const {
     data: coaList,
@@ -35,7 +31,6 @@ const Dash = () => {
       newCoa.push(x);
     } catch (error) {}
   });
-  let newCoan = newCoa;
   // Filter journal Entry by period
   let jE = useMemo(() => {
     return journalEntry
@@ -79,44 +74,7 @@ const Dash = () => {
       }
     }
   });
-  // journal Entry All
-  let jEn = useMemo(() => {
-    return journalEntry?.sort((a, b) =>
-      a.posting_date > b.posting_date ? 1 : -1
-    );
-  }, [journalEntry]);
-  jEn?.forEach((e) => {
-    if (e.acc !== "Total") {
-      try {
-        let i = newCoan.findIndex((d) => d.number === e.acc);
-        let d, c;
-        // console.log(e.acc, e.debit, parseInt(e.debit))
-        d = parseInt(e.debit) + parseInt(newCoan[i].debit);
-        c = parseInt(e.credit) + parseInt(newCoan[i].credit);
-        let t = 0;
-        if (newCoan[i].type === "Assets" || newCoan[i].type === "Expense") {
-          t = d - c;
-        } else {
-          t = c - d;
-        }
-        let y = newCoan;
-        let x = {
-          number: newCoan[i].number,
-          name: newCoan[i].name,
-          type: newCoan[i].type,
-          parent: newCoan[i].parent,
-          is_group: newCoan[i].is_group,
-          debit: d.toString() + ".00",
-          credit: c.toString() + ".00",
-          total: t.toString() + ".00",
-        };
-        y[i] = x;
-        newCoan = y;
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  });
+
   let assets = 0;
   let liability = 0;
   let equity = 0;
@@ -132,14 +90,14 @@ const Dash = () => {
       expense += parseFloat(element.total);
     }
   });
-  newCoan?.forEach((element) => {
+  newCoa?.forEach((element) => {
     if (element.type === "Liability") {
       liability += parseFloat(element.total);
     } else if (element.type === "Equity") {
       equity += parseFloat(element.total);
     }
   });
-  newCoan?.forEach((element) => {
+  newCoa?.forEach((element) => {
     if (element.type === "Assets") {
       assets += parseFloat(element.total);
     }

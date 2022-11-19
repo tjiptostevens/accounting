@@ -1,28 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AddCoa from "../modal/addCoa";
 import DeleteCoa from "../modal/deleteCoa";
 import EditCoa from "../modal/editCoa";
 import Modal from "../../site/modal";
 
-let Array = [];
-const coaTotal = (list) => {
-  // console.log('child', child)
-  let arr = {};
-  let gr = {};
-  let x = 0;
-  // console.log(child)
-  if (list.child.length > 0) {
-    for (let i = 0; i < list.child.length; i++) {
-      const element = parseInt(list.child[i].total);
-      x += element;
-    }
-    // console.log('for', x)
-    arr = { ...list, total: x };
-    Array = arr;
-    // console.log('x', Array)
-    return `${x}.00`;
-  }
-};
 function CoaList({ list, btn }) {
   // const list = coaTotal(lists)
   const [data, setData] = useState({ vis: false, toggle: false });
@@ -33,7 +14,6 @@ function CoaList({ list, btn }) {
   const nestTotal = (list) => {
     let c = 0;
     let d = 0;
-    let t = 0;
     const childTotal = (data) => {
       for (const key in data) {
         if (key === "debit") {

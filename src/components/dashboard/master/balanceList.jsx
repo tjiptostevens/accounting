@@ -1,17 +1,13 @@
-import React, { useState, useEffect } from "react";
-import Modal from "../../site/modal";
+import React, { useState } from "react";
 
 const BalanceList = ({ list, btn }) => {
-  // const list = coaTotal(lists)
   const [data, setData] = useState({ vis: false, toggle: false });
-  const [vis, setVis] = useState({ modal: false });
   const nestedCoa = (list.child || []).map((d) => {
     return <BalanceList key={d.number} list={d} type="child" btn={btn} />;
   });
   const nestTotal = (list) => {
     let c = 0;
     let d = 0;
-    let t = 0;
     const childTotal = (data) => {
       for (const key in data) {
         if (key === "debit") {
@@ -37,22 +33,8 @@ const BalanceList = ({ list, btn }) => {
     }
   };
 
-  const handleClose = (e) => {
-    setVis({ ...vis, modal: false });
-  };
-  const handleAddChild = (e) => {
-    setVis({ ...vis, modal: true, value: 1 });
-  };
-  const handleEdit = (e) => {
-    setVis({ ...vis, modal: true, value: 2 });
-  };
-  const handleDelete = (e) => {
-    setVis({ ...vis, modal: true, value: 3 });
-  };
-
   return (
     <>
-      {/* {console.log(list)} */}
       <div
         style={{
           paddingLeft: list.name.split(" ")[0] === "Akum." ? "40px" : "20px",
