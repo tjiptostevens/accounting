@@ -4,11 +4,11 @@ import useFetch from "../../useFetch";
 import useDate from "../../useDate";
 import Modal from "../../site/modal";
 import {
-  AddAssetsFn,
   AddJournalEntryFn,
   AddJournalFn,
   GetJournalLastFn,
 } from "../../custom/accFn";
+import { AddAssetsFn } from "../../custom/assetsFn";
 
 const AddAssets = (props) => {
   const { YY, MM, DD } = useDate();

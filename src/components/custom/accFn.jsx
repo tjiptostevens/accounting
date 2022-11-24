@@ -135,40 +135,5 @@ const AddEquityChangeFn = async (
     return error;
   }
 };
-const AddAssetsFn = async (input) => {
-  let x = { ...input, company: company, created_by: loginUser };
-  try {
-    let res = await fetch(`${urlLink.url}addassets.php`, {
-      signal: abortCtr.signal,
-      method: "POST",
-      body: JSON.stringify(x),
-      headers: headers,
-    });
 
-    res = await res.json();
-    console.log(res);
-    if (res.error) {
-      throw res;
-    } else {
-      return res;
-    }
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-};
-const CalcAssetFn = async (input) => {
-  try {
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export {
-  AddAssetsFn,
-  CalcAssetFn,
-  AddJournalFn,
-  AddJournalEntryFn,
-  AddEquityChangeFn,
-  GetJournalLastFn,
-};
+export { AddJournalFn, AddJournalEntryFn, AddEquityChangeFn, GetJournalLastFn };
