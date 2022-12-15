@@ -1,53 +1,58 @@
-import React, { useState } from 'react'
-import urlLink from '../../config/urlLink'
-import { AddPeriodFn } from '../../custom/periodFn'
-import Modal from '../../site/modal'
+import React, { useState } from "react";
+import urlLink from "../../config/urlLink";
+import { AddPeriodFn } from "../../custom/periodFn";
+import Modal from "../../site/modal";
 
 const AddPeriod = (props) => {
-  const [data, setData] = useState({ required: true })
+  const [data, setData] = useState({ required: true });
 
-  const [vis, setVis] = useState({ modal: false })
+  const [vis, setVis] = useState({ modal: false });
   const handleChange = (e) => {
-    console.log(`${[e.target.name]}`, e.target.value)
+    console.log(`${[e.target.name]}`, e.target.value);
     setData({
       ...data,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
   const handleClose = (e) => {
-    e.preventDefault()
-    console.log(data)
-    setData({ ...data, required: !data.required })
-    props.handleClose(e)
-  }
+    e.preventDefault();
+    console.log(data);
+    setData({ ...data, required: !data.required });
+    props.handleClose(e);
+    window.location.reload();
+  };
   const handleSubmit = async (e) => {
-    console.log(data)
+    e.preventDefault();
+    console.log(data);
     try {
-      let res = await AddPeriodFn(data)
-      console.log(res)
+      let res = await AddPeriodFn(data);
+      console.log(res);
       if (res.error) {
-        throw res
+        throw res;
       } else {
-        setVis({ ...vis, modal: true, msg: res.message })
+        setVis({ ...vis, modal: true, msg: res.message });
       }
     } catch (error) {
-      console.log(error)
-      setVis({ ...vis, modal: true, msg: error.message })
+      console.log(error);
+      setVis({ ...vis, modal: true, msg: error.message });
     }
-  }
+  };
   return (
     <>
       <Modal
         modal={vis.modal}
-        title={''}
-        element={vis.msg}
-        handleClose={(e) => setVis({ modal: false })}
+        title={""}
+        element={<>{vis.msg}</>}
+        handleClose={(e) => {
+          setVis({ modal: false });
+          window.location.reload();
+        }}
       />
       <form onSubmit={handleSubmit} method="post">
         {/* Name */}
         <div
           className="row col-md-12"
-          style={{ margin: '0px', padding: '0px' }}
+          style={{ margin: "0px", padding: "0px" }}
         >
           <label className="label_title">
             Name <span className="text-danger">*</span>
@@ -65,7 +70,7 @@ const AddPeriod = (props) => {
         {/* Description */}
         <div
           className="row col-md-12"
-          style={{ margin: '0px', padding: '0px' }}
+          style={{ margin: "0px", padding: "0px" }}
         >
           <label className="label_title">
             Description <span className="text-danger">*</span>
@@ -83,7 +88,7 @@ const AddPeriod = (props) => {
         {/* start */}
         <div
           className="row col-md-12"
-          style={{ margin: '0px', padding: '0px' }}
+          style={{ margin: "0px", padding: "0px" }}
         >
           <label className="label_title">
             Start Date <span className="text-danger">*</span>
@@ -101,7 +106,7 @@ const AddPeriod = (props) => {
         {/* end */}
         <div
           className="row col-md-12"
-          style={{ margin: '0px', padding: '0px' }}
+          style={{ margin: "0px", padding: "0px" }}
         >
           <label className="label_title">
             End Date <span className="text-danger">*</span>
@@ -131,7 +136,7 @@ const AddPeriod = (props) => {
         </button>
       </form>
     </>
-  )
-}
+  );
+};
 
-export default AddPeriod
+export default AddPeriod;

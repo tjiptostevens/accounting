@@ -158,6 +158,8 @@ const Period = () => {
   const handleClose = (e) => {
     // e.preventDefault()
     setVis({ ...vis, modal: false });
+
+    window.location.reload();
   };
   const handleEdit = (e, input) => {
     console.log(e, input);

@@ -34,6 +34,13 @@ const AddPeriodFn = async (
     if (res.error) {
       throw res;
     } else {
+      return res;
+    }
+  } catch (error) {
+    console.log(error);
+    return error;
+  } finally {
+    try {
       let period = await fetch(`${urlLink.url}getperiod.php`, {
         signal: abortCtr.signal,
         method: "GET",
@@ -44,11 +51,9 @@ const AddPeriodFn = async (
       console.log(period);
       localStorage.setItem("period", JSON.stringify(period[0]));
       sessionStorage.setItem("period", JSON.stringify(period[0]));
-      return res;
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
-    return error;
   }
 };
 
